@@ -2,6 +2,8 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
+#include "LoginPage.h"
+#include "PageController.h"
 
 class MainWindow : public QMainWindow
 {
@@ -13,4 +15,6 @@ public:
 
 private:
     Ui::MainWindowClass ui;
+    LoginPage *loginpage;
+    PageController* pageController;
 };
