@@ -39,7 +39,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
+    <QtInstall>6.5.3_msvc2019_64</QtInstall>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>6.5.1_msvc2019_64</QtInstall>
@@ -68,6 +68,9 @@
     <Link>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <ClCompile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
@@ -97,11 +100,13 @@
     <ClCompile Include="LoginPage.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="PageController.cpp" />
+    <ClCompile Include="RegisterPage.cpp" />
     <QtMoc Include="MainWindow.h" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="RegisterPage.h" />
     <QtMoc Include="LoginPage.h" />
     <ClInclude Include="PageController.h" />
   </ItemGroup>

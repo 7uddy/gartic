@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
 #include "LoginPage.h"
+#include "RegisterPage.h"
 #include "PageController.h"
 
 class MainWindow : public QMainWindow
@@ -15,6 +16,7 @@ public:
 
 private:
     Ui::MainWindowClass ui;
-    LoginPage *loginpage;
+    LoginPage* loginpage;
+    RegisterPage* registerpage;
     PageController* pageController;
 };

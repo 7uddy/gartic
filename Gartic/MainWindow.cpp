@@ -6,8 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui.setupUi(this);
     setWindowTitle("Gartic");
     loginpage = new LoginPage;
+    registerpage = new RegisterPage;
     pageController = new PageController(this);
-    pageController->addPage(loginpage);
+    pageController->addPage(registerpage);
     setCentralWidget(pageController);
 }
 

@@ -29,6 +29,9 @@
     <QtMoc Include="LoginPage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="RegisterPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -41,6 +44,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PageController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RegisterPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
