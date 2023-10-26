@@ -2,6 +2,8 @@
 #include <QtWidgets/QApplication>
 #include <QFile>
 
+#include "Jucator.h"
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

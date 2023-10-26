@@ -49,6 +49,9 @@
     <ClCompile Include="RegisterPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Jucator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
@@ -57,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PageController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Jucator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
