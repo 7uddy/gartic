@@ -3,6 +3,7 @@
 #include <QFile>
 
 #include "Jucator.h"
+import round;
 
 int main(int argc, char *argv[])
 {
