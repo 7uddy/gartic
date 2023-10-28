@@ -1,14 +1,14 @@
 #pragma once
 #include <QtWidgets>
+#include "PageController.h"
 
 class LoginPage : public QWidget
 {
 	Q_OBJECT
 public:
-	LoginPage(QWidget* parent = nullptr);
+	LoginPage(PageController* controller,QWidget* parent = nullptr);
 	void PlaceElements();
 	void LoginButtonClicked();
-	void RegisterButtonClicked();
 private:
 	QPushButton* loginButton;
 	QPushButton* registerButton;

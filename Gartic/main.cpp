@@ -1,9 +1,8 @@
 #include "MainWindow.h"
 #include <QtWidgets/QApplication>
-#include <QFile>
 
 #include "Jucator.h"
-import round;
+//import round;
 
 int main(int argc, char *argv[])
 {

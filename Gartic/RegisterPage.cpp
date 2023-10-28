@@ -1,6 +1,6 @@
 #include "RegisterPage.h"
 
-RegisterPage::RegisterPage(QWidget* parent)
+RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 {
 	registerButton = new QPushButton("Signup", this);
 	loginButton = new QPushButton("Already have an account? Login", this);
@@ -12,7 +12,9 @@ RegisterPage::RegisterPage(QWidget* parent)
 	email->setPlaceholderText("Email");
 	password->setPlaceholderText("Password");
 	PlaceElements();
-	connect(loginButton, &QPushButton::clicked, this, &RegisterPage::LoginButtonClicked);
+	connect(loginButton, &QPushButton::clicked, controller, [controller]() {
+		controller->showPage("Login");
+		});
 	connect(registerButton, &QPushButton::clicked, this, &RegisterPage::RegisterButtonClicked);
 }
 
@@ -26,10 +28,6 @@ void RegisterPage::PlaceElements()
 	layout->addWidget(registerButton);
 	layout->addWidget(loginButton);
 	layout->setAlignment(Qt::AlignTop);
-}
-
-void RegisterPage::LoginButtonClicked()
-{
 }
 
 void RegisterPage::RegisterButtonClicked()

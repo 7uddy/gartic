@@ -1,6 +1,6 @@
 #include "LoginPage.h"
 
-LoginPage::LoginPage(QWidget* parent)
+LoginPage::LoginPage(PageController* controller,QWidget* parent)
 {
 	loginButton = new QPushButton("Login", this);
 	registerButton = new QPushButton("Don't have an account? Signup", this);
@@ -11,7 +11,9 @@ LoginPage::LoginPage(QWidget* parent)
 	password->setPlaceholderText("Password");
 	PlaceElements();
 	connect(loginButton, &QPushButton::clicked, this, &LoginPage::LoginButtonClicked);
-	connect(registerButton, &QPushButton::clicked, this, &LoginPage::RegisterButtonClicked);
+	connect(registerButton, &QPushButton::clicked, controller, [controller]() {
+		controller->showPage("Register");
+		});
 }
 
 void LoginPage::PlaceElements()
@@ -30,7 +32,4 @@ void LoginPage::LoginButtonClicked()
 
 }
 
-void LoginPage::RegisterButtonClicked()
-{
 
-}

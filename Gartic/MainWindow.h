@@ -13,7 +13,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
+    void show();
 private:
     Ui::MainWindowClass ui;
     LoginPage* loginpage;

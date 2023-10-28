@@ -5,12 +5,19 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui.setupUi(this);
     setWindowTitle("Gartic");
-    loginpage = new LoginPage;
-    registerpage = new RegisterPage;
     pageController = new PageController(this);
-    pageController->addPage(registerpage);
+    loginpage = new LoginPage(pageController);
+    registerpage = new RegisterPage(pageController);
+    pageController->addPage(loginpage, "Login");
+    pageController->addPage(registerpage, "Register");
     setCentralWidget(pageController);
 }
 
 MainWindow::~MainWindow()
 {}
+
+void MainWindow::show()
+{
+    pageController->setStartupPage("Login");
+    QMainWindow::show();
+}
