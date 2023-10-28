@@ -106,6 +106,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="LoginPage.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -118,6 +119,7 @@
   <ItemGroup>
     <QtMoc Include="RegisterPage.h" />
     <QtMoc Include="LoginPage.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PageController.h" />
   </ItemGroup>
