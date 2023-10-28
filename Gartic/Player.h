@@ -1,11 +1,11 @@
 #pragma once
 #include <string>
 
-class Jucator
+class Player
 {
 public:
-	Jucator();
-	Jucator(const std::string& username, const std::string& password);
+	Player();
+	Player(const std::string& username, const std::string& password);
 
 	void setUsername(const std::string& username);
 	void setScore(const uint16_t score);

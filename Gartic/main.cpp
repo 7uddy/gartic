@@ -1,7 +1,7 @@
 #include "MainWindow.h"
 #include <QtWidgets/QApplication>
 
-#include "Jucator.h"
+#include "Player.h"
 //import round;
 
 int main(int argc, char *argv[])

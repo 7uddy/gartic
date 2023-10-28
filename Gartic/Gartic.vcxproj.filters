@@ -49,7 +49,7 @@
     <ClCompile Include="RegisterPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Jucator.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -62,7 +62,7 @@
     <ClInclude Include="PageController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Jucator.h">
+    <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
