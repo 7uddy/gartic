@@ -11,13 +11,24 @@ MainWindow::MainWindow(QWidget *parent)
     pageController->addPage(loginpage, "Login");
     pageController->addPage(registerpage, "Register");
     setCentralWidget(pageController);
+    SetBackground();
+    setGeometry(100, 100, 1200, 800);
 }
 
 MainWindow::~MainWindow()
 {}
 
-void MainWindow::show()
+void MainWindow::Show()
 {
     pageController->setStartupPage("Login");
     QMainWindow::show();
+}
+
+void MainWindow::SetBackground()
+{
+    QString imageUrl = "Images/Background_game.jpg";
+    this->setAutoFillBackground(true);
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QBrush(QImage(imageUrl)));
+    this->setPalette(palette);
 }

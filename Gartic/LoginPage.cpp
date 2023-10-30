@@ -6,9 +6,10 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 	registerButton = new QPushButton("Don't have an account? Signup", this);
 	username = new QLineEdit(this);
 	password = new QLineEdit(this);
-	password->setEchoMode(QLineEdit::Password);
-	username->setPlaceholderText("Username");
-	password->setPlaceholderText("Password");
+	imageLabel = new QLabel(this);
+    layout = new QVBoxLayout(this);
+	SetSize();
+	StyleElements();
 	PlaceElements();
 	connect(loginButton, &QPushButton::clicked, this, &LoginPage::LoginButtonClicked);
 	connect(registerButton, &QPushButton::clicked, controller, [controller]() {
@@ -18,13 +19,53 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 
 void LoginPage::PlaceElements()
 {
-	QVBoxLayout* layout = new QVBoxLayout(this);
 	setLayout(layout);
+
+	QHBoxLayout* innerLayout = new QHBoxLayout;
+	QPixmap image("Images/Title.png");
+	imageLabel->setPixmap(image);
+	innerLayout->addWidget(imageLabel);
+	innerLayout->setContentsMargins(55,0, 0,70);
+
+	layout->setContentsMargins(400,100,400,100);
+	layout->addLayout(innerLayout);
 	layout->addWidget(username);
 	layout->addWidget(password);
 	layout->addWidget(loginButton);
 	layout->addWidget(registerButton);
-	layout->setAlignment(Qt::AlignTop);
+	layout->setAlignment(Qt::AlignCenter);
+}
+
+void LoginPage::StyleElements()
+{
+	password->setEchoMode(QLineEdit::Password);
+	username->setPlaceholderText("Username");
+	password->setPlaceholderText("Password");
+	QString buttonStyle = "QPushButton {"
+		"border-radius: 10px;"
+		"background-color: #F2D300;"
+		"color: black;"
+		"font-weight: bold"
+		"}";
+	QString lineEditStyle = "QLineEdit {"
+		"border-radius: 10px;"
+		"}";
+	loginButton->setStyleSheet(buttonStyle);
+	registerButton->setStyleSheet(buttonStyle);
+	username->setStyleSheet(lineEditStyle);
+	password->setStyleSheet(lineEditStyle);
+}
+
+void LoginPage::SetSize()
+{
+	username->setFixedSize(400, 50);
+	password->setFixedSize(400, 50);
+	loginButton->setFixedSize(400, 50);
+	registerButton->setFixedSize(400, 50);
+	username->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	password->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	loginButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	registerButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 void LoginPage::LoginButtonClicked()
