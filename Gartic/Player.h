@@ -7,19 +7,31 @@ public:
 	Player();
 	Player(const std::string& username, const std::string& password);
 
-	void setUsername(const std::string& username);
-	void setScore(const uint16_t score);
-	uint32_t getID() const;
+	/*-------Player variables related functions.-------*/
+	uint16_t GetID() const;
+	void SetID(const uint16_t& id);
+
+	void SetUsername(const std::string& username);
+	std::string GetUsername() const;
+
+	void UpdateScore(const uint16_t score);
+	void ResetScore();
+
+	bool IsArtist() const;
+	void ChangeArtistState();
+	/*-------Player variables related functions.-------*/
 
 private:
 	std::string m_username;
 	std::string m_password;
-	uint32_t m_uniqueId;
+	uint16_t m_uniqueId;
 	bool m_artist;
 	uint16_t m_score;
 
+private:
 	static uint8_t m_playerCount;
 
-	uint32_t generateID() const;
+private:
+	uint16_t GenerateID() const;
 };
 

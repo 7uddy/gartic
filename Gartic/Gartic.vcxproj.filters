@@ -52,6 +52,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MainWindow.ui">
@@ -68,6 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\Background_game.jpg">
+      <Filter>Source Files</Filter>
+    </Image>
+    <Image Include="Images\Title.png">
       <Filter>Source Files</Filter>
     </Image>
   </ItemGroup>
