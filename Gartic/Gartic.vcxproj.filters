@@ -70,8 +70,10 @@
     <Image Include="Images\Background_game.jpg">
       <Filter>Source Files</Filter>
     </Image>
-    <Image Include="Images\Logo.png">
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="style.css">
       <Filter>Source Files</Filter>
-    </Image>
+    </None>
   </ItemGroup>
 </Project>

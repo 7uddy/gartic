@@ -41,19 +41,10 @@ void LoginPage::StyleElements()
 	password->setEchoMode(QLineEdit::Password);
 	username->setPlaceholderText("Username");
 	password->setPlaceholderText("Password");
-	QString buttonStyle = "QPushButton {"
-		"border-radius: 10px;"
-		"background-color: #F2D300;"
-		"color: black;"
-		"font-weight: bold"
-		"}";
-	QString lineEditStyle = "QLineEdit {"
-		"border-radius: 10px;"
-		"}";
-	loginButton->setStyleSheet(buttonStyle);
-	registerButton->setStyleSheet(buttonStyle);
-	username->setStyleSheet(lineEditStyle);
-	password->setStyleSheet(lineEditStyle);
+	QFile styleFile("style.css");
+	styleFile.open(QFile::ReadOnly | QFile::Text);
+	QString styleSheet = styleFile.readAll();
+	setStyleSheet(styleSheet);
 }
 
 void LoginPage::SetSize()
