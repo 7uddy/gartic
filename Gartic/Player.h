@@ -25,6 +25,8 @@ public:
 	void ChangeArtistState();
 	/*-------Player variables related functions.-------*/
 
+	bool operator<(const Player&);
+
 private:
 	std::string m_username;
 	std::string m_password;

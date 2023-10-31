@@ -1,5 +1,5 @@
 #pragma once
-#include<fstream>
+#include <fstream>
 #include <string>
 #include <vector>
 class Input

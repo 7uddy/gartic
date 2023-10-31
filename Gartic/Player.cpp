@@ -69,3 +69,10 @@ void Player::ChangeArtistState()
 {
 	m_artist = !m_artist;
 }
+
+bool Player::operator<(const Player& player)
+{
+	if (this->m_score < player.m_score) 
+		return true;
+	return false;
+}
