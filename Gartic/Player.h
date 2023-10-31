@@ -14,8 +14,12 @@ public:
 	void SetUsername(const std::string& username);
 	std::string GetUsername() const;
 
-	void UpdateScore(const uint16_t score);
+	void SetPassword(const std::string& password);
+
+
+	void UpdateScore(const int16_t score);
 	void ResetScore();
+	int16_t GetScore() const;
 
 	bool IsArtist() const;
 	void ChangeArtistState();
@@ -26,7 +30,7 @@ private:
 	std::string m_password;
 	uint16_t m_uniqueId;
 	bool m_artist;
-	uint16_t m_score;
+	int16_t m_score;
 
 private:
 	static uint8_t m_playerCount;

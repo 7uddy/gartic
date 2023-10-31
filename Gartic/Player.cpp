@@ -25,7 +25,12 @@ std::string Player::GetUsername() const
 	return m_username;
 }
 
-void Player::UpdateScore(const uint16_t score)
+void Player::SetPassword(const std::string& password)
+{
+	m_password = password;
+}
+
+void Player::UpdateScore(const int16_t score)
 {
 	m_score = score;
 }
@@ -33,6 +38,11 @@ void Player::UpdateScore(const uint16_t score)
 void Player::ResetScore()
 {
 	m_score = 0;
+}
+
+int16_t Player::GetScore() const
+{
+	return m_score;
 }
 
 uint16_t Player::GenerateID() const
