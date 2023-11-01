@@ -11,7 +11,9 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 	SetSize();
 	StyleElements();
 	PlaceElements();
-	connect(loginButton, &QPushButton::clicked, this, &LoginPage::LoginButtonClicked);
+	connect(loginButton, &QPushButton::clicked, controller, [controller]() {
+		controller->showPage("MainMenu"); // just testing
+	});
 	connect(registerButton, &QPushButton::clicked, controller, [controller]() {
 		controller->showPage("Register");
 		});

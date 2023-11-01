@@ -4,6 +4,7 @@
 #include "ui_MainWindow.h"
 #include "LoginPage.h"
 #include "RegisterPage.h"
+#include "MainMenuPage.h"
 #include "PageController.h"
 
 class MainWindow : public QMainWindow
@@ -17,7 +18,8 @@ public:
     void SetBackground();
 private:
     Ui::MainWindowClass ui;
-    LoginPage* loginpage;
-    RegisterPage* registerpage;
+    LoginPage* loginPage;
+    RegisterPage* registerPage;
     PageController* pageController;
+    MainMenuPage* mainMenuPage;
 };

@@ -6,10 +6,12 @@ MainWindow::MainWindow(QWidget *parent)
     ui.setupUi(this);
     setWindowTitle("Gartic");
     pageController = new PageController(this);
-    loginpage = new LoginPage(pageController);
-    registerpage = new RegisterPage(pageController);
-    pageController->addPage(loginpage, "Login");
-    pageController->addPage(registerpage, "Register");
+    loginPage = new LoginPage(pageController);
+    registerPage = new RegisterPage(pageController);
+    mainMenuPage = new MainMenuPage(pageController);
+    pageController->addPage(loginPage, "Login");
+    pageController->addPage(registerPage, "Register");
+    pageController->addPage(mainMenuPage, "MainMenu");
     setCentralWidget(pageController);
     SetBackground();
     setGeometry(100, 100, 1200, 800);
