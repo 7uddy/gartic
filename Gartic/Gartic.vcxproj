@@ -113,11 +113,13 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="PageController.cpp" />
     <ClCompile Include="RegisterPage.cpp" />
+    <ClCompile Include="Round.cpp" />
     <QtMoc Include="MainWindow.h" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Round.h" />
     <QtMoc Include="RegisterPage.h" />
     <QtMoc Include="LoginPage.h" />
     <QtMoc Include="MainMenuPage.h" />

@@ -1,15 +1,13 @@
-import round;
-import <random>;
-using gartic::Round;
-
+#include "Round.h"
+#include<random>
 Round::Round()
 {
-	/*empty*/
+    /*empty*/
 }
 
 std::string Round::GetHiddenWord() const
 {
-	return m_hiddenWord;
+    return m_hiddenWord;
 }
 
 uint16_t Round::GenerateHiddenWordIndex() const
