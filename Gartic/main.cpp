@@ -1,5 +1,6 @@
 #include "MainWindow.h"
 #include <QtWidgets/QApplication>
+#include <QIcon>
 
 #include "Player.h"
 //import round;
@@ -7,6 +8,8 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    QIcon appIcon("Images/App_icon.ico");
+    a.setWindowIcon(appIcon);
     MainWindow w;
     w.show();
 
