@@ -121,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Round.h" />
-    <ClInclude Include="SelectRoomPage.h" />
+    <QtMoc Include="SelectRoomPage.h" />
     <QtMoc Include="RegisterPage.h" />
     <QtMoc Include="LoginPage.h" />
     <QtMoc Include="MainMenuPage.h" />
