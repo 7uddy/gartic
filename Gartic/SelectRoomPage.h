@@ -19,4 +19,5 @@ private:
     QPushButton* joinButton;
     QLabel* imageLabel;
     QVBoxLayout* layout;
+    QPushButton* returnButton;
 };

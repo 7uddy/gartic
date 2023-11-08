@@ -6,6 +6,7 @@ SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
     joinButton = new QPushButton("Join Room", this);
     imageLabel = new QLabel(this);
     layout = new QVBoxLayout(this);
+    returnButton = new QPushButton(this);
 
     SetSize();
     StyleElements();
@@ -14,11 +15,14 @@ SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
 
 void SelectRoomPage::PlaceElements() {
     setLayout(layout);
-    QHBoxLayout* innerLayout = new QHBoxLayout;
+
+    QHBoxLayout* topLeftLayout = new QHBoxLayout;
     QPixmap image("Images/Game_Name.png");
     imageLabel->setPixmap(image);
-    innerLayout->addWidget(imageLabel);
-    innerLayout->setContentsMargins(55, 0, 0, 70);
+    topLeftLayout->addWidget(imageLabel);
+    topLeftLayout->setContentsMargins(55, 0, 0, 70);
+    topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+
     layout->setContentsMargins(400, 100, 400, 100);
     layout->addWidget(roomCode);
     layout->addWidget(joinButton);
@@ -30,6 +34,7 @@ void SelectRoomPage::StyleElements() {
     QFile styleFile("style.css");
     styleFile.open(QFile::ReadOnly | QFile::Text);
     QString styleSheet = styleFile.readAll();
+    returnButton->setAccessibleName("returnButton");
     setStyleSheet(styleSheet);
 }
 
@@ -38,6 +43,7 @@ void SelectRoomPage::SetSize() {
     joinButton->setFixedSize(200, 50);
     roomCode->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     joinButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 void SelectRoomPage::JoinButtonClicked()
