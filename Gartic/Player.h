@@ -36,7 +36,8 @@ public:
 
 	/*-------Operator overloading-------*/
 
-	bool operator<(const Player&);
+	bool operator<(const Player&) noexcept;
+	bool operator==(const Player&) noexcept;
 
 private:
 	uint16_t GenerateID() const noexcept;

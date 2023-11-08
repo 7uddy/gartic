@@ -73,9 +73,19 @@ void Player::ChangeRole() noexcept
 	}
 }
 
-bool Player::operator<(const Player& player)
+bool Player::operator<(const Player& player) noexcept
 {
 	if (this->m_score < player.m_score) 
 		return true;
 	return false;
+}
+
+bool Player::operator==(const Player& player) noexcept
+{
+	if (this->m_password != player.m_password) return false;
+	if (this->m_username!= player.m_username) return false;
+	if (this->m_role != player.m_role) return false;
+	if (this->m_uniqueId != player.m_uniqueId) return false;
+	if (this->m_score != player.m_score) return false;
+	return true;
 }

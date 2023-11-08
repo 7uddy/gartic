@@ -1,25 +1,33 @@
 #pragma once
-#include "Player.h"
 #include "Input.h"
+#include "Player.h"
+#include "Round.h"
+
 #include <vector>
 #include <algorithm>
 
 class Game
 {
 public:
-	Game();
+	/*-------Constructors-------*/
+	Game() = default;
 
-	uint16_t GetGameID() const;
-	std::vector<Player> GetPlayers() const;
-	void SortPlayersByCurrentScore();
+
+	/*-------Game variables related functions-------*/
+	const uint16_t& GetGameID() const noexcept;
+
+	const std::vector<Player>& GetPlayers() const noexcept;
+	void SortPlayersByCurrentScore() noexcept;
+
+	void AddPlayerToGame(Player&&);
+	void DeletePlayerFromGameWithID(const uint16_t&);
+
 
 private:
-	std::vector<Round> m_Rounds;
 	std::vector<Player> m_Players;
-	std::vector<Player> m_Leaderboard;
-	uint16_t m_id;
+	uint16_t m_gameID;
 
 private:
-	static uint16_t k_numberOfRounds;
+	static const uint16_t k_numberOfRounds = 4;
 };
 
