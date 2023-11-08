@@ -9,6 +9,14 @@
 class Game
 {
 public:
+	/*-------Enums-------*/
+	enum class Status : uint8_t
+	{
+		Active,
+		Finished
+	};
+
+
 	/*-------Constructors-------*/
 	Game() = default;
 
@@ -22,10 +30,12 @@ public:
 	void AddPlayerToGame(Player&&);
 	void DeletePlayerFromGameWithID(const uint16_t&);
 
+	void ChangeGameStatus() noexcept;
 
 private:
 	std::vector<Player> m_Players;
 	uint16_t m_gameID;
+	Status m_gameState;
 
 private:
 	static const uint16_t k_numberOfRounds = 4;

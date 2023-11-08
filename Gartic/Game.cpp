@@ -33,3 +33,16 @@ void Game::DeletePlayerFromGameWithID(const uint16_t& ID)
         throw std::exception("Player with specified ID does not exist in current game.");
     m_Players.erase(playerFound);
 }
+
+void Game::ChangeGameStatus() noexcept
+{
+    switch (m_gameState)
+    {
+    case Status::Finished:
+        m_gameState = Status::Active;
+        return;
+    case Status::Active:
+        m_gameState = Status::Finished;
+        return;
+    }
+}
