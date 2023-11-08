@@ -2,72 +2,75 @@
 
 uint8_t Player::m_playerCount = 1;
 
-Player::Player()
-{
-	/* EMPTY */
-}
-
 Player::Player(const std::string& username, const std::string& password) :
-	m_username{ username }, m_password{ password }, m_artist{ false }, m_score{ 0 },
+	m_username{ username }, m_password{ password }, m_role{ Role::Guesser }, m_score{ 0 },
 	m_uniqueId{ GenerateID() }
 {
 	
 	m_playerCount++;
 }
 
-void Player::SetUsername(const std::string& username)
+void Player::SetUsername(const std::string& username) noexcept
 {
 	m_username = username;
 }
 
-std::string Player::GetUsername() const
+const std::string& Player::GetUsername() const noexcept
 {
 	return m_username;
 }
 
-void Player::SetPassword(const std::string& password)
+void Player::SetPassword(const std::string& password) noexcept
 {
 	m_password = password;
 }
 
-void Player::UpdateScore(const int16_t score)
+void Player::UpdateScore(const int16_t score) noexcept
 {
 	m_score = score;
 }
 
-void Player::ResetScore()
+void Player::ResetScore() noexcept
 {
 	m_score = 0;
 }
 
-int16_t Player::GetScore() const
+const int16_t& Player::GetScore() const noexcept
 {
 	return m_score;
 }
 
-uint16_t Player::GenerateID() const
+uint16_t Player::GenerateID() const noexcept
 {
 	return m_playerCount;
 }
 
-uint16_t Player::GetID() const
+const uint16_t& Player::GetID() const noexcept
 {
 	return m_uniqueId;
 }
 
-void Player::SetID(const uint16_t& id)
+void Player::SetID(const uint16_t& id) noexcept
 {
 	m_uniqueId = id;
 }
 
-bool Player::IsArtist() const
+bool Player::IsArtist() const noexcept
 {
-	return m_artist;
+	return m_role==Role::Artist;
 }
 
-void Player::ChangeArtistState()
+void Player::ChangeRole() noexcept
 {
-	m_artist = !m_artist;
+	switch (m_role)
+	{
+		case Role::Artist:
+			m_role = Role::Guesser;
+			return;
+		case Role::Guesser:
+			m_role = Role::Artist;
+			return;
+	}
 }
 
 bool Player::operator<(const Player& player)

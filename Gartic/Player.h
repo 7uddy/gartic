@@ -4,40 +4,51 @@
 class Player
 {
 public:
-	Player();
+	/*-------Enums-------*/
+	enum class Role : uint8_t
+	{
+		Guesser,
+		Artist
+	};
+
+
+	/*-------Constructors-------*/
+	Player() = default;
 	Player(const std::string& username, const std::string& password);
 
-	/*-------Player variables related functions.-------*/
-	uint16_t GetID() const;
-	void SetID(const uint16_t& id);
 
-	void SetUsername(const std::string& username);
-	std::string GetUsername() const;
+	/*-------Player variables related functions-------*/
+	const uint16_t& GetID() const noexcept;
+	void SetID(const uint16_t& id) noexcept;
 
-	void SetPassword(const std::string& password);
+	void SetUsername(const std::string& username) noexcept;
+	const std::string& GetUsername() const noexcept;
+
+	void SetPassword(const std::string& password) noexcept;
+
+	void UpdateScore(const int16_t score) noexcept;
+	void ResetScore() noexcept;
+	const int16_t& GetScore() const noexcept;
+
+	bool IsArtist() const noexcept;
+	void ChangeRole() noexcept;
 
 
-	void UpdateScore(const int16_t score);
-	void ResetScore();
-	int16_t GetScore() const;
-
-	bool IsArtist() const;
-	void ChangeArtistState();
-	/*-------Player variables related functions.-------*/
+	/*-------Operator overloading-------*/
 
 	bool operator<(const Player&);
 
 private:
+	uint16_t GenerateID() const noexcept;
+
+private:
+	uint16_t m_uniqueId;
 	std::string m_username;
 	std::string m_password;
-	uint16_t m_uniqueId;
-	bool m_artist;
-	int16_t m_score;
+	Role m_role : 1;
+	float m_score;
 
 private:
 	static uint8_t m_playerCount;
-
-private:
-	uint16_t GenerateID() const;
 };
 
