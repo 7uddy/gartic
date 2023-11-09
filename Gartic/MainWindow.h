@@ -6,6 +6,7 @@
 #include "RegisterPage.h"
 #include "MainMenuPage.h"
 #include "PageController.h"
+#include "ProfilePage.h"
 
 class MainWindow : public QMainWindow
 {
@@ -22,4 +23,5 @@ private:
     RegisterPage* registerPage;
     PageController* pageController;
     MainMenuPage* mainMenuPage;
+    ProfilePage* profilePage;
 };

@@ -2,7 +2,7 @@
 
 MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 {
-	//myProfile = new QPushButton("My profile", this); // will be modified
+	myProfile = new QPushButton("My profile", this);
 	createButton = new QPushButton("Create room", this);
 	joinButton = new QPushButton("Join room", this);
 	imageLabel = new QLabel(this);
@@ -12,6 +12,9 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 	PlaceElements();
 	connect(createButton, &QPushButton::clicked, this, &MainMenuPage::CreateButtonClicked);
 	connect(joinButton, &QPushButton::clicked, this, &MainMenuPage::JoinButtonClicked);
+	connect(myProfile, &QPushButton::clicked, controller, [controller]() {
+		controller->showPage("Profile");
+		});
 }
 
 void MainMenuPage::PlaceElements()
@@ -54,3 +57,4 @@ void MainMenuPage::CreateButtonClicked()
 void MainMenuPage::JoinButtonClicked()
 {
 }
+

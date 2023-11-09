@@ -9,12 +9,16 @@ MainWindow::MainWindow(QWidget *parent)
     loginPage = new LoginPage(pageController);
     registerPage = new RegisterPage(pageController);
     mainMenuPage = new MainMenuPage(pageController);
+    profilePage = new ProfilePage(pageController);
     pageController->addPage(loginPage, "Login");
     pageController->addPage(registerPage, "Register");
     pageController->addPage(mainMenuPage, "MainMenu");
+    pageController->addPage(profilePage, "Profile");
     setCentralWidget(pageController);
     SetBackground();
     setGeometry(100, 100, 1200, 800);
+    QIcon appIcon("Images/App_icon.ico");
+    setWindowIcon(appIcon);
 }
 
 MainWindow::~MainWindow()

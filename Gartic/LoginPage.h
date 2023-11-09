@@ -1,6 +1,5 @@
 #pragma once
 #include <QtWidgets>
-#include <QFile>
 #include "PageController.h"
 
 class LoginPage : public QWidget
