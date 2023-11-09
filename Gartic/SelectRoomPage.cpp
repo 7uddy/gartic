@@ -20,8 +20,13 @@ void SelectRoomPage::PlaceElements() {
     QPixmap image("Images/Game_Name.png");
     imageLabel->setPixmap(image);
     topLeftLayout->addWidget(imageLabel);
-    topLeftLayout->setContentsMargins(55, 0, 0, 70);
     topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+
+    QVBoxLayout* bottomLeftLayout = new QVBoxLayout;
+    returnButton->setIconSize(QSize(50, 50));
+    returnButton->setFixedSize(40, 40);
+    bottomLeftLayout->addWidget(returnButton);
+    bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
     layout->setContentsMargins(400, 100, 400, 100);
     layout->addWidget(roomCode);

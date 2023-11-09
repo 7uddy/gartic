@@ -18,13 +18,13 @@ QLineEdit {
 }
 
 QPushButton[accessibleName="returnButton"] {
-    icon: url("arrowBY_deschis.png");
+    icon: url("Images/arrow.png");
 }
 
 QPushButton[accessibleName="returnButton"]:hover {
-    icon: url(arrowBY.png);
+    icon: url("Images/arrow_hovered.png");
 }
 
 QPushButton[accessibleName="returnButton"]:pressed {
-    icon: url(arrowYB.png);
+    icon: url("Images/arrow_pressed.png");
 }
