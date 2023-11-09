@@ -6,9 +6,25 @@ QPushButton {
 }
 
 QPushButton:hover {
+    background-color: #d9bd00;
+}
+
+QPushButton:pressed {
     background-color: #0056b3;
 }
 
 QLineEdit {
     border-radius: 10px;
+}
+
+QPushButton[accessibleName="returnButton"] {
+    icon: url("arrowBY_deschis.png");
+}
+
+QPushButton[accessibleName="returnButton"]:hover {
+    icon: url(arrowBY.png);
+}
+
+QPushButton[accessibleName="returnButton"]:pressed {
+    icon: url(arrowYB.png);
 }
