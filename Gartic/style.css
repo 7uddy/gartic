@@ -28,3 +28,8 @@ QPushButton[accessibleName="returnButton"]:hover {
 QPushButton[accessibleName="returnButton"]:pressed {
     icon: url("Images/arrow_pressed.png");
 }
+
+QPushButton[accessibleName="myProfile"] {
+    width:100px;
+    height:50px;
+}

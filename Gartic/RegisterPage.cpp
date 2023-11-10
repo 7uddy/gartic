@@ -9,6 +9,7 @@ RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 	password = new QLineEdit(this);
 	imageLabel = new QLabel(this);
 	layout = new QVBoxLayout(this);
+	innerLayout = new QHBoxLayout;
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -21,20 +22,23 @@ RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 void RegisterPage::PlaceElements()
 {
 	setLayout(layout);
-
-	QHBoxLayout* innerLayout = new QHBoxLayout;
 	QPixmap image("Images/Title.png");
 	imageLabel->setPixmap(image);
 	innerLayout->addWidget(imageLabel);
-	innerLayout->setContentsMargins(55, 0, 0, 70);
+	innerLayout->setAlignment(Qt::AlignCenter);
 
-	layout->setContentsMargins(400, 100, 400, 100);
+	layout->addSpacing(50);
 	layout->addLayout(innerLayout);
 	layout->addWidget(username);
+	layout->addSpacing(5);
 	layout->addWidget(email);
+	layout->addSpacing(5);
 	layout->addWidget(password);
+	layout->addSpacing(20);
 	layout->addWidget(registerButton);
+	layout->addSpacing(5);
 	layout->addWidget(loginButton);
+	layout->addSpacing(200);
 	layout->setAlignment(Qt::AlignCenter);
 }
 
@@ -66,4 +70,11 @@ void RegisterPage::SetSize()
 
 void RegisterPage::RegisterButtonClicked()
 {
+	/*empty*/
+}
+
+RegisterPage::~RegisterPage()
+{
+	delete loginButton, registerButton, username, email, password,
+		layout, innerLayout, imageLabel;
 }

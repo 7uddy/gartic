@@ -5,21 +5,26 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 	imageLabel = new QLabel(this);
 	layout = new QVBoxLayout(this);
 	username = new QTextEdit("Username", this);
-	username->setReadOnly(true);
 	averageScore = new QTextEdit("Average Score", this);
-	averageScore->setReadOnly(true);
 	matchHistory = new QTextEdit("Match History", this);
-	matchHistory->setReadOnly(true);
+	SetSize();
+	StyleElements();
+	PlaceElements();
 }
 
 void ProfilePage::PlaceElements()
 {
+	
 }
 
 void ProfilePage::StyleElements()
 {
+	username->setReadOnly(true);
+	averageScore->setReadOnly(true);
+	matchHistory->setReadOnly(true);
 }
 
 void ProfilePage::SetSize()
 {
+	
 }

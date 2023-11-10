@@ -8,6 +8,7 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 	password = new QLineEdit(this);
 	imageLabel = new QLabel(this);
     layout = new QVBoxLayout(this);
+	innerLayout = new QHBoxLayout;
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -22,19 +23,22 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 void LoginPage::PlaceElements()
 {
 	setLayout(layout);
-
 	QHBoxLayout* innerLayout = new QHBoxLayout;
 	QPixmap image("Images/Title.png");
 	imageLabel->setPixmap(image);
 	innerLayout->addWidget(imageLabel);
-	innerLayout->setContentsMargins(55,0, 0,70);
+	innerLayout->setAlignment(Qt::AlignCenter);
 
-	layout->setContentsMargins(400,100,400,100);
+	layout->addSpacing(50);
 	layout->addLayout(innerLayout);
 	layout->addWidget(username);
+	layout->addSpacing(5);
 	layout->addWidget(password);
+	layout->addSpacing(20);
 	layout->addWidget(loginButton);
+	layout->addSpacing(5);
 	layout->addWidget(registerButton);
+	layout->addSpacing(200);
 	layout->setAlignment(Qt::AlignCenter);
 }
 
@@ -63,7 +67,13 @@ void LoginPage::SetSize()
 
 void LoginPage::LoginButtonClicked()
 {
+	/*empty*/
+}
 
+LoginPage::~LoginPage()
+{
+	delete loginButton, registerButton, username, password, layout,
+		imageLabel, innerLayout;
 }
 
 

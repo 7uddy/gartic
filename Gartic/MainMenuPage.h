@@ -13,11 +13,11 @@ public:
 	void SetSize();
 	void CreateButtonClicked();
 	void JoinButtonClicked();
+	~MainMenuPage();
 private:
-	QVBoxLayout* layout;
+	QVBoxLayout* layout, *buttonsLayout;
+	QHBoxLayout* topLayout;
 	QLabel* imageLabel;
-	QPushButton* createButton;
-	QPushButton* joinButton;
-	QPushButton* myProfile;
+	QPushButton* createButton,*joinButton,* myProfile;
 };
 

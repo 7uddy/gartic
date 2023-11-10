@@ -7,6 +7,8 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 	joinButton = new QPushButton("Join room", this);
 	imageLabel = new QLabel(this);
 	layout = new QVBoxLayout(this);
+	buttonsLayout = new QVBoxLayout(this);
+	topLayout = new QHBoxLayout;
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -20,18 +22,24 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 void MainMenuPage::PlaceElements()
 {
 	setLayout(layout);
-	layout->setContentsMargins(400, 100, 400, 100);
-	layout->addWidget(createButton);
-	layout->addWidget(joinButton);
-	layout->setAlignment(Qt::AlignCenter);
-
-	QHBoxLayout* layout2 = new QHBoxLayout;
 	QPixmap image("Images/Title.png");
 	imageLabel->setPixmap(image);
 	imageLabel->setFixedSize(image.width(), image.height());
-	layout2->addWidget(imageLabel);
-	layout2->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
+	topLayout->addWidget(imageLabel);
+	topLayout->addWidget(myProfile);
+	topLayout->setAlignment(imageLabel, Qt::AlignLeft);
+	topLayout->setAlignment(myProfile, Qt::AlignRight);
+	
+	buttonsLayout->addWidget(createButton);
+	buttonsLayout->addSpacing(20);
+	buttonsLayout->addWidget(joinButton);
+
+	layout->addLayout(topLayout);
+	layout->addLayout(buttonsLayout);
+	layout->addSpacing(200);
+	layout->setAlignment(topLayout, Qt::AlignTop);
+	layout->setAlignment(buttonsLayout, Qt::AlignCenter);
 }
 
 void MainMenuPage::StyleElements()
@@ -39,6 +47,7 @@ void MainMenuPage::StyleElements()
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
+	myProfile->setAccessibleName("myProfile");
 	setStyleSheet(styleSheet);
 }
 
@@ -52,9 +61,17 @@ void MainMenuPage::SetSize()
 
 void MainMenuPage::CreateButtonClicked()
 {
+	/*empty*/
 }
 
 void MainMenuPage::JoinButtonClicked()
 {
+	/*empty*/
+}
+
+MainMenuPage::~MainMenuPage()
+{
+	delete myProfile, createButton, joinButton, imageLabel, layout,
+		buttonsLayout, topLayout;
 }
 

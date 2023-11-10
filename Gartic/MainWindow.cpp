@@ -10,10 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     registerPage = new RegisterPage(pageController);
     mainMenuPage = new MainMenuPage(pageController);
     profilePage = new ProfilePage(pageController);
-    pageController->addPage(loginPage, "Login");
-    pageController->addPage(registerPage, "Register");
-    pageController->addPage(mainMenuPage, "MainMenu");
-    pageController->addPage(profilePage, "Profile");
+    AddPages();
     setCentralWidget(pageController);
     SetBackground();
     setGeometry(100, 100, 1200, 800);
@@ -22,7 +19,9 @@ MainWindow::MainWindow(QWidget *parent)
 }
 
 MainWindow::~MainWindow()
-{}
+{
+    delete loginPage, registerPage, pageController, mainMenuPage, profilePage;
+}
 
 void MainWindow::Show()
 {
@@ -37,4 +36,12 @@ void MainWindow::SetBackground()
     QPalette palette;
     palette.setBrush(QPalette::Window, QBrush(QImage(imageUrl)));
     this->setPalette(palette);
+}
+
+void MainWindow::AddPages()
+{
+    pageController->addPage(loginPage, "Login");
+    pageController->addPage(registerPage, "Register");
+    pageController->addPage(mainMenuPage, "MainMenu");
+    pageController->addPage(profilePage, "Profile");
 }

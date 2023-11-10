@@ -11,12 +11,12 @@ public:
 	void StyleElements();
 	void SetSize();
 	void LoginButtonClicked();
+	~LoginPage();
 private:
-	QPushButton* loginButton;
-	QPushButton* registerButton;
-	QLineEdit* username;
-	QLineEdit* password;
+	QPushButton* loginButton,* registerButton;
+	QLineEdit* username,* password;
 	QVBoxLayout* layout;
+	QHBoxLayout* innerLayout;
 	QLabel* imageLabel;
 };
 

@@ -17,6 +17,7 @@ public:
     ~MainWindow();
     void Show();
     void SetBackground();
+    void AddPages();
 private:
     Ui::MainWindowClass ui;
     LoginPage* loginPage;
