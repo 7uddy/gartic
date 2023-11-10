@@ -10,11 +10,12 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
+	~ProfilePage();
 private:
-	QVBoxLayout* layout;
+	QVBoxLayout* layout,*infoLayout;
+	QHBoxLayout* topLayout, *buttonLayout;
 	QLabel* imageLabel;
-	QTextEdit* username;
-	QTextEdit* averageScore;
-	QTextEdit* matchHistory;
+	QTextEdit* username, * averageScore,* matchHistory;
+	QPushButton* returnButton;
 };
 

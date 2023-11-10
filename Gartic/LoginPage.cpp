@@ -23,7 +23,6 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 void LoginPage::PlaceElements()
 {
 	setLayout(layout);
-	QHBoxLayout* innerLayout = new QHBoxLayout;
 	QPixmap image("Images/Title.png");
 	imageLabel->setPixmap(image);
 	innerLayout->addWidget(imageLabel);

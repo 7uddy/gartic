@@ -1,4 +1,4 @@
-QPushButton {
+QPushButton, QTextEdit {
     border-radius: 10px;
     background-color: #F2D300;
     color: black;
@@ -32,4 +32,9 @@ QPushButton[accessibleName="returnButton"]:pressed {
 QPushButton[accessibleName="myProfile"] {
     width:100px;
     height:50px;
+}
+
+QPushButton[accessibleName="returnButton"] {
+    width: 100px;
+    height: 50px;
 }

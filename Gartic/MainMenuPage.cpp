@@ -8,7 +8,7 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 	imageLabel = new QLabel(this);
 	layout = new QVBoxLayout(this);
 	buttonsLayout = new QVBoxLayout(this);
-	topLayout = new QHBoxLayout;
+	topLayout = new QHBoxLayout(this);
 	SetSize();
 	StyleElements();
 	PlaceElements();
