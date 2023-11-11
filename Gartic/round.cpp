@@ -3,12 +3,39 @@
 Round::Round(Difficulty difficulty) :
     m_difficulty{ difficulty }
 {
-    /*empty*/
+    m_lettersToShow = 0;
+    m_hiddenWord = "";
+    m_shownWord = "";
 }
 
 std::string Round::GetHiddenWord() const
 {
     return m_hiddenWord;
+}
+
+bool Round::IsHiddenWord(const std::string& word) const
+{
+    return word == m_hiddenWord;
+}
+
+void Round::RevealLetter()
+{
+    /*
+    TODO: m_shownWord has to be an empty string with size m_hiddenWord for this to work
+    */
+    uint8_t wordSize = m_hiddenWord.length();
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    while (m_lettersToShow)
+    {
+        std::uniform_int_distribution<int> distribution(0, wordSize - 1);
+        if (m_shownWord[distribution(gen)] == '\0')
+        {
+            m_shownWord[distribution(gen)] == m_hiddenWord[distribution(gen)];
+            m_lettersToShow--;
+            break;
+        }
+    }
 }
 
 uint16_t Round::GenerateHiddenWordIndex() const
@@ -19,13 +46,14 @@ uint16_t Round::GenerateHiddenWordIndex() const
     return distribution(gen);
 }
 
-uint8_t Round::GenerateLettersNumberToShow() const
+uint8_t Round::GenerateLettersNumberToShow() 
 {
     /*
     This function is implemented with the idea that the game will always hint half of the letters, regardless of difficulty.
     */
     uint8_t wordSize = m_hiddenWord.length();
-    return wordSize / 2;
+    m_lettersToShow = wordSize / 2;
+    return m_lettersToShow;
 }
 
 bool Round::VerifyWordDifficultyBalance() const

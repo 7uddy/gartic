@@ -21,17 +21,20 @@ public:
 
 	Round(Difficulty difficulty);
 	std::string GetHiddenWord() const;
-
+	bool IsHiddenWord(const std::string& word) const;
+	void RevealLetter();
 private:
 
 	uint16_t GenerateHiddenWordIndex() const;
-	uint8_t GenerateLettersNumberToShow() const;
+	uint8_t GenerateLettersNumberToShow();
 	bool VerifyWordDifficultyBalance()const;
 
 private:
 
 	std::string m_hiddenWord;
+	std::string m_shownWord;
 	static const uint16_t kWordNumber = 499;
 	Difficulty m_difficulty;
+	uint8_t m_lettersToShow;
 
 };
