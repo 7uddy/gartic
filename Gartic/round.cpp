@@ -31,7 +31,7 @@ void Round::RevealLetter()
         std::uniform_int_distribution<int> distribution(0, wordSize - 1);
         if (m_shownWord[distribution(gen)] == '\0')
         {
-            m_shownWord[distribution(gen)] == m_hiddenWord[distribution(gen)];
+            m_shownWord[distribution(gen)] = m_hiddenWord[distribution(gen)];
             m_lettersToShow--;
             break;
         }
@@ -54,6 +54,24 @@ uint8_t Round::GenerateLettersNumberToShow()
     uint8_t wordSize = m_hiddenWord.length();
     m_lettersToShow = wordSize / 2;
     return m_lettersToShow;
+}
+
+uint8_t GetMaxLettersForDifficulty(Round::Difficulty difficulty)
+{
+    /*
+    Returns how many letters a word can have for a given difficulty.
+    */
+    switch (difficulty)
+    {
+    case Round::Difficulty::Easy:
+        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Easy);
+    case Round::Difficulty::Medium:
+        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Medium);
+    case Round::Difficulty::Hard:
+        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Hard);
+    default:
+        return 0;
+    }
 }
 
 bool Round::VerifyWordDifficultyBalance() const
@@ -83,24 +101,6 @@ uint8_t DifficultyToInt(Round::Difficulty difficulty)
         return uint8_t(Medium);
     case Hard:
         return uint8_t(Hard);
-    default:
-        return 0;
-    }
-}
-
-uint8_t GetMaxLettersForDifficulty(Round::Difficulty difficulty)
-{
-    /*
-    Returns how many letters a word can have for a given difficulty.
-    */
-    switch (difficulty)
-    {
-    case Round::Difficulty::Easy:
-        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Easy);
-    case Round::Difficulty::Medium:
-        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Medium);
-    case Round::Difficulty::Hard:
-        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Hard);
     default:
         return 0;
     }
