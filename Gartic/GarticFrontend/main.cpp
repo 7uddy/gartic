@@ -2,7 +2,6 @@
 #include <QtWidgets/QApplication>
 #include <QIcon>
 
-#include "Game.h"
 //import round;
 
 int main(int argc, char *argv[])

@@ -58,22 +58,10 @@
     <ClCompile Include="RegisterPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenuPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Round.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SelectRoomPage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProfilePage.cpp">
@@ -87,12 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="PageController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Round.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
