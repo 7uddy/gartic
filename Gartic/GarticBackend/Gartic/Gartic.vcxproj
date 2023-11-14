@@ -117,6 +117,7 @@
       <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
       <EnableModules>true</EnableModules>
       <BuildStlModules>true</BuildStlModules>
+      <AdditionalOptions>/D_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,13 +145,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\MC\HttpApp\HTTPServer\HTTPServer\utils.cpp" />
+    <ClCompile Include="Database.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="round.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="utils.cppm" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Database.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Player.h" />
