@@ -34,6 +34,11 @@ int main()
 		}
 		return crow::json::wvalue{ logincredentials_json };
 		});
+
+	auto& addToDatabaseUser = CROW_ROUTE(app, "/addusertodatabase")
+		.methods(crow::HTTPMethod::PUT);
+	addToDatabaseUser(AddUserHandler(db));
+
 	app.port(18080).multithreaded().run();
 	return 0;
 }

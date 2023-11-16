@@ -30,10 +30,12 @@ inline auto createStorage(const std::string& filename)
 using Storage = decltype(createStorage(""));
 void populateStorage(Storage& storage);
 
+
 class AddUserHandler {
 public:
 	AddUserHandler(Storage& storage);
 
+	crow::response operator() (const crow::request& req) const;
 private:
 	Storage& m_db;
 };
