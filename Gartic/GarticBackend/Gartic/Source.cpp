@@ -39,6 +39,35 @@ int main()
 		.methods(crow::HTTPMethod::PUT);
 	addToDatabaseUser(AddUserHandler(db));
 
+	CROW_ROUTE(app, "/verifyuserindatabase")
+		.methods(crow::HTTPMethod::GET)([&db](const crow::request& req)
+			{
+				std::string receivedUsername = req.url_params.get("username");
+				std::string receivedPassword = req.url_params.get("password");
+				std::string receivedEmail = req.url_params.get("email");
+
+				if(receivedPassword.empty())
+					return crow::response(400);
+				if(receivedUsername.empty() && receivedEmail.empty())
+					return crow::response(400);
+
+				if(!receivedUsername.empty())
+					for (const auto& logincredential : db.iterate<LoginCredential>())
+					{
+						if (logincredential.username == receivedUsername
+							&& logincredential.password == receivedPassword)
+							return crow::response(302);
+					}
+				else
+					for (const auto& logincredential : db.iterate<LoginCredential>())
+					{
+						if (logincredential.email == receivedEmail
+							&& logincredential.password == receivedPassword)
+							return crow::response(302);
+					}
+				return crow::response(404);
+			});
+
 	app.port(18080).multithreaded().run();
 	return 0;
 }
