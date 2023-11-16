@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <iostream>
 #include <memory>
-#include"Database.h"
+#include "Database.h"
 #include <crow.h>
 #include <sqlite_orm/sqlite_orm.h>
 namespace sql = sqlite_orm;
@@ -15,6 +15,9 @@ int main()
 	auto initLoginCredentialCount = db.count<LoginCredential>();
 	if (initLoginCredentialCount == 0)
 		populateStorage(db);
+	auto initWords = db.count<Word>();
+	if (initWords == 0)
+		getWords(db);
 	auto loginCredentialCount = db.count<LoginCredential>();
 	std::cout << "## There are currently " << loginCredentialCount << " items in the database.##\n";
 	crow::SimpleApp app;
