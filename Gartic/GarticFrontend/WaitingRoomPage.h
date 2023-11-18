@@ -14,5 +14,8 @@ public:
 private:
 	QPushButton* startButton,*easyButton,*mediumButton,*hardButton;
 	QLabel* imageLabel;
+	QHBoxLayout* topLayout,*roomInfo;
+	QVBoxLayout* layout, *playersInfo,*infoGame;
+	QTextEdit* listPlayers,*status,*playersNumber,* roomCode,* difficulty;
 };
 
