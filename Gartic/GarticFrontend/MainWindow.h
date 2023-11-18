@@ -7,6 +7,8 @@
 #include "MainMenuPage.h"
 #include "PageController.h"
 #include "ProfilePage.h"
+#include "WaitingRoomPage.h"
+#include "SelectRoomPage.h"
 
 class MainWindow : public QMainWindow
 {
@@ -25,4 +27,6 @@ private:
     PageController* pageController;
     MainMenuPage* mainMenuPage;
     ProfilePage* profilePage;
+    WaitingRoomPage* waitingRoomPage;
+    SelectRoomPage* selectRoomPage;
 };

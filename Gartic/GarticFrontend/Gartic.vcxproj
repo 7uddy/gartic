@@ -114,11 +114,13 @@
     <ClCompile Include="ProfilePage.cpp" />
     <ClCompile Include="RegisterPage.cpp" />
     <ClCompile Include="SelectRoomPage.cpp" />
+    <ClCompile Include="WaitingRoomPage.cpp" />
     <QtMoc Include="MainWindow.h" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="WaitingRoomPage.h" />
     <QtMoc Include="ProfilePage.h" />
     <QtMoc Include="SelectRoomPage.h" />
     <QtMoc Include="RegisterPage.h" />

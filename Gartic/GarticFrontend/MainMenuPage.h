@@ -12,7 +12,6 @@ public:
 	void StyleElements();
 	void SetSize();
 	void CreateButtonClicked();
-	void JoinButtonClicked();
 	~MainMenuPage();
 private:
 	QVBoxLayout* layout, *buttonsLayout;

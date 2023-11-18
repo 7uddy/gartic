@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent)
     registerPage = new RegisterPage(pageController);
     mainMenuPage = new MainMenuPage(pageController);
     profilePage = new ProfilePage(pageController);
+    waitingRoomPage = new WaitingRoomPage(pageController);
+    selectRoomPage = new SelectRoomPage(pageController);
     AddPages();
     setCentralWidget(pageController);
     SetBackground();
@@ -44,4 +46,6 @@ void MainWindow::AddPages()
     pageController->addPage(registerPage, "Register");
     pageController->addPage(mainMenuPage, "MainMenu");
     pageController->addPage(profilePage, "Profile");
+    pageController->addPage(waitingRoomPage, "WaitingRoom");
+    pageController->addPage(selectRoomPage, "SelectRoom");
 }

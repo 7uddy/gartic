@@ -12,8 +12,12 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 	SetSize();
 	StyleElements();
 	PlaceElements();
-	connect(createButton, &QPushButton::clicked, this, &MainMenuPage::CreateButtonClicked);
-	connect(joinButton, &QPushButton::clicked, this, &MainMenuPage::JoinButtonClicked);
+	connect(createButton, &QPushButton::clicked, controller, [controller]() {
+		controller->showPage("WaitingRoom");
+		});
+	connect(joinButton, &QPushButton::clicked, controller, [controller]() {
+		controller->showPage("SelectRoom");
+		});
 	connect(myProfile, &QPushButton::clicked, controller, [controller]() {
 		controller->showPage("Profile");
 		});
@@ -60,11 +64,6 @@ void MainMenuPage::SetSize()
 }
 
 void MainMenuPage::CreateButtonClicked()
-{
-	/*empty*/
-}
-
-void MainMenuPage::JoinButtonClicked()
 {
 	/*empty*/
 }
