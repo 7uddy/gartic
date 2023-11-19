@@ -11,6 +11,10 @@ SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
     SetSize();
     StyleElements();
     PlaceElements();
+
+    connect(returnButton, &QPushButton::clicked, controller, [controller]() {
+       controller->showPage("MainMenu");
+   });
 }
 
 void SelectRoomPage::PlaceElements() {
@@ -28,10 +32,14 @@ void SelectRoomPage::PlaceElements() {
     bottomLeftLayout->addWidget(returnButton);
     bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
-    layout->setContentsMargins(400, 100, 400, 100);
-    layout->addWidget(roomCode);
-    layout->addWidget(joinButton);
-    layout->setAlignment(Qt::AlignCenter);
+    QVBoxLayout* middleLayout = new QVBoxLayout;
+    middleLayout->addWidget(roomCode);
+    middleLayout->addWidget(joinButton);
+    middleLayout->setAlignment(Qt::AlignCenter);
+
+    layout->addLayout(topLeftLayout);
+    layout->addLayout(middleLayout);
+    layout->addLayout(bottomLeftLayout);
 }
 
 void SelectRoomPage::StyleElements() {
