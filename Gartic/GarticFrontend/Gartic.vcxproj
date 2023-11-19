@@ -108,6 +108,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GamePage.cpp" />
+    <ClCompile Include="LeaderboardPage.cpp" />
     <ClCompile Include="MainMenuPage.cpp" />
     <ClCompile Include="LoginPage.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -128,6 +129,7 @@
     <QtMoc Include="LoginPage.h" />
     <QtMoc Include="MainMenuPage.h" />
     <QtMoc Include="GamePage.h" />
+    <QtMoc Include="LeaderboardPage.h" />
     <ClInclude Include="PageController.h" />
   </ItemGroup>
   <ItemGroup>

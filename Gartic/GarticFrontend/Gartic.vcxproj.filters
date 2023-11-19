@@ -47,6 +47,9 @@
     <QtMoc Include="GamePage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="LeaderboardPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -77,6 +80,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GamePage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LeaderboardPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
