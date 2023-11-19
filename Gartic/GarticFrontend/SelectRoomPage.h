@@ -13,6 +13,7 @@ public:
     void StyleElements();
     void SetSize();
     void JoinButtonClicked();
+    ~SelectRoomPage();
 
 private:
     QLineEdit* roomCode;

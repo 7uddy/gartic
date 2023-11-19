@@ -63,3 +63,8 @@ void SelectRoomPage::JoinButtonClicked()
 {
     /*Empty*/
 }
+
+SelectRoomPage::~SelectRoomPage()
+{
+    delete roomCode, joinButton, imageLabel, returnButton, layout;
+}
