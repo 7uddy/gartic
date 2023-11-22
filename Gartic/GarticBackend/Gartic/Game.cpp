@@ -1,5 +1,11 @@
 #include "Game.h"
 
+Game::Game() : 
+    m_roundNumber{ 0 }, m_gameState{ Status::Inactive }, m_gameID{5}
+{
+    /*EMPTY*/
+}
+
 const uint16_t& Game::GetGameID() const noexcept
 {
     return m_gameID;
@@ -13,6 +19,16 @@ const std::vector<Player>& Game::GetPlayers() const noexcept
 void Game::SortPlayersByCurrentScore() noexcept
 {
     std::sort(m_Players.begin(), m_Players.end());
+}
+
+void Game::movePlayersHereFromOutside(std::vector<Player>&& playersFromOutside) noexcept
+{
+    m_Players = std::move(playersFromOutside);
+}
+
+std::vector<Player>&& Game::movePlayersFromHere() noexcept
+{
+    return std::move(m_Players);
 }
 
 void Game::AddPlayerToGame(Player&& player)
@@ -36,13 +52,30 @@ void Game::DeletePlayerFromGameWithID(const uint16_t& ID)
 
 void Game::ChangeGameStatus() noexcept
 {
+    //Only changes 
+    //Inactive -> Active
+    //Active -> Finished
     switch (m_gameState)
     {
-    case Status::Finished:
+    case Status::Inactive:
         m_gameState = Status::Active;
         return;
     case Status::Active:
         m_gameState = Status::Finished;
         return;
     }
+}
+
+void Game::startGame() noexcept
+{
+    //startRound
+    choosePainter();
+    //getWord
+    //getBoard
+    //startTimer
+}
+
+void Game::choosePainter() noexcept
+{
+    m_Painter = &m_Players[(m_roundNumber + m_roundNumber / k_numberOfRounds * m_Players.size()) % m_Players.size()];
 }
