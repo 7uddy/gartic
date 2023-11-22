@@ -12,10 +12,10 @@ public:
 	void SetSize();
 	~WaitingRoomPage();
 private:
-	QPushButton* startButton,*easyButton,*mediumButton,*hardButton;
+	QPushButton* startButton, * easyButton, * mediumButton, * hardButton;
 	QLabel* imageLabel;
-	QHBoxLayout* topLayout,*roomInfo;
-	QVBoxLayout* layout, *playersInfo,*infoGame;
-	QTextEdit* listPlayers,*status,*playersNumber,* roomCode,* difficulty;
+	QHBoxLayout* topLayout, * infoGame, * buttonsLayout;
+	QVBoxLayout* layout, * infoPlayers, * roomInfo;
+	QTextEdit* listPlayers, * status, * playersNumber, * roomCode, * difficulty;
 };
 
