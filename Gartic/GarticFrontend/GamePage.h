@@ -10,9 +10,14 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
+	void SendMessage();
 	~GamePage();
 private:
 	QLabel* imageLabel;
-	QTextEdit* listPlayers, * round, * time, * word;
+	QTextEdit* listPlayers, * round, * time, * word, *chatHistory;
+	QHBoxLayout *topLayout;
+	QVBoxLayout* layout, * chatLayout;
+	QLineEdit* messageInput; 
+	QPushButton* sendButton;
 };
 
