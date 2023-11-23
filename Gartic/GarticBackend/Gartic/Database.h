@@ -89,7 +89,7 @@ void getWords(Storage& storage);
 class AddUserHandler {
 public:
 	AddUserHandler(Storage& storage);
-
+	bool DoesUsernameExists(const std::string& username) const;
 	crow::response operator() (const crow::request& req) const;
 private:
 	Storage& m_db;

@@ -15,15 +15,18 @@ int main()
 	auto initLoginCredentialCount = db.count<LoginCredential>();
 	if (initLoginCredentialCount == 0)
 		getLoginCredentials(db);
+
 	auto initWords = db.count<Word>();
 	if (initWords == 0)
 		getWords(db);
+
 	auto loginCredentialCount = db.count<LoginCredential>();
 	std::cout << "## There are currently " << loginCredentialCount << " items in the database.##\n";
 	crow::SimpleApp app;
 	CROW_ROUTE(app, "/")([]() {
 		return "Server is running.This is the main branch";
 		});
+
 	CROW_ROUTE(app, "/logincredentials")([&db]() {
 		std::vector<crow::json::wvalue> logincredentials_json;
 		for (const auto& logincredential : db.iterate<LoginCredential>())
@@ -37,6 +40,7 @@ int main()
 		}
 		return crow::json::wvalue{ logincredentials_json };
 		});
+
 	auto& addToDatabaseUser = CROW_ROUTE(app, "/addusertodatabase")
 		.methods(crow::HTTPMethod::PUT);
 	addToDatabaseUser(AddUserHandler(db));
@@ -67,6 +71,20 @@ int main()
 							&& logincredential.password == receivedPassword)
 							return crow::response(302);
 					}
+				return crow::response(404);
+			});
+
+	CROW_ROUTE(app, "/deleteuserfromdatabase")
+		.methods(crow::HTTPMethod::GET)([&db](const crow::request& req)
+			{
+				std::string receivedUsername = req.url_params.get("username");
+				if (receivedUsername.empty())
+					return crow::response(400);
+
+				else {
+					db.remove_all<LoginCredential>(sql::where(sql::c(&LoginCredential::username) == receivedUsername));
+					return crow::response(200);
+				}
 				return crow::response(404);
 			});
 

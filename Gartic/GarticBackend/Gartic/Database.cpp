@@ -46,3 +46,9 @@ crow::response AddUserHandler::operator()(const crow::request& req) const
 	}
 	return crow::response(200);
 }
+
+bool AddUserHandler::DoesUsernameExists(const std::string& username) const
+{
+	auto count = m_db.count<LoginCredential>(sql::where(sql::c(&LoginCredential::username) == username));
+	return count > 0;
+}
