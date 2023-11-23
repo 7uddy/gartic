@@ -21,7 +21,7 @@ public:
 	/*-------Constructors-------*/
 	Game();
 
-	void movePlayersHereFromOutside(std::vector<Player>&&);
+	void movePlayersHereFromOutside(std::vector<Player>&&) noexcept;
 	std::vector<Player>&& movePlayersFromHere() noexcept;
 
 	/*-------Game variables related functions-------*/
@@ -48,6 +48,5 @@ private:
 
 private:
 	static const uint16_t k_numberOfRounds = 4;
-	static Player* m_Painter;
 };
 

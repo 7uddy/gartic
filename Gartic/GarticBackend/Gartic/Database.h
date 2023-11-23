@@ -7,19 +7,35 @@
 namespace sql = sqlite_orm;
 
 import utils;
+
 struct LoginCredential
 {
 	int userID;
 	std::string username;
 	std::string password;
 	std::string email;
+
+	LoginCredential() = default;
+	LoginCredential(std::string argUsername, std::string argPassword, std::string argEmail)
+		: username(argUsername), password(argPassword), email(argEmail)
+	{
+		/*empty*/
+	}
 };
+
 
 struct Word
 {
 	int wordID;
 	std::string word;
 	int difficulty;
+};
+
+struct GamesScores
+{
+	int gameID;
+	int userID;
+	float finalScore;
 };
 
 inline auto createStorage(const std::string& filename)
@@ -38,7 +54,13 @@ inline auto createStorage(const std::string& filename)
 			sql::make_column("wordID", &Word::wordID, sql::primary_key().autoincrement()),
 			sql::make_column("word", &Word::word),
 			sql::make_column("difficulty", &Word::difficulty)
-		)
+		),
+		sql::make_table(
+			"GamesScores",
+			sql::make_column("gameID", &GamesScores::gameID),
+			sql::make_column("userID", &GamesScores::userID),
+			sql::make_column("finalScore", &GamesScores::finalScore),
+			sql::foreign_key(&GamesScores::userID).references(&LoginCredential::userID))
 	);
 }
 using Storage = decltype(createStorage(""));

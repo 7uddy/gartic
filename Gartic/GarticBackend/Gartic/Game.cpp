@@ -69,13 +69,13 @@ void Game::ChangeGameStatus() noexcept
 void Game::startGame() noexcept
 {
     //startRound
-    choosePainter();
+    //choosePainter();
     //getWord
     //getBoard
     //startTimer
 }
-
-void Game::choosePainter() noexcept
-{
-    m_Painter = &m_Players[(m_roundNumber + m_roundNumber / k_numberOfRounds * m_Players.size()) % m_Players.size()];
-}
+//
+//void Game::choosePainter() noexcept
+//{
+//    m_Painter = &m_Players[(m_roundNumber + m_roundNumber / k_numberOfRounds * m_Players.size()) % m_Players.size()];
+//}
