@@ -61,5 +61,8 @@
     <Text Include="words.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="credentials.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

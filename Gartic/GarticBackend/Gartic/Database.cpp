@@ -7,18 +7,22 @@ void getWords(Storage& storage)
 	std::string word; int difficulty;
 	while (fin >> word >> difficulty)
 	{
-		storage.insert(Word{ -1, word, difficulty });
+		storage.insert(Word(word, difficulty));
 	}
 	fin.close();
 }
 
-void populateStorage(Storage& storage)
+void getLoginCredentials(Storage& storage)
 {
-	std::vector<LoginCredential> credentials{
-	LoginCredential { "Tudor", "123","tudorcalin11@yahoo.com"},
-	LoginCredential { "Nicu", "321", "andreinicugeani@yahoo.com"}
-	};
-	storage.insert_range(credentials.begin(), credentials.end());
+	std::ifstream fin{ "credentials.txt" };
+	std::string username;
+	std::string password;
+	std::string email;
+	while (fin >> username >> password >> email)
+	{
+		storage.insert(LoginCredential(username, password, email));
+	}
+	fin.close();
 }
 AddUserHandler::AddUserHandler(Storage& storage)
 	: m_db{ storage }
@@ -37,11 +41,7 @@ crow::response AddUserHandler::operator()(const crow::request& req) const
 
 	if (usernameIter != end && passwordIter != end && emailIter != end)
 	{
-		LoginCredential userCredential;
-		userCredential.userID = -1;
-		userCredential.username = usernameIter->second;
-		userCredential.password = passwordIter->second;
-		userCredential.email = emailIter->second;
+		LoginCredential userCredential(usernameIter->second, passwordIter->second, emailIter->second);
 		m_db.insert(userCredential);
 	}
 	return crow::response(200);

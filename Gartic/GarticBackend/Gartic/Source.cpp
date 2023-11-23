@@ -14,7 +14,7 @@ int main()
 	db.sync_schema();
 	auto initLoginCredentialCount = db.count<LoginCredential>();
 	if (initLoginCredentialCount == 0)
-		populateStorage(db);
+		getLoginCredentials(db);
 	auto initWords = db.count<Word>();
 	if (initWords == 0)
 		getWords(db);
