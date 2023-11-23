@@ -16,7 +16,7 @@ struct LoginCredential
 	std::string email;
 
 	LoginCredential() = default;
-	LoginCredential(std::string argUsername, std::string argPassword, std::string argEmail)
+	LoginCredential(const std::string& argUsername,const std::string& argPassword, const std::string& argEmail)
 		: username(argUsername), password(argPassword), email(argEmail)
 	{
 		/*empty*/
@@ -29,6 +29,14 @@ struct Word
 	int wordID;
 	std::string word;
 	int difficulty;
+
+	Word() = default;
+	Word(const std::string& argWord, const int& argDifficulty) :
+		word(argWord),
+		difficulty(argDifficulty)
+	{
+		/*empty*/
+	}
 };
 
 struct GamesScores
@@ -36,6 +44,14 @@ struct GamesScores
 	int gameID;
 	int userID;
 	float finalScore;
+
+	GamesScores() = default;
+	GamesScores(const int& argUserID, const float& argFinalScore) 
+		:userID(argUserID),
+		finalScore(argFinalScore)
+	{
+		/*empty*/
+	}
 };
 
 inline auto createStorage(const std::string& filename)
@@ -57,14 +73,16 @@ inline auto createStorage(const std::string& filename)
 		),
 		sql::make_table(
 			"GamesScores",
-			sql::make_column("gameID", &GamesScores::gameID),
+			sql::make_column("gameID", &GamesScores::gameID, sql::primary_key()),
 			sql::make_column("userID", &GamesScores::userID),
 			sql::make_column("finalScore", &GamesScores::finalScore),
-			sql::foreign_key(&GamesScores::userID).references(&LoginCredential::userID))
+			sql::foreign_key(&GamesScores::userID).references(&LoginCredential::userID)
+		)
+
 	);
 }
 using Storage = decltype(createStorage(""));
-void populateStorage(Storage& storage);
+void getLoginCredentials(Storage& storage);
 void getWords(Storage& storage);
 
 
