@@ -1,6 +1,8 @@
 #pragma once
 #include <QtWidgets>
 #include "PageController.h"
+#include <vector>
+#include <QMouseEvent>
 
 class GamePage : public QWidget
 {
@@ -10,14 +12,19 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
-	void SendMessage();
+	virtual void paintEvent(QPaintEvent* event);
 	~GamePage();
+private slots:
+	void SendMessage();
 private:
 	QLabel* imageLabel;
 	QTextEdit* listPlayers, * round, * time, * word, *chatHistory;
-	QHBoxLayout *topLayout;
+	QHBoxLayout *topLayout,*gameLayout;
 	QVBoxLayout* layout, * chatLayout;
 	QLineEdit* messageInput; 
 	QPushButton* sendButton;
+	const int numRows = 50;
+	const int numCols = 80;
+	std::vector<std::vector<int>> drawingMatrix;
 };
 
