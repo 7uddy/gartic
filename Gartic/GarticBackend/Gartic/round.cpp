@@ -1,123 +1,125 @@
-#include "Round.h"
-#include<random>
-Round::Round(Difficulty difficulty) :
-    m_difficulty{ difficulty }
+import round;
+using namespace gartic;
+
+Player* Round::m_painter = nullptr;
+Round::Round(Difficulty newDifficulty, std::vector<Player>* addressOfPlayers):
+	m_difficulty{ newDifficulty }, m_players{ addressOfPlayers }, m_miniRoundNumber{ 0 }
 {
-    m_lettersToShow = 0;
-    m_hiddenWord = "";
-    m_shownWord = "";
+	/*EMPTY*/;
 }
 
-std::string Round::GetHiddenWord() const
+void Round::startRound() noexcept
 {
-    return m_hiddenWord;
+	choosePainter();
+	++m_miniRoundNumber;
+	//std::string word{ GetHiddenWord() };
+	m_startRoundTime = std::chrono::steady_clock::now();
 }
 
-bool Round::IsHiddenWord(const std::string& word) const
+void Round::choosePainter() noexcept
 {
-    return word == m_hiddenWord;
+	auto index_of_new_painter = (m_miniRoundNumber + m_miniRoundNumber / k_numberOfRounds * m_players->size()) % m_players->size();
+	m_painter = &(*m_players)[index_of_new_painter];
 }
 
-void Round::RevealLetter()
+void Round::addPlayerGuessTime(const uint16_t& id) noexcept
 {
-    /*
-    TODO: m_shownWord has to be an empty string with size m_hiddenWord for this to work
-    */
-    uint8_t wordSize = m_hiddenWord.length();
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    while (m_lettersToShow)
-    {
-        std::uniform_int_distribution<int> distribution(0, wordSize - 1);
-        if (m_shownWord[distribution(gen)] == '\0')
-        {
-            m_shownWord[distribution(gen)] = m_hiddenWord[distribution(gen)];
-            m_lettersToShow--;
-            break;
-        }
-    }
+	Time timeNow = std::chrono::steady_clock::now();
+	auto seconds = std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime).count();
+	for (auto& player : *m_players)
+	{
+		if (player.getID() == id)
+		{
+			m_guessTimes.emplace_back(&player, seconds);
+			return;
+		}
+	}
+	throw std::exception("PLAYER NOT FOUND");
 }
 
-uint16_t Round::GenerateHiddenWordIndex() const
+void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) noexcept
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> distribution(0, kWordNumber);
-    return distribution(gen);
+	if (player == m_painter)
+	{
+		if (m_guessTimes.empty())
+			player->addToScore(-100);
+		else
+		{
+			float average = 0;
+			for (auto& item : m_guessTimes)
+			{
+				average += item.second;
+			}
+			average /= m_guessTimes.size();
+			auto score = (60 - average) * 100 / 60;
+			player->addToScore(score);
+		}
+		return;
+	}
+	if(seconds==60)
+	{
+		player->addToScore(-50);
+		return;
+	}
+	if (seconds < 30)
+	{
+		player->addToScore(100);
+		return;
+	}
+	auto score = (60 - seconds) * 100 / 30;
+	player->addToScore(score);
 }
 
-uint8_t Round::GenerateLettersNumberToShow() 
+void Round::endRound() noexcept
 {
-    /*
-    This function is implemented with the idea that the game will always hint half of the letters, regardless of difficulty.
-    */
-    uint8_t wordSize = m_hiddenWord.length();
-    m_lettersToShow = wordSize / 2;
-    return m_lettersToShow;
+	bool found;
+	for (auto& player : *m_players)
+	{
+		found = false;
+		for (auto& item : m_guessTimes)
+		{
+			if (item.first == &player)
+			{
+				updateScoreForPlayer(&player, item.second);
+				found = true;
+				break;
+			}
+		}
+		if(!found)
+			updateScoreForPlayer(&player);
+	}
+	updateScoreForPlayer(m_painter);
+	m_guessTimes.clear();
 }
 
-uint8_t GetMaxLettersForDifficulty(Round::Difficulty difficulty)
+bool Round::isWordCorrectAndAddUserGuessTime(const uint16_t& id, const std::string& guess) noexcept
 {
-    /*
-    Returns how many letters a word can have for a given difficulty.
-    */
-    switch (difficulty)
-    {
-    case Round::Difficulty::Easy:
-        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Easy);
-    case Round::Difficulty::Medium:
-        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Medium);
-    case Round::Difficulty::Hard:
-        return static_cast<uint8_t>(Round::MaxLettersForDifficulty::Hard);
-    default:
-        return 0;
-    }
+	if (guess == m_hiddenWord)
+	{
+		addPlayerGuessTime(id);
+		return true;
+	}
+	return false;
 }
 
-bool Round::VerifyWordDifficultyBalance() const
+std::string gartic::Round::getWord(const uint16_t& id) const noexcept
 {
-    /*
-    Checks if the hiddenWord is good for the selected difficulty.
-    */
-    uint8_t wordSize = m_hiddenWord.length();
-    if (wordSize > GetMaxLettersForDifficulty(m_difficulty))
-    {
-        return false;
-    }
-    else return true;
+	if (id == m_painter->getID())
+		return m_hiddenWord;
+	else
+		return m_shownWord;
 }
 
-uint8_t DifficultyToInt(Round::Difficulty difficulty)
+uint16_t Round::getSecondsFromStart() const noexcept
 {
-    /*
-    Return an int identifier for a given difficulty.
-    */
-    switch (difficulty)
-    {
-        using enum Round::Difficulty;
-    case Easy:
-        return uint8_t(Easy);
-    case Medium:
-        return uint8_t(Medium);
-    case Hard:
-        return uint8_t(Hard);
-    default:
-        return 0;
-    }
+	Time timeNow = std::chrono::steady_clock::now();
+	return std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime).count();
 }
 
-std::string_view DifficultyToString(Round::Difficulty difficulty)
+void Round::showAllPlayers() const noexcept
 {
-    switch (difficulty)
-    {
-        using enum Round::Difficulty;
-    case Easy:
-        return "Easy";
-    case Medium:
-        return "Medium";
-    case Hard:
-        return "Hard";
-    default:
-        return "";
-    }
+	for (auto& element : *m_players)
+	{
+		std::cout << element.getUsername() << " ";
+	}
 }

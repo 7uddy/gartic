@@ -1,11 +1,13 @@
-#include "Game.h"
 #include <filesystem>
 #include <iostream>
 #include <memory>
-#include "Database.h"
 #include <crow.h>
 #include <sqlite_orm/sqlite_orm.h>
 namespace sql = sqlite_orm;
+
+
+#include "Database.h"
+import game;
 
 int main()
 {

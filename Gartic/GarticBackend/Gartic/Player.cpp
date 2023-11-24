@@ -1,91 +1,99 @@
-#include "Player.h"
-
-uint8_t Player::m_playerCount = 1;
+import player;
+using namespace gartic;
 
 Player::Player(const std::string& username, const std::string& password) :
-	m_username{ username }, m_password{ password }, m_role{ Role::Guesser }, m_score{ 0 },
-	m_uniqueId{ GenerateID() }
+	m_username{ username }, m_password{ password }, m_score{ 0 },
+	m_uniqueId{ 0 }
 {
-	
-	m_playerCount++;
+	/*EMPTY*/
 }
 
-void Player::SetUsername(const std::string& username) noexcept
+Player::Player(Player&& otherPlayer)
+{
+	*this = std::move(otherPlayer);
+}
+
+Player& Player::operator=(Player&& other) noexcept
+{
+	if (this != &other)
+	{
+		m_uniqueId = std::exchange(other.m_uniqueId, 0);
+		m_username = std::exchange(other.m_username, std::string());
+		m_password = std::exchange(other.m_password, std::string());
+		m_score = std::exchange(other.m_score, 0);
+	}
+	return *this;
+}
+
+void Player::setUsername(const std::string& username) noexcept
 {
 	m_username = username;
 }
 
-const std::string& Player::GetUsername() const noexcept
+const std::string& Player::getUsername() const noexcept
 {
 	return m_username;
 }
 
-void Player::SetPassword(const std::string& password) noexcept
+void Player::setPassword(const std::string& password) noexcept
 {
 	m_password = password;
 }
 
-void Player::UpdateScore(const int16_t score) noexcept
+const std::string& gartic::Player::getPassword() const noexcept
+{
+	return m_password;
+}
+
+void Player::setScoreTo(const float& score) noexcept
 {
 	m_score = score;
 }
 
-void Player::ResetScore() noexcept
+void Player::addToScore(const float& score) noexcept
+{
+	m_score += score;
+}
+
+void Player::resetScore() noexcept
 {
 	m_score = 0;
 }
 
-const int16_t& Player::GetScore() const noexcept
+const float& Player::getScore() const noexcept
 {
 	return m_score;
 }
 
-uint16_t Player::GenerateID() const noexcept
-{
-	return m_playerCount;
-}
 
-const uint16_t& Player::GetID() const noexcept
+const uint16_t& Player::getID() const noexcept
 {
 	return m_uniqueId;
 }
 
-void Player::SetID(const uint16_t& id) noexcept
+void Player::setID(const uint16_t& id) noexcept
 {
 	m_uniqueId = id;
 }
 
-bool Player::IsArtist() const noexcept
-{
-	return m_role==Role::Artist;
-}
-
-void Player::ChangeRole() noexcept
-{
-	switch (m_role)
-	{
-		case Role::Artist:
-			m_role = Role::Guesser;
-			return;
-		case Role::Guesser:
-			m_role = Role::Artist;
-			return;
-	}
-}
-
 bool Player::operator<(const Player& player) noexcept
 {
-	if (this->m_score < player.m_score) 
+	if (m_score < player.m_score)
 		return true;
 	return false;
 }
 
-bool Player::operator==(const Player& player) noexcept
+bool Player::operator==(const Player& player) const 
 {
-	if (this->m_password != player.m_password) return false;
-	if (this->m_username!= player.m_username) return false;
-	if (this->m_role != player.m_role) return false;
-	if (this->m_uniqueId != player.m_uniqueId) return false;
-	if (this->m_score != player.m_score) return false;
+	if (this == &player) return true;
+	if (m_password != player.m_password) return false;
+	if (m_username != player.m_username) return false;
+	if (m_uniqueId != player.m_uniqueId) return false;
+	if (m_score != player.m_score) return false;
 	return true;
+}
+
+bool gartic::Player::operator!=(const Player& otherPlayer) const
+{
+	return !((*this) == otherPlayer);
 }
