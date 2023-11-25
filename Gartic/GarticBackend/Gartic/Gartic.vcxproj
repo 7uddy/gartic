@@ -150,6 +150,8 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game.cppm" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="lobby.cpp" />
+    <ClCompile Include="lobby.cppm" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="player.cppm" />
     <ClCompile Include="round.cpp" />

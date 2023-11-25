@@ -35,7 +35,7 @@ namespace gartic
 		void showAllPlayers() const noexcept;
 
 	private:
-		void addPlayerGuessTime(const uint16_t& id) noexcept;
+		void addPlayerGuessTime(const uint16_t& id);
 		void choosePainter() noexcept;
 		void updateScoreForPlayer(Player*, const uint16_t&) noexcept;
 

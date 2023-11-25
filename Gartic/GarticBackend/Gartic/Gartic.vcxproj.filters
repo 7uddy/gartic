@@ -48,6 +48,12 @@
     <ClCompile Include="game.cppm">
       <Filter>Header Files</Filter>
     </ClCompile>
+    <ClCompile Include="lobby.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lobby.cppm">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">

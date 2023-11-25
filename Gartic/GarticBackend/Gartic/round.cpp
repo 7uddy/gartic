@@ -22,7 +22,7 @@ void Round::choosePainter() noexcept
 	m_painter = &(*m_players)[index_of_new_painter];
 }
 
-void Round::addPlayerGuessTime(const uint16_t& id) noexcept
+void Round::addPlayerGuessTime(const uint16_t& id)
 {
 	Time timeNow = std::chrono::steady_clock::now();
 	auto seconds = std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime).count();
