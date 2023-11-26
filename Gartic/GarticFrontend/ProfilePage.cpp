@@ -35,6 +35,8 @@ void ProfilePage::PlaceElements()
 	infoLayout->addWidget(matchHistory);
 	infoLayout->setAlignment(Qt::AlignCenter);
 
+	returnButton->setIconSize(QSize(50, 50));
+	returnButton->setFixedSize(40, 40);
 	buttonLayout->addWidget(returnButton);
 
 	layout->addLayout(topLayout);
@@ -66,6 +68,7 @@ void ProfilePage::SetSize()
 	username->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	averageScore->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	matchHistory->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
 ProfilePage::~ProfilePage()

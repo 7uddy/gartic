@@ -38,3 +38,9 @@ QPushButton[accessibleName="returnButton"] {
     width: 100px;
     height: 50px;
 }
+
+.QWidget[accessibleName="leaderboardPadding"] {
+    border: 1px;
+    border-radius: 20px;
+    background-color: grey;
+}

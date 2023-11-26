@@ -27,6 +27,15 @@ void LeaderboardPage::PlaceElements()
 	bottomLeftLayout->addWidget(returnButton);
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
+	QVBoxLayout* middleLayout = new QVBoxLayout;
+	QWidget* boardPadding = new QWidget;
+	boardPadding->setAccessibleName("leaderboardPadding");
+	boardPadding->setFixedSize(500, 300);
+
+	middleLayout->addWidget(boardPadding);
+	middleLayout->setAlignment(Qt::AlignCenter);
+
+	layout->addLayout(middleLayout);
 	layout->addLayout(topLeftLayout);
 	layout->addLayout(bottomLeftLayout);
 }
