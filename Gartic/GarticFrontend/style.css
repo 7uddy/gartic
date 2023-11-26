@@ -42,7 +42,7 @@ QPushButton[accessibleName="returnButton"] {
 .QWidget[accessibleName="leaderboardPadding"] {
     border: 1px;
     border-radius: 20px;
-    background-color: grey;
+    background-color: #F2D300;
 }
 
 .QWidget[accessibleName="profilePadding"] {

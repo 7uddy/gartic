@@ -10,6 +10,7 @@
 #include "WaitingRoomPage.h"
 #include "SelectRoomPage.h"
 #include "GamePage.h"
+#include "LeaderboardPage.h"
 
 class MainWindow : public QMainWindow
 {
@@ -31,4 +32,5 @@ private:
     WaitingRoomPage* waitingRoomPage;
     SelectRoomPage* selectRoomPage;
     GamePage* gamePage;
+    LeaderboardPage* leaderboardPage;
 };

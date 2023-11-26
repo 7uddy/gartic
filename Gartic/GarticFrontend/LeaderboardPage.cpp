@@ -21,12 +21,12 @@ void LeaderboardPage::PlaceElements()
 	topLeftLayout->addWidget(imageLabel);
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-
 	QVBoxLayout* bottomLeftLayout = new QVBoxLayout;
 	returnButton->setIconSize(QSize(50, 50));
 	returnButton->setFixedSize(40, 40);
 	bottomLeftLayout->addWidget(returnButton);
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
+
 
 
 	QVBoxLayout* middleLayout = new QVBoxLayout;
@@ -35,21 +35,37 @@ void LeaderboardPage::PlaceElements()
 	boardPadding->setAccessibleName("leaderboardPadding");
 	boardPadding->setFixedSize(500, 300);
 
+
 	QWidget* profilePadding = new QWidget(boardPadding);
 	profilePadding->setAccessibleName("profilePadding");
-	profilePadding->setFixedSize(300, 150);
+	profilePadding->setFixedSize(300, 100);
+
 
 	QHBoxLayout* profileLayout = new QHBoxLayout(profilePadding);
+
 	QLabel* profileImage = new QLabel;
+	profileImage->setPixmap(QPixmap("Images/arrow_pressed.png"));
+	profileImage->setFixedSize(50, 50);
+	profileImage->setScaledContents(true);
+
 	QLabel* profileName = new QLabel;
+	profileName->setText("Player1");
+
 	QLabel* profileScore = new QLabel;
+	profileScore->setText("110");
+
+	profileLayout->addWidget(profileImage);
+	profileLayout->addWidget(profileName);
+	profileLayout->addWidget(profileScore);
+
 
 	middleLayout->addWidget(boardPadding);
 	middleLayout->setAlignment(Qt::AlignCenter);
 
 
-	layout->addLayout(middleLayout);
+	
 	layout->addLayout(topLeftLayout);
+	layout->addLayout(middleLayout);
 	layout->addLayout(bottomLeftLayout);
 }
 

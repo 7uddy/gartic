@@ -15,6 +15,10 @@ SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
     connect(returnButton, &QPushButton::clicked, controller, [controller]() {
        controller->showPage("MainMenu");
    });
+
+    connect(joinButton, &QPushButton::clicked, controller, [controller]() {
+        controller->showPage("Leaderboard");
+        });
 }
 
 void SelectRoomPage::PlaceElements() {

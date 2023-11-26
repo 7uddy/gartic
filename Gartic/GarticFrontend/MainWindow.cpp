@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     waitingRoomPage = new WaitingRoomPage(pageController);
     selectRoomPage = new SelectRoomPage(pageController);
     gamePage = new GamePage(pageController);
+    leaderboardPage = new LeaderboardPage(pageController);
     AddPages();
     setCentralWidget(pageController);
     SetBackground();
@@ -23,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete loginPage, registerPage, pageController, mainMenuPage, profilePage, waitingRoomPage, selectRoomPage, gamePage;
+    delete loginPage, registerPage, pageController, mainMenuPage, profilePage, waitingRoomPage, selectRoomPage, gamePage, leaderboardPage;
 }
 
 void MainWindow::Show()
@@ -50,4 +51,5 @@ void MainWindow::AddPages()
     pageController->addPage(waitingRoomPage, "WaitingRoom");
     pageController->addPage(selectRoomPage, "SelectRoom");
     pageController->addPage(gamePage, "Game");
+    pageController->addPage(leaderboardPage, "Leaderboard");
 }
