@@ -21,19 +21,32 @@ void LeaderboardPage::PlaceElements()
 	topLeftLayout->addWidget(imageLabel);
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
+
 	QVBoxLayout* bottomLeftLayout = new QVBoxLayout;
 	returnButton->setIconSize(QSize(50, 50));
 	returnButton->setFixedSize(40, 40);
 	bottomLeftLayout->addWidget(returnButton);
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
+
 	QVBoxLayout* middleLayout = new QVBoxLayout;
+
 	QWidget* boardPadding = new QWidget;
 	boardPadding->setAccessibleName("leaderboardPadding");
 	boardPadding->setFixedSize(500, 300);
 
+	QWidget* profilePadding = new QWidget(boardPadding);
+	profilePadding->setAccessibleName("profilePadding");
+	profilePadding->setFixedSize(300, 150);
+
+	QHBoxLayout* profileLayout = new QHBoxLayout(profilePadding);
+	QLabel* profileImage = new QLabel;
+	QLabel* profileName = new QLabel;
+	QLabel* profileScore = new QLabel;
+
 	middleLayout->addWidget(boardPadding);
 	middleLayout->setAlignment(Qt::AlignCenter);
+
 
 	layout->addLayout(middleLayout);
 	layout->addLayout(topLeftLayout);
