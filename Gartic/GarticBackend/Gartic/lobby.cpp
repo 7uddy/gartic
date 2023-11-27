@@ -2,6 +2,11 @@ import lobby;
 
 using namespace gartic;
 
+gartic::Lobby::Lobby() : m_lobbyCode{ "1234" }, m_lobbyStatus{Status::WaitingForPlayers}
+{
+	/*EMPTY*/
+}
+
 void Lobby::addPlayer(Player&& player) noexcept
 {
 	m_players.emplace_back(std::move(player));
@@ -21,6 +26,7 @@ void Lobby::removePlayer(const std::string& username)
 void Lobby::clearLobby() noexcept
 {
 	m_players.clear();
+	m_lobbyStatus = Status::Terminated;
 }
 
 uint16_t Lobby::getNumberOfPlayers() const noexcept
@@ -33,9 +39,14 @@ const std::string& Lobby::getLobbyCode() const noexcept
 	return m_lobbyCode;
 }
 
-std::vector<Player>&& Lobby::getPlayersToMove()
+std::vector<Player> Lobby::getPlayersToMove()
 {
 	return std::move(m_players);
+}
+
+const Lobby::Status& gartic::Lobby::getStatusOfLobby() const noexcept
+{
+	return m_lobbyStatus;
 }
 
 bool Lobby::isInLobby(const std::string& username) const

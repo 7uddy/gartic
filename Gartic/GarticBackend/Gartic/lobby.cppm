@@ -12,7 +12,14 @@ namespace gartic
 	export class Lobby
 	{
 	public:
-		Lobby() = default;
+		enum class Status : uint8_t
+		{
+			WaitingForPlayers,
+			Launched,
+			Terminated
+		};
+	public:
+		Lobby();
 		void addPlayer(Player&& player) noexcept;
 
 		//ERROR IN std::find FUNCTION
@@ -24,9 +31,11 @@ namespace gartic
 
 		uint16_t getNumberOfPlayers() const noexcept;
 		const std::string& getLobbyCode() const noexcept;
-		std::vector<Player>&& getPlayersToMove();
+		std::vector<Player> getPlayersToMove();
+		const Status& getStatusOfLobby() const noexcept;
 	private:
 		std::vector<Player> m_players;
 		std::string m_lobbyCode;
+		Status m_lobbyStatus;
 	};
 }
