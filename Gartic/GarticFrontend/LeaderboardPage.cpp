@@ -83,6 +83,11 @@ void LeaderboardPage::SetSize()
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
+void LeaderboardPage::OnPlayerJoin(const QString& playerName, const QString& playerScore)
+{
+
+}
+
 LeaderboardPage::~LeaderboardPage()
 {
 	delete imageLabel, returnButton, layout;
