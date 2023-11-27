@@ -7,6 +7,31 @@ LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 	returnButton = new QPushButton(this);
 	boardPadding = new QWidget;
 
+
+	//FOR TESTING
+	testButton = new QPushButton("Test me", this);
+	playerNames = new QVector<QString>;
+	playerScores = new QVector<QString>;
+
+	index = 0;
+
+	playerNames->append("Player 1");
+	playerNames->append("Player 2");
+	playerNames->append("Player 3");
+	playerNames->append("Player 4");
+
+	playerScores->append(QString::number(222));
+	playerScores->append(QString::number(200));
+	playerScores->append(QString::number(188));
+	playerScores->append(QString::number(0));
+
+
+	connect(testButton, &QPushButton::clicked, this, [=]() {
+		OnPlayerJoin(playerNames->at(index), playerScores->at(index));
+		});
+	//FOR TESTING
+
+
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -32,6 +57,11 @@ void LeaderboardPage::PlaceElements()
 	boardPadding->setFixedSize(400, 350);
 
 	middleLayout->addWidget(boardPadding);
+
+	//TO BE REMOVED
+	middleLayout->addWidget(testButton, 0, Qt::AlignLeft);
+	//TO BE REMOVED
+
 	middleLayout->setAlignment(Qt::AlignCenter);
 
 	layout->addLayout(topLeftLayout);
@@ -80,6 +110,11 @@ void LeaderboardPage::OnPlayerJoin(const QString& playerName, const QString& pla
 	newProfileLayout->addWidget(newProfileName);
 	newProfileLayout->addWidget(newProfileScore, 0, Qt::AlignRight);
 	newProfileLayout->setAlignment(Qt::AlignCenter);
+
+	newProfilePadding->setVisible(true);
+	newProfileImage->setVisible(true);
+	newProfileName->setVisible(true);
+	newProfileScore->setVisible(true);
 
 	profilePaddings.append(newProfilePadding);
 	profileLayouts.append(newProfileLayout);
