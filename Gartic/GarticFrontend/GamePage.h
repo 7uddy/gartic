@@ -3,6 +3,7 @@
 #include "PageController.h"
 #include <vector>
 #include <QMouseEvent>
+#include "BoardWidget.h"
 
 class GamePage : public QWidget
 {
@@ -18,13 +19,11 @@ private slots:
 	void SendMessage();
 private:
 	QLabel* imageLabel;
-	QTextEdit* listPlayers, * round, * time, * word, *chatHistory;
-	QHBoxLayout *topLayout,*gameLayout;
+	QTextEdit* listPlayers, * round, * time, * word, * chatHistory;
+	QHBoxLayout* topLayout, * gameLayout;
 	QVBoxLayout* layout, * chatLayout;
-	QLineEdit* messageInput; 
+	QLineEdit* messageInput;
 	QPushButton* sendButton;
-	const int numRows = 50;
-	const int numCols = 80;
-	std::vector<std::vector<int>> drawingMatrix;
+	BoardWidget* board;
+	QGridLayout* gameGridLayout;
 };
-

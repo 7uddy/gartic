@@ -1,6 +1,6 @@
 #include "GamePage.h"
 
-GamePage::GamePage(PageController* controller, QWidget* parent) : drawingMatrix(numRows, std::vector<int>(numCols, 0))
+GamePage::GamePage(PageController* controller, QWidget* parent)
 {
 	imageLabel = new QLabel(this);
 	layout = new QVBoxLayout(this);
@@ -14,6 +14,8 @@ GamePage::GamePage(PageController* controller, QWidget* parent) : drawingMatrix(
 	sendButton = new QPushButton("Send", this);
 	chatHistory = new QTextEdit(this);
 	gameLayout = new QHBoxLayout();
+	board = new BoardWidget();
+	gameGridLayout = new QGridLayout();
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -41,15 +43,13 @@ void GamePage::PlaceElements()
 	chatLayout->addWidget(messageInput);
 	chatLayout->addWidget(sendButton);
 
-	gameLayout->addSpacing(100);
-	gameLayout->addWidget(listPlayers);
-	gameLayout->setAlignment(listPlayers, Qt::AlignLeft | Qt::AlignCenter);
-	gameLayout->addLayout(chatLayout);
-	gameLayout->addSpacing(100);
-	gameLayout->setAlignment(chatLayout, Qt::AlignRight | Qt::AlignBottom);
+	gameGridLayout->setContentsMargins(20, 0, 20, 0);
+	gameGridLayout->addWidget(listPlayers, 0, 0, 1, 1);
+	gameGridLayout->addWidget(board, 0, 1, 1, 1);
+	gameGridLayout->addLayout(chatLayout, 0, 2, 1, 1);
 
 	layout->addLayout(topLayout);
-	layout->addLayout(gameLayout);
+	layout->addLayout(gameGridLayout);
 	layout->addSpacing(200);
 	layout->setAlignment(topLayout, Qt::AlignTop);
 }
@@ -70,12 +70,12 @@ void GamePage::SetSize()
 	chatHistory->setReadOnly(true);
 	listPlayers->setReadOnly(true);
 	messageInput->setFixedSize(300, 50);
-    sendButton->setFixedSize(300, 50);
-	listPlayers->setFixedSize(200,450);
+	sendButton->setFixedSize(300, 50);
+	listPlayers->setFixedSize(200, 450);
 	round->setFixedSize(200, 50);
 	time->setFixedSize(200, 50);
 	word->setFixedSize(200, 50);
-	chatHistory->setFixedSize(300,350);
+	chatHistory->setFixedSize(300, 350);
 	messageInput->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	sendButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	listPlayers->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -87,29 +87,13 @@ void GamePage::SetSize()
 
 void GamePage::paintEvent(QPaintEvent* event)
 {
-	QPainter paint(this);
-	paint.setRenderHint(QPainter::Antialiasing, true);
-	const int matrixWidth = numCols * 10;
-	const int matrixHeight = numRows * 10;
-	int startX = (width() - matrixWidth) / 2;
-	int startY = (height() - matrixHeight) / 2;
-	for(int index=0;index<numRows;index++)
-		for (int jndex = 0; jndex < numCols; jndex++)
-		{
-			QRect rectangle(startX + jndex * 10, startY + index * 10, 10, 10);
-			if (drawingMatrix[index][jndex] == 0)
-			{
-				paint.setPen(QPen(Qt::white, 0));
-				paint.setBrush(Qt::white);
-				paint.drawRect(rectangle);
-			}
-	    }
+	/*empty*/
 }
 
 void GamePage::SendMessage()
 {
 	QString message = messageInput->text();
-	if (!message.isEmpty()) 
+	if (!message.isEmpty())
 	{
 		chatHistory->append("Name: " + message);
 		messageInput->clear();
@@ -119,5 +103,5 @@ void GamePage::SendMessage()
 GamePage::~GamePage()
 {
 	delete imageLabel, listPlayers, round, time, word, topLayout, layout, chatLayout, messageInput,
-		sendButton, chatHistory;
+		sendButton, chatHistory, board, gameGridLayout;
 }
