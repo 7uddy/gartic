@@ -1,4 +1,4 @@
-import round;
+module round;
 using namespace gartic;
 
 Player* Round::m_painter = nullptr;

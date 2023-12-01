@@ -26,8 +26,6 @@ namespace gartic
 
 		const uint16_t& getGameID() const noexcept;
 
-		void sortPlayersByCurrentScore() noexcept;
-
 		void setPlayers(std::vector<Player>&&) noexcept;
 		void addPlayerToGame(Player&&);
 		void deletePlayerFromGameWithID(const uint16_t&);

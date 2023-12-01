@@ -1,4 +1,4 @@
-import player;
+module player;
 using namespace gartic;
 
 Player::Player(const std::string& username, const std::string& password) :

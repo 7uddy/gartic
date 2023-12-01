@@ -1,10 +1,10 @@
-import lobby;
+module lobby;
 
 using namespace gartic;
 
-gartic::Lobby::Lobby() : m_lobbyCode{ "1234" }, m_lobbyStatus{Status::WaitingForPlayers}
+gartic::Lobby::Lobby() : m_lobbyStatus{Status::WaitingForPlayers}, m_lobbyCode{}
 {
-	/*EMPTY*/
+	GenerateLobbyCode();
 }
 
 void Lobby::addPlayer(Player&& player) noexcept
@@ -39,14 +39,36 @@ const std::string& Lobby::getLobbyCode() const noexcept
 	return m_lobbyCode;
 }
 
-std::vector<Player> Lobby::getPlayersToMove()
-{
-	return std::move(m_players);
-}
-
 const Lobby::Status& gartic::Lobby::getStatusOfLobby() const noexcept
 {
 	return m_lobbyStatus;
+}
+
+void gartic::Lobby::StartGame(gartic::Game& game)
+{
+	game.setPlayers(std::move(m_players));
+	m_lobbyStatus = Status::Launched;
+}
+
+bool gartic::Lobby::CheckLobbyCode(const std::string& code) const
+{
+	return m_lobbyCode == code;
+}
+
+void gartic::Lobby::GenerateLobbyCode()
+{
+	for (int i = 0; i < k_lengthOfLobbyCode; i++)
+	{
+		m_lobbyCode.push_back(static_cast<char>(GetRandomDigit()));
+	}
+}
+
+int gartic::Lobby::GetRandomDigit(int maxim) const
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> distrib(48, maxim);
+	return distrib(gen);
 }
 
 bool Lobby::isInLobby(const std::string& username) const

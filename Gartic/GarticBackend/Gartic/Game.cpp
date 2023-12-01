@@ -1,4 +1,4 @@
-import game;
+module game;
 
 using namespace gartic;
 
@@ -31,4 +31,9 @@ const uint16_t& gartic::Game::getGameID() const noexcept
 void Game::setPlayers(std::vector<Player>&& players) noexcept
 {
 	m_players = std::move(players);
+}
+
+void Game::addPlayerToGame(Player&& newPlayer)
+{
+	m_players.emplace_back(std::move(newPlayer));
 }

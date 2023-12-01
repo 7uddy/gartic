@@ -1,11 +1,12 @@
 module;
 export module lobby;
 
-import player;
+import game;
 import <cstdint>;
 import <string>;
 import <vector>;
 import <iostream>;
+import <random>;
 
 namespace gartic
 {
@@ -21,18 +22,24 @@ namespace gartic
 	public:
 		Lobby();
 		void addPlayer(Player&& player) noexcept;
-
-		//ERROR IN std::find FUNCTION
 		void removePlayer(const std::string& username);
 		bool isInLobby(const std::string& username) const;
-		//
 
 		void clearLobby() noexcept;
 
 		uint16_t getNumberOfPlayers() const noexcept;
 		const std::string& getLobbyCode() const noexcept;
-		std::vector<Player> getPlayersToMove();
 		const Status& getStatusOfLobby() const noexcept;
+
+		void StartGame(Game& game);
+		bool CheckLobbyCode(const std::string&) const;
+
+	private:
+		void GenerateLobbyCode();
+		int GetRandomDigit(int maxim=57) const;
+
+	private:
+		static const char k_lengthOfLobbyCode = 4;
 	private:
 		std::vector<Player> m_players;
 		std::string m_lobbyCode;
