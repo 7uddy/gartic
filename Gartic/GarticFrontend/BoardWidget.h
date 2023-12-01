@@ -8,11 +8,17 @@ class BoardWidget : public QWidget
 
 public:
     BoardWidget(QWidget* parent = nullptr);
+signals:
+    void mouseDraw(QMouseEvent* event);
 protected:
     virtual void paintEvent(QPaintEvent* event) override;
+    virtual void mousePressEvent(QMouseEvent* event) override;
+    virtual void mouseMoveEvent(QMouseEvent* event) override;
 private:
-    const int numRows = 80;
+    const int numRows = 50;
     const int numCols = 80;
+public:
     std::vector<std::vector<int>> drawingMatrix;
 };
+
 

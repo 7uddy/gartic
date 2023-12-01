@@ -13,7 +13,7 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
-	virtual void paintEvent(QPaintEvent* event);
+	void updateBoard(QMouseEvent* event);
 	~GamePage();
 private slots:
 	void SendMessage();
