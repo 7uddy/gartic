@@ -20,6 +20,7 @@ namespace gartic
 			Active,
 			Finished
 		};
+
 		/*-------Game variables related functions-------*/
 		Game() = default;
 
@@ -39,13 +40,15 @@ namespace gartic
 		//FOR GUI
 		uint16_t getTimer() const noexcept;
 		const std::vector<Player>& getPlayers() const noexcept;
-
+		void AddMessageToChat(const std::string&) noexcept;
+		void ClearChat() noexcept;
+		std::string GetChat() const noexcept;
 	 private:
 		std::vector<Player> m_players;
 		uint16_t m_gameID;
 		Status m_gameState;
 		Round::Difficulty m_difficulty;
 		Round m_round;
-
+		std::vector<std::string> m_chat;
 	};
 }
