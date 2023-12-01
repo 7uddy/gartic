@@ -16,7 +16,17 @@ RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 	connect(loginButton, &QPushButton::clicked, controller, [controller]() {
 		controller->showPage("Login");
 		});
-	connect(registerButton, &QPushButton::clicked, this, &RegisterPage::RegisterButtonClicked);
+	connect(registerButton, &QPushButton::clicked, controller, [=]() {
+		if (controller->verifyRegister(username->text(),email->text(), password->text()))
+		{
+			QMessageBox::information(controller, "Registration Success", "User registered successfully. You can now log in.");
+			controller->showPage("Login");
+		}
+		else 
+		{
+			QMessageBox::warning(controller, "Register Error", "Invalid username or password or email.");
+		}
+		});
 }
 
 void RegisterPage::PlaceElements()

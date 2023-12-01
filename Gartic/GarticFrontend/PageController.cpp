@@ -27,3 +27,23 @@ void PageController::setStartupPage(const QString& name)
 		showPage(name);
 	}
 }
+
+bool PageController::verifyLogin(const QString& enteredUsername, const QString& enteredPassword)
+{
+	QString expectedPassword = "password"; //test
+	QString expectedUsername = "user"; //test
+	if (enteredUsername == expectedUsername && enteredPassword == expectedPassword)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool PageController::verifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword)
+{
+	if ((enteredUsername == "user") || (enteredEmail == "user@yahoo.com") || (enteredPassword == "password")) // test
+	{
+		return false;
+	}
+	return true;
+}
