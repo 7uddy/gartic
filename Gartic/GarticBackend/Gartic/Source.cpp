@@ -9,6 +9,7 @@ namespace sql = sqlite_orm;
 #include "Database.h"
 import game;
 import lobby;
+import player;
 
 int main()
 {
@@ -87,6 +88,33 @@ int main()
 				else {
 					db.remove_all<LoginCredential>(sql::where(sql::c(&LoginCredential::username) == receivedUsername));
 					return crow::response(200);
+				}
+				return crow::response(404);
+			});
+
+	gartic::Lobby lobby;
+
+	CROW_ROUTE(app, "/joingame")
+		.methods(crow::HTTPMethod::GET)([&lobby,&db](const crow::request& req)
+			{
+				std::string receivedLobbyID = req.url_params.get("lobbyid");
+				std::string receivedUserID = req.url_params.get("userid");
+				if (receivedLobbyID.empty() || receivedUserID.empty())
+					return crow::response(400);
+
+				else {
+					if (lobby.getLobbyCode()==receivedLobbyID)
+					{
+						for (const auto& logincredential : db.iterate<LoginCredential>())
+						{
+							 if (std::to_string(logincredential.userID) == receivedUserID)
+								{
+									gartic::Player newPlayer(logincredential.username, logincredential.password);
+									lobby.addPlayer(std::move(newPlayer));
+									return crow::response(200);
+								}
+						}
+					}
 				}
 				return crow::response(404);
 			});
