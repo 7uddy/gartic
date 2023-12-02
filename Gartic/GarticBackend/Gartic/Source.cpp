@@ -11,7 +11,7 @@ import game;
 import lobby;
 import player;
 
-int main()
+Storage CreateDatabase() 
 {
 	const std::string db_file = "logincredentials.sqlite";
 	Storage db = createStorage(db_file);
@@ -26,7 +26,11 @@ int main()
 
 	auto loginCredentialCount = db.count<LoginCredential>();
 	std::cout << "## There are currently " << loginCredentialCount << " items in the database.##\n";
-	crow::SimpleApp app;
+	return db;
+}
+
+void ServerRoutes(Storage& db, crow::SimpleApp& app)
+{
 	CROW_ROUTE(app, "/")([]() {
 		return "Server is running.This is the main branch";
 		});
@@ -35,12 +39,12 @@ int main()
 		std::vector<crow::json::wvalue> logincredentials_json;
 		for (const auto& logincredential : db.iterate<LoginCredential>())
 		{
-			logincredentials_json.push_back(crow::json::wvalue{ 
-				{"userID", logincredential.userID}, 
+			logincredentials_json.push_back(crow::json::wvalue{
+				{"userID", logincredential.userID},
 				{"username", logincredential.username},
 				{"password", logincredential.password},
 				{"email", logincredential.email}
-				});			
+				});
 		}
 		return crow::json::wvalue{ logincredentials_json };
 		});
@@ -56,12 +60,12 @@ int main()
 				std::string receivedPassword = req.url_params.get("password");
 				std::string receivedEmail = req.url_params.get("email");
 
-				if(receivedPassword.empty())
+				if (receivedPassword.empty())
 					return crow::response(400);
-				if(receivedUsername.empty() && receivedEmail.empty())
+				if (receivedUsername.empty() && receivedEmail.empty())
 					return crow::response(400);
 
-				if(!receivedUsername.empty())
+				if (!receivedUsername.empty())
 					for (const auto& logincredential : db.iterate<LoginCredential>())
 					{
 						if (logincredential.username == receivedUsername
@@ -95,7 +99,7 @@ int main()
 	gartic::Lobby lobby;
 
 	CROW_ROUTE(app, "/joingame")
-		.methods(crow::HTTPMethod::GET)([&lobby,&db](const crow::request& req)
+		.methods(crow::HTTPMethod::GET)([&lobby, &db](const crow::request& req)
 			{
 				std::string receivedLobbyID = req.url_params.get("lobbyid");
 				std::string receivedUserID = req.url_params.get("userid");
@@ -103,22 +107,28 @@ int main()
 					return crow::response(400);
 
 				else {
-					if (lobby.getLobbyCode()==receivedLobbyID)
+					if (lobby.getLobbyCode() == receivedLobbyID)
 					{
 						for (const auto& logincredential : db.iterate<LoginCredential>())
 						{
-							 if (std::to_string(logincredential.userID) == receivedUserID)
-								{
-									gartic::Player newPlayer(logincredential.username, logincredential.password);
-									lobby.addPlayer(std::move(newPlayer));
-									return crow::response(200);
-								}
+							if (std::to_string(logincredential.userID) == receivedUserID)
+							{
+								gartic::Player newPlayer(logincredential.username, logincredential.password);
+								lobby.addPlayer(std::move(newPlayer));
+								return crow::response(200);
+							}
 						}
 					}
 				}
 				return crow::response(404);
 			});
+}
 
+int main()
+{
+	Storage db=CreateDatabase();
+	crow::SimpleApp app;
+	ServerRoutes(db,app);
 	app.port(18080).multithreaded().run();
 	return 0;
 }
