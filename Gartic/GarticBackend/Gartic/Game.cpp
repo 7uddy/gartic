@@ -13,6 +13,16 @@ void gartic::Game::showAllPlayers() const noexcept
 		std::cout << player.getUsername() << " ";
 }
 
+bool gartic::Game::IsPlayerInGame(const Player& newPlayer) const noexcept
+{
+	for (const auto& player : m_players)
+	{
+		if (player.getID() == newPlayer.getID())
+			return true;
+	}
+	return false;
+}
+
 uint16_t gartic::Game::getTimer() const noexcept
 {
 	return m_round.getSecondsFromStart();

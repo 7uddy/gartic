@@ -8,50 +8,46 @@ namespace sql = sqlite_orm;
 
 import utils;
 
-struct LoginCredential
+class LoginCredential
 {
+
+public:
+	LoginCredential() = default;
+	LoginCredential(std::string_view argUsername, std::string_view argPassword, std::string_view argEmail);
+
+
 	int userID;
 	std::string username;
 	std::string password;
 	std::string email;
 
-	LoginCredential() = default;
-	LoginCredential(const std::string& argUsername,const std::string& argPassword, const std::string& argEmail)
-		: username(argUsername), password(argPassword), email(argEmail)
-	{
-		/*empty*/
-	}
 };
 
 
-struct Word
+class Word
 {
+
+public:
+	Word() = default;
+	Word(const std::string& argWord, const int argDifficulty);
+
 	int wordID;
 	std::string word;
 	int difficulty;
 
-	Word() = default;
-	Word(const std::string& argWord, const int& argDifficulty) :
-		word(argWord),
-		difficulty(argDifficulty)
-	{
-		/*empty*/
-	}
 };
 
-struct GamesScores
+class GamesScores
 {
+
+public:
+	GamesScores() = default;
+	GamesScores(const int& argUserID, const float& argFinalScore);
+
 	int gameID;
 	int userID;
 	float finalScore;
 
-	GamesScores() = default;
-	GamesScores(const int& argUserID, const float& argFinalScore) 
-		:userID(argUserID),
-		finalScore(argFinalScore)
-	{
-		/*empty*/
-	}
 };
 
 inline auto createStorage(const std::string& filename)
@@ -81,16 +77,20 @@ inline auto createStorage(const std::string& filename)
 
 	);
 }
+
 using Storage = decltype(createStorage(""));
 void getLoginCredentials(Storage& storage);
 void getWords(Storage& storage);
 
 
 class AddUserHandler {
+
 public:
 	AddUserHandler(Storage& storage);
-	bool DoesUsernameExists(const std::string& username) const;
-	crow::response operator() (const crow::request& req) const;
+	bool DoesUsernameExists(std::string_view username) const noexcept;
+	bool DoesEmailExists(std::string_view email) const noexcept;
+	crow::response operator() (const crow::request& req) const noexcept;
+
 private:
 	Storage& m_db;
 };

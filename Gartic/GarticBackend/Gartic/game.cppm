@@ -36,7 +36,8 @@ namespace gartic
 
 		void startAnotherRound() noexcept;
 		void showAllPlayers() const noexcept;
-
+		bool IsPlayerInGame(const Player& newPlayer) const noexcept;
+		 
 		//FOR GUI
 		uint16_t getTimer() const noexcept;
 		const std::vector<Player>& getPlayers() const noexcept;

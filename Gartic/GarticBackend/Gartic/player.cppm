@@ -12,7 +12,7 @@ namespace gartic
 	public:
 		/*-------Constructors-------*/
 		Player() = default;
-		Player(const std::string& username, const std::string& password);
+		Player(std::string_view username,std::string_view password);
 		Player(Player&& otherPlayer);
 
 		Player& operator=(Player&& other) noexcept;

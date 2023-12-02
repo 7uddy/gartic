@@ -1,6 +1,26 @@
 #include "Database.h"
 #include <fstream>
 
+LoginCredential::LoginCredential(std::string_view argUsername, std::string_view argPassword, std::string_view argEmail)
+	: username(argUsername), password(argPassword), email(argEmail)
+{
+	//Empty
+}
+
+Word::Word(const std::string& argWord, const int argDifficulty)
+	: word(argWord),
+	difficulty(argDifficulty)
+{
+	//Empty
+}
+
+GamesScores::GamesScores(const int& argUserID, const float& argFinalScore)
+	:userID(argUserID),
+	finalScore(argFinalScore)
+{
+	//Empty
+}
+
 void getWords(Storage& storage)
 {
 	std::ifstream fin{ "words.txt" };
@@ -30,7 +50,7 @@ AddUserHandler::AddUserHandler(Storage& storage)
 
 }
 
-crow::response AddUserHandler::operator()(const crow::request& req) const
+crow::response AddUserHandler::operator()(const crow::request& req) const noexcept
 {
 	auto bodyArgs = parseUrlArgs(req.body);
 	auto end = bodyArgs.end();
@@ -41,14 +61,25 @@ crow::response AddUserHandler::operator()(const crow::request& req) const
 
 	if (usernameIter != end && passwordIter != end && emailIter != end)
 	{
-		LoginCredential userCredential(usernameIter->second, passwordIter->second, emailIter->second);
-		m_db.insert(userCredential);
+		if (DoesUsernameExists(usernameIter->second) || DoesEmailExists(emailIter->second))
+		{
+			LoginCredential userCredential(usernameIter->second, passwordIter->second, emailIter->second);
+			m_db.insert(userCredential);
+			return crow::response(200);
+		}
+		else return crow::response(400);
 	}
-	return crow::response(200);
 }
 
-bool AddUserHandler::DoesUsernameExists(const std::string& username) const
+bool AddUserHandler::DoesUsernameExists(std::string_view username) const noexcept
 {
 	auto count = m_db.count<LoginCredential>(sql::where(sql::c(&LoginCredential::username) == username));
 	return count > 0;
 }
+
+bool AddUserHandler::DoesEmailExists(std::string_view email) const noexcept
+{
+	auto count = m_db.count<LoginCredential>(sql::where(sql::c(&LoginCredential::email) == email));
+	return count>0;
+}
+

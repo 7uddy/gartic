@@ -1,7 +1,7 @@
 module player;
 using namespace gartic;
 
-Player::Player(const std::string& username, const std::string& password) :
+Player::Player(std::string_view username, std::string_view password) :
 	m_username{ username }, m_password{ password }, m_score{ 0 },
 	m_uniqueId{ 0 }
 {
