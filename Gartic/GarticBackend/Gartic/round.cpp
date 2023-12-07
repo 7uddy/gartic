@@ -10,10 +10,20 @@ Round::Round(Difficulty newDifficulty, std::vector<Player>* addressOfPlayers):
 
 void Round::startRound() noexcept
 {
+	const int numberOfDifficulties = 2;
 	choosePainter();
 	++m_miniRoundNumber;
+	//Template to changing difficulty between rounds
+	if (m_miniRoundNumber - 1 != 0)
+	{
+		if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
+		{
+			auto difficultyAsInt = GetDifficulty();
+			if (difficultyAsInt + 1 <= numberOfDifficulties)
+				SetDifficulty(difficultyAsInt + 1);
+		}
+	}
 	//std::string word{ GetHiddenWord() };
-	//if(newRound) m_difficulty++;
 	m_startRoundTime = std::chrono::steady_clock::now();
 }
 
@@ -71,6 +81,34 @@ void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) n
 	player->addToScore(score);
 }
 
+uint16_t gartic::Round::DifficultyToInteger(const Difficulty& difficulty) const
+{
+	switch (difficulty)
+	{
+	case Difficulty::Easy:
+		return 0;
+	case Difficulty::Medium:
+		return 1;
+	case Difficulty::Hard:
+		return 2;
+	}
+	throw std::exception("UNABLE TO CONVERT DIFFICULTY TO INT");
+}
+
+Round::Difficulty gartic::Round::IntegerToDifficulty(int difficulty) const
+{
+	switch (difficulty)
+	{
+	case 0:
+		return Difficulty::Easy;
+	case 1:
+		return Difficulty::Medium;
+	case 2:
+		return Difficulty::Hard;
+	}
+	throw std::exception("UNABLE TO CONVERT INT TO DIFFICULTY");
+}
+
 void Round::endRound() noexcept
 {
 	bool found;
@@ -115,6 +153,17 @@ uint16_t Round::getSecondsFromStart() const noexcept
 {
 	Time timeNow = std::chrono::steady_clock::now();
 	return std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime).count();
+}
+
+void gartic::Round::SetDifficulty(int difficultyAsInt)
+{
+	auto difficulty = IntegerToDifficulty(difficultyAsInt);
+	m_difficulty = difficulty;
+}
+
+uint16_t gartic::Round::GetDifficulty() const noexcept
+{
+	return DifficultyToInteger(m_difficulty);
 }
 
 void Round::showAllPlayers() const noexcept

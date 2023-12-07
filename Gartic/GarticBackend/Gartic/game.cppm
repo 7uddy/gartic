@@ -33,8 +33,10 @@ namespace gartic
 		void addPlayerToGame(Player&&);
 		void deletePlayerFromGameWithID(const uint16_t&);
 
-		void changeGameStatus() noexcept;
-		void changeDifficulty(const Round::Difficulty&) noexcept;
+		//void changeGameStatus() noexcept;
+		void changeDifficulty(int) noexcept;
+
+		uint16_t GetDifficulty() const noexcept;
 
 		void startAnotherRound() noexcept;
 		void showAllPlayers() const noexcept; //for test

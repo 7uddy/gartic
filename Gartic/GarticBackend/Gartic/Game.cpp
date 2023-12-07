@@ -3,6 +3,16 @@ module game;
 using namespace gartic;
 
 
+void gartic::Game::changeDifficulty(int difficultyIndex) noexcept
+{
+	m_round.SetDifficulty(difficultyIndex);
+}
+
+uint16_t gartic::Game::GetDifficulty() const noexcept
+{
+	return m_round.GetDifficulty();
+}
+
 void Game::startAnotherRound() noexcept
 {
 	m_round.startRound();

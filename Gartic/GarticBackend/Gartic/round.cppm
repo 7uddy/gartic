@@ -31,6 +31,9 @@ namespace gartic
 		std::string getWord(const uint16_t& id) const noexcept;
 
 		uint16_t getSecondsFromStart() const noexcept;
+		void SetDifficulty(int);
+		uint16_t GetDifficulty() const noexcept;
+
 		//FOR TEST
 		void showAllPlayers() const noexcept;
 
@@ -38,7 +41,8 @@ namespace gartic
 		void addPlayerGuessTime(const uint16_t& id);
 		void choosePainter() noexcept;
 		void updateScoreForPlayer(Player*, const uint16_t&) noexcept;
-
+		uint16_t DifficultyToInteger(const Difficulty&) const;
+		Difficulty IntegerToDifficulty(int) const;
 	private:
 		static Player* m_painter;
 		static const uint16_t k_numberOfRounds = 4;
