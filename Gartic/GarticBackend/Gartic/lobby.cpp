@@ -50,7 +50,7 @@ void gartic::Lobby::StartGame(gartic::Game& game)
 	m_lobbyStatus = Status::Launched;
 }
 
-void gartic::Lobby::EndGame(Game& game)
+void gartic::Lobby::CloseLobby(Game& game)
 {
 	m_lobbyStatus = Status::Terminated;
 	clearLobby();
@@ -63,9 +63,10 @@ bool gartic::Lobby::CheckLobbyCode(const std::string& code) const
 
 void gartic::Lobby::GenerateLobbyCode()
 {
+	const int ASCIIValueOfZ = 57;
 	for (int i = 0; i < k_lengthOfLobbyCode; i++)
 	{
-		m_lobbyCode.push_back(static_cast<char>(GetRandomDigit()));
+		m_lobbyCode.push_back(static_cast<char>(GetRandomDigit(ASCIIValueOfZ)));
 	}
 }
 

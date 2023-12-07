@@ -13,6 +13,7 @@ void Round::startRound() noexcept
 	choosePainter();
 	++m_miniRoundNumber;
 	//std::string word{ GetHiddenWord() };
+	//if(newRound) m_difficulty++;
 	m_startRoundTime = std::chrono::steady_clock::now();
 }
 

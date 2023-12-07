@@ -2,6 +2,7 @@ module game;
 
 using namespace gartic;
 
+
 void Game::startAnotherRound() noexcept
 {
 	m_round.startRound();
@@ -33,9 +34,16 @@ const std::vector<Player>& gartic::Game::getPlayers() const noexcept
 	return m_players;
 }
 
-void gartic::Game::AddMessageToChat(const std::string& message) noexcept
+void gartic::Game::AddMessageToChat(const uint16_t& id, const std::string& message) noexcept
 {
-	m_chat.emplace_back(message);
+	if (id == 0)
+	{
+		m_chat.emplace_back(std::make_pair(std::optional<uint16_t>(), message));
+	}
+	else
+	{
+		m_chat.emplace_back(std::make_pair(std::optional<uint16_t>(id), message));
+	}
 }
 
 void gartic::Game::ClearChat() noexcept
@@ -43,11 +51,19 @@ void gartic::Game::ClearChat() noexcept
 	m_chat.clear();
 }
 
-std::string gartic::Game::GetChat() const noexcept
+std::string gartic::Game::GetChat(const uint16_t& id) const noexcept
 {
 	std::string chat{};
 	for (auto& message : m_chat)
-		chat += message + '\n';
+	{
+		if (!message.first.has_value())
+		{
+			chat += message.second + '\n';
+			continue;
+		}
+		if(message.first.value()==id)
+			chat += message.second + '\n';
+	}
 	return chat;
 }
 

@@ -4,9 +4,11 @@ export module game;
 
 
 export import round;
-import <string>;
-import <iostream>;
-import <vector>;
+export import <string>;
+export import <iostream>;
+export import <vector>;
+export import <optional>;
+export import <cstdint>;
 
 namespace gartic
 {
@@ -35,20 +37,20 @@ namespace gartic
 		void changeDifficulty(const Round::Difficulty&) noexcept;
 
 		void startAnotherRound() noexcept;
-		void showAllPlayers() const noexcept;
+		void showAllPlayers() const noexcept; //for test
 		bool IsPlayerInGame(const Player& newPlayer) const noexcept;
 		 
 		//FOR GUI
 		uint16_t getTimer() const noexcept;
 		const std::vector<Player>& getPlayers() const noexcept;
-		void AddMessageToChat(const std::string&) noexcept;
+		void AddMessageToChat(const uint16_t&, const std::string&) noexcept;
 		void ClearChat() noexcept;
-		std::string GetChat() const noexcept;
+		std::string GetChat(const uint16_t&) const noexcept;
 	 private:
 		std::vector<Player> m_players;
 		uint16_t m_gameID;
 		Status m_gameState;
 		Round m_round;
-		std::vector<std::string> m_chat;
+		std::vector<std::pair<std::optional<uint16_t>, std::string>> m_chat;
 	};
 }

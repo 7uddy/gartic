@@ -34,12 +34,12 @@ namespace gartic
 		bool CheckLobbyCode(const std::string&) const;
 
 		void StartGame(Game& game);
-		void EndGame(Game& game);
+		void CloseLobby(Game& game);
 		//
 
 	private:
 		void GenerateLobbyCode();
-		int GetRandomDigit(int maxim=57) const;
+		int GetRandomDigit(int) const;
 		int ConvertLobbyStatusToInteger() const noexcept;
 
 		void clearLobby() noexcept;
