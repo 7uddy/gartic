@@ -39,15 +39,21 @@ const std::string& Lobby::getLobbyCode() const noexcept
 	return m_lobbyCode;
 }
 
-const Lobby::Status& gartic::Lobby::getStatusOfLobby() const noexcept
+int gartic::Lobby::getStatusOfLobby() const noexcept
 {
-	return m_lobbyStatus;
+	return ConvertLobbyStatusToInteger();
 }
 
 void gartic::Lobby::StartGame(gartic::Game& game)
 {
 	game.setPlayers(std::move(m_players));
 	m_lobbyStatus = Status::Launched;
+}
+
+void gartic::Lobby::EndGame(Game& game)
+{
+	m_lobbyStatus = Status::Terminated;
+	clearLobby();
 }
 
 bool gartic::Lobby::CheckLobbyCode(const std::string& code) const
@@ -63,12 +69,25 @@ void gartic::Lobby::GenerateLobbyCode()
 	}
 }
 
-int gartic::Lobby::GetRandomDigit(int maxim) const
+int Lobby::GetRandomDigit(int maxim) const
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<> distrib(48, maxim);
 	return distrib(gen);
+}
+
+int Lobby::ConvertLobbyStatusToInteger() const noexcept
+{
+	switch (m_lobbyStatus)
+	{
+	case (Status::WaitingForPlayers):
+		return 0;
+	case (Status::Launched):
+		return 1;
+	case (Status::Terminated):
+		return -1;
+	}
 }
 
 bool Lobby::isInLobby(const std::string& username) const

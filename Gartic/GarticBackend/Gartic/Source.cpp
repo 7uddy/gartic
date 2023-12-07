@@ -10,6 +10,7 @@ namespace sql = sqlite_orm;
 import game;
 import lobby;
 import player;
+using namespace gartic;
 
 Storage CreateDatabase() 
 {

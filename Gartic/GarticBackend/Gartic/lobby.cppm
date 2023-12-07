@@ -21,22 +21,28 @@ namespace gartic
 		};
 	public:
 		Lobby();
+
 		void addPlayer(Player&& player) noexcept;
 		void removePlayer(const std::string& username);
 		bool isInLobby(const std::string& username) const;
 
-		void clearLobby() noexcept;
-
+		//FOR GUI
 		uint16_t getNumberOfPlayers() const noexcept;
+		int getStatusOfLobby() const noexcept;
+
 		const std::string& getLobbyCode() const noexcept;
-		const Status& getStatusOfLobby() const noexcept;
+		bool CheckLobbyCode(const std::string&) const;
 
 		void StartGame(Game& game);
-		bool CheckLobbyCode(const std::string&) const;
+		void EndGame(Game& game);
+		//
 
 	private:
 		void GenerateLobbyCode();
 		int GetRandomDigit(int maxim=57) const;
+		int ConvertLobbyStatusToInteger() const noexcept;
+
+		void clearLobby() noexcept;
 
 	private:
 		static const char k_lengthOfLobbyCode = 4;

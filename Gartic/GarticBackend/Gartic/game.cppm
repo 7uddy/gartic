@@ -48,7 +48,6 @@ namespace gartic
 		std::vector<Player> m_players;
 		uint16_t m_gameID;
 		Status m_gameState;
-		Round::Difficulty m_difficulty;
 		Round m_round;
 		std::vector<std::string> m_chat;
 	};
