@@ -15,7 +15,7 @@ void Lobby::addPlayer(Player&& player) noexcept
 void Lobby::removePlayer(const std::string& username)
 {
 	for (auto it = m_players.begin(); it!=m_players.end();++it)
-		if (it->getUsername() == username)
+		if (it->GetUsername() == username)
 		{
 			m_players.erase(it);
 			return;
@@ -94,6 +94,6 @@ int Lobby::ConvertLobbyStatusToInteger() const noexcept
 bool Lobby::isInLobby(const std::string& username) const
 {
 	for (auto& player : m_players)
-		if (player.getUsername() == username) return true;
+		if (player.GetUsername() == username) return true;
 	return false;
 }

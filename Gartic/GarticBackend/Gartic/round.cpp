@@ -39,7 +39,7 @@ void Round::addPlayerGuessTime(const uint16_t& id)
 	auto seconds = std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime).count();
 	for (auto& player : *m_players)
 	{
-		if (player.getID() == id)
+		if (player.GetID() == id)
 		{
 			m_guessTimes.emplace_back(&player, seconds);
 			return;
@@ -53,7 +53,7 @@ void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) n
 	if (player == m_painter)
 	{
 		if (m_guessTimes.empty())
-			player->addToScore(-100);
+			player->AddToScore(-100);
 		else
 		{
 			float average = 0;
@@ -63,22 +63,22 @@ void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) n
 			}
 			average /= m_guessTimes.size();
 			auto score = (60 - average) * 100 / 60;
-			player->addToScore(score);
+			player->AddToScore(score);
 		}
 		return;
 	}
 	if(seconds==60)
 	{
-		player->addToScore(-50);
+		player->AddToScore(-50);
 		return;
 	}
 	if (seconds < 30)
 	{
-		player->addToScore(100);
+		player->AddToScore(100);
 		return;
 	}
 	auto score = (60 - seconds) * 100 / 30;
-	player->addToScore(score);
+	player->AddToScore(score);
 }
 
 uint16_t gartic::Round::DifficultyToInteger(const Difficulty& difficulty) const
@@ -143,7 +143,7 @@ bool Round::isWordCorrectAndAddUserGuessTime(const uint16_t& id, const std::stri
 
 std::string gartic::Round::getWord(const uint16_t& id) const noexcept
 {
-	if (id == m_painter->getID())
+	if (id == m_painter->GetID())
 		return m_hiddenWord;
 	else
 		return m_shownWord;
@@ -170,6 +170,6 @@ void Round::showAllPlayers() const noexcept
 {
 	for (auto& element : *m_players)
 	{
-		std::cout << element.getUsername() << " ";
+		std::cout << element.GetUsername() << " ";
 	}
 }

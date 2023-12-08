@@ -21,14 +21,14 @@ void Game::startAnotherRound() noexcept
 void gartic::Game::showAllPlayers() const noexcept
 {
 	for (auto& player : m_players)
-		std::cout << player.getUsername() << " ";
+		std::cout << player.GetUsername() << " ";
 }
 
 bool gartic::Game::IsPlayerInGame(const Player& newPlayer) const noexcept
 {
 	for (const auto& player : m_players)
 	{
-		if (player.getID() == newPlayer.getID())
+		if (player.GetID() == newPlayer.GetID())
 			return true;
 	}
 	return false;
@@ -95,7 +95,7 @@ void Game::addPlayerToGame(Player&& newPlayer)
 void gartic::Game::deletePlayerFromGameWithID(const uint16_t& id)
 {
 	for (auto it = m_players.begin(); it != m_players.end(); ++it)
-		if (it->getID() == id)
+		if (it->GetID() == id)
 		{
 			m_players.erase(it);
 			return;

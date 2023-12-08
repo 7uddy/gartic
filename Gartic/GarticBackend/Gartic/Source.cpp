@@ -114,7 +114,7 @@ void ServerRoutes(Storage& db, crow::SimpleApp& app)
 						{
 							if (std::to_string(logincredential.userID) == receivedUserID)
 							{
-								gartic::Player newPlayer(logincredential.username, logincredential.password);
+								gartic::Player newPlayer(logincredential.username, logincredential.password,logincredential.email,logincredential.userID);
 								lobby.addPlayer(std::move(newPlayer));
 								return crow::response(200);
 							}
