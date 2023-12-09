@@ -14,13 +14,13 @@ RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(loginButton, &QPushButton::clicked, controller, [controller]() {
-		controller->showPage("Login");
+		controller->ShowPage("Login");
 		});
 	connect(registerButton, &QPushButton::clicked, controller, [=]() {
-		if (controller->verifyRegister(username->text(),email->text(), password->text()))
+		if (controller->VerifyRegister(username->text(),email->text(), password->text()))
 		{
 			QMessageBox::information(controller, "Registration Success", "User registered successfully. You can now log in.");
-			controller->showPage("Login");
+			controller->ShowPage("Login");
 		}
 		else 
 		{

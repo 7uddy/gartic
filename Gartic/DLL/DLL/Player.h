@@ -1,13 +1,13 @@
 #pragma once
 #include <iostream>
-#include <string_view>
+#include <string>
 #include <regex>
 
 class __declspec(dllexport) Player
 {
 public:
 	Player() = default;
-	Player(const std::string& username, const std::string& password, const std::string& email);
+	Player(const std::string& username, const std::string& email, const std::string& password);
 	Player(const Player& player) = default;
 	Player(Player&& player) noexcept;
 	void SetUsername(const std::string& username);
@@ -20,6 +20,8 @@ public:
 	float GetScore();
 	Player& operator=(const Player& player) = default;
 	Player& operator=(Player&& player) noexcept;
+	bool VerifyLogin(const std::string& username, const std::string& password) const;
+	bool VerifyRegister(const std::string& username,const std::string& email, const std::string&password) const;
 	~Player();
 private:
 	std::string m_username;

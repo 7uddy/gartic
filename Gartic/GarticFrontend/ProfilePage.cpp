@@ -15,7 +15,7 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(returnButton, &QPushButton::clicked, controller, [controller]() {
-		controller->showPage("MainMenu");
+		controller->ShowPage("MainMenu");
 		});
 }
 

@@ -22,7 +22,7 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(startButton, &QPushButton::clicked, controller, [controller]() {
-		controller->showPage("Game"); // just testing
+		controller->ShowPage("Game"); // just testing
 		});
 }
 

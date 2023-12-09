@@ -13,10 +13,10 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(loginButton, &QPushButton::clicked, controller, [=]() {
-		if (controller->verifyLogin(username->text(), password->text())) 
+		if (controller->VerifyLogin(username->text(), password->text())) 
 		{
 			QMessageBox::information(controller, "Login Success", "Welcome back!You can now access the game.");
-			controller->showPage("MainMenu");
+			controller->ShowPage("MainMenu");
 		}
 		else 
 		{
@@ -24,7 +24,7 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 		}
 	});
 	connect(registerButton, &QPushButton::clicked, controller, [controller]() {
-		controller->showPage("Register");
+		controller->ShowPage("Register");
 		});
 }
 

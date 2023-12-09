@@ -13,11 +13,11 @@ SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
     PlaceElements();
 
     connect(returnButton, &QPushButton::clicked, controller, [controller]() {
-       controller->showPage("MainMenu");
+       controller->ShowPage("MainMenu");
    });
 
     connect(joinButton, &QPushButton::clicked, controller, [controller]() {
-        controller->showPage("Leaderboard");
+        controller->ShowPage("Leaderboard");
         });
 }
 

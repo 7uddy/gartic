@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::Show()
 {
-    pageController->setStartupPage("Login");
+    pageController->SetStartupPage("Login");
     QMainWindow::show();
 }
 
@@ -44,12 +44,12 @@ void MainWindow::SetBackground()
 
 void MainWindow::AddPages()
 {
-    pageController->addPage(loginPage, "Login");
-    pageController->addPage(registerPage, "Register");
-    pageController->addPage(mainMenuPage, "MainMenu");
-    pageController->addPage(profilePage, "Profile");
-    pageController->addPage(waitingRoomPage, "WaitingRoom");
-    pageController->addPage(selectRoomPage, "SelectRoom");
-    pageController->addPage(gamePage, "Game");
-    pageController->addPage(leaderboardPage, "Leaderboard");
+    pageController->AddPage(loginPage, "Login");
+    pageController->AddPage(registerPage, "Register");
+    pageController->AddPage(mainMenuPage, "MainMenu");
+    pageController->AddPage(profilePage, "Profile");
+    pageController->AddPage(waitingRoomPage, "WaitingRoom");
+    pageController->AddPage(selectRoomPage, "SelectRoom");
+    pageController->AddPage(gamePage, "Game");
+    pageController->AddPage(leaderboardPage, "Leaderboard");
 }

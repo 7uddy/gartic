@@ -5,13 +5,13 @@ PageController::PageController(QWidget* parent):QStackedWidget(parent)
 	/*empty*/
 }
 
-void PageController::addPage(QWidget* page, const QString& name)
+void PageController::AddPage(QWidget* page, const QString& name)
 {
 	pagesMap[name] = page;
 	QStackedWidget::addWidget(page);
 }
 
-void PageController::showPage(const QString& name)
+void PageController::ShowPage(const QString& name)
 {
 	if (pagesMap.contains(name))
 	{
@@ -20,30 +20,22 @@ void PageController::showPage(const QString& name)
 	}
 }
 
-void PageController::setStartupPage(const QString& name)
+void PageController::SetStartupPage(const QString& name)
 {
 	if (pagesMap.contains(name))
 	{
-		showPage(name);
+		ShowPage(name);
 	}
 }
 
-bool PageController::verifyLogin(const QString& enteredUsername, const QString& enteredPassword)
+bool PageController::VerifyLogin(const QString& enteredUsername, const QString& enteredPassword)
 {
-	QString expectedPassword = "password"; //test
-	QString expectedUsername = "user"; //test
-	if (enteredUsername == expectedUsername && enteredPassword == expectedPassword)
-	{
-		return true;
-	}
-	return false;
+	//return player.VerifyLogin(enteredUsername.toStdString(), enteredPassword.toStdString());
+	return true;
 }
 
-bool PageController::verifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword)
+bool PageController::VerifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword)
 {
-	if ((enteredUsername == "user") || (enteredEmail == "user@yahoo.com") || (enteredPassword == "password")) // test
-	{
-		return false;
-	}
+	//return player.VerifyRegister(enteredUsername.toStdString(), enteredEmail.toStdString(), enteredPassword.toStdString());
 	return true;
 }

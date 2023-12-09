@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(const std::string& username, const std::string& password, const std::string& email) 
+Player::Player(const std::string& username, const std::string& email, const std::string& password)
 	:m_username(username), m_password(password), m_email(email)
 {
 	m_score = 0;
@@ -61,6 +61,22 @@ Player& Player::operator=(Player&& player) noexcept
 		std::exchange(m_score, player.m_score);
 	}
 	return *this;
+}
+
+bool Player::VerifyLogin(const std::string& username, const std::string& password) const
+{
+	std::regex usernamePattern("^[a-zA-Z0-9_]+$");
+	std::regex passwordPattern("^(?=.*[a-z])(?=.*[A-Z]).+$");
+	return std::regex_match(username, usernamePattern) && std::regex_match(password, passwordPattern);
+}
+
+bool Player::VerifyRegister(const std::string& username, const std::string& email, const std::string& password) const
+{
+	std::regex usernamePattern("^[a-zA-Z0-9_]+$");
+	std::regex passwordPattern("^(?=.*[a-z])(?=.*[A-Z]).+$");
+	std::regex emailPattern(R"(\b[A-Za-z0-9.]+@[A-Za-z0-9]+\.[A-Z|a-z]{2,}\b)");
+	return std::regex_match(username, usernamePattern) && std::regex_match(email, emailPattern)
+		&& std::regex_match(password, passwordPattern);
 }
 
 Player::~Player()

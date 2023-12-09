@@ -13,13 +13,13 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(createButton, &QPushButton::clicked, controller, [controller]() {
-		controller->showPage("WaitingRoom");
+		controller->ShowPage("WaitingRoom");
 		});
 	connect(joinButton, &QPushButton::clicked, controller, [controller]() {
-		controller->showPage("SelectRoom");
+		controller->ShowPage("SelectRoom");
 		});
 	connect(myProfile, &QPushButton::clicked, controller, [controller]() {
-		controller->showPage("Profile");
+		controller->ShowPage("Profile");
 		});
 }
 
