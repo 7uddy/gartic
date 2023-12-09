@@ -20,7 +20,7 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(sendButton, &QPushButton::clicked, this, &GamePage::SendMessage);
-	connect(board, &BoardWidget::mouseDraw, this, &GamePage::updateBoard);
+	connect(board, &BoardWidget::MouseDraw, this, &GamePage::UpdateBoard);
 }
 
 void GamePage::PlaceElements()
@@ -86,13 +86,12 @@ void GamePage::SetSize()
 	chatHistory->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
-void GamePage::updateBoard(QMouseEvent* event)
+void GamePage::UpdateBoard(QMouseEvent* event)
 {
 	QPoint localPos = event->localPos().toPoint();
 	int col = localPos.x() / 10;
 	int row = localPos.y() / 10;
-
-	if ((col >= 0 && col < 80) && (row >= 0 && row < 80))
+	if ((col >= 0 && col < board->GetNumCols()) && (row >= 0 && row < board->GetNumRows()))
 	{
 		board->drawingMatrix[row][col] = 1;
 		board->update();

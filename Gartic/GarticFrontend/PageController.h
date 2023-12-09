@@ -15,6 +15,6 @@ public:
 	bool VerifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword);
 private:
 	QMap<QString, QWidget*> pagesMap;
-	//Player player;
+	Player player;
 };
 

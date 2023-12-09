@@ -8,8 +8,11 @@ class BoardWidget : public QWidget
 
 public:
     BoardWidget(QWidget* parent = nullptr);
+    const int GetNumRows();
+    const int GetNumCols();
+    ~BoardWidget();
 signals:
-    void mouseDraw(QMouseEvent* event);
+    void MouseDraw(QMouseEvent* event);
 protected:
     virtual void paintEvent(QPaintEvent* event) override;
     virtual void mousePressEvent(QMouseEvent* event) override;

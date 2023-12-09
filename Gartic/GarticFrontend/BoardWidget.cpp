@@ -5,6 +5,21 @@ BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), drawingMatrix(numRo
 	setFixedSize(numCols * 10, numRows * 10);
 }
 
+const int BoardWidget::GetNumRows()
+{
+	return numRows;
+}
+
+const int BoardWidget::GetNumCols()
+{
+	return numCols;
+}
+
+BoardWidget::~BoardWidget()
+{
+	/*empty*/
+}
+
 void BoardWidget::paintEvent(QPaintEvent* event)
 {
 	Q_UNUSED(event);
@@ -36,10 +51,10 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 
 void BoardWidget::mousePressEvent(QMouseEvent* event)
 {
-	emit mouseDraw(event);
+	emit MouseDraw(event);
 }
 
 void BoardWidget::mouseMoveEvent(QMouseEvent* event)
 {
-	emit mouseDraw(event);
+	emit MouseDraw(event);
 }

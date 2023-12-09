@@ -140,6 +140,11 @@
   <ItemGroup>
     <None Include="style.css" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DLL\DLL\DLL.vcxproj">
+      <Project>{b48efe23-0466-4a8c-8627-d0002bbd39b9}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

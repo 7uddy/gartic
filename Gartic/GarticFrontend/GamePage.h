@@ -13,7 +13,7 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
-	void updateBoard(QMouseEvent* event);
+	void UpdateBoard(QMouseEvent* event);
 	~GamePage();
 private slots:
 	void SendMessage();
