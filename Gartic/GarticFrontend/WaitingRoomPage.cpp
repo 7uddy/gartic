@@ -11,7 +11,11 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	startButton = new QPushButton("Start");
 	playersNumber = new QLabel("0/4");
 
-	
+	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
+		currentDifficulty = static_cast<Difficulty>((difficultyToInt(currentDifficulty) + 1) % 4);
+		difficultyButton->setText(difficultyToQString(currentDifficulty));
+		});
+
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -51,6 +55,32 @@ void WaitingRoomPage::SetSize()
 {
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	startButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+}
+
+QString WaitingRoomPage::difficultyToQString(Difficulty difficulty) {
+	if (difficulty == Difficulty::Easy)
+		return "Easy";
+	if (difficulty == Difficulty::Medium)
+		return "Medium";
+	if (difficulty == Difficulty::Hard)
+		return "Hard";
+	if (difficulty == Difficulty::Ascending)
+		return "Ascending";
+
+	throw std::exception("Unable to convert difficulty to QString");
+}
+
+int WaitingRoomPage::difficultyToInt(Difficulty difficulty) {
+	if (difficulty == Difficulty::Easy)
+		return 0;
+	if (difficulty == Difficulty::Medium)
+		return 1;
+	if (difficulty == Difficulty::Hard)
+		return 2;
+	if (difficulty == Difficulty::Ascending)
+		return 3;
+
+	throw std::exception("Unable to convert difficulty to int");
 }
 
 WaitingRoomPage::~WaitingRoomPage()

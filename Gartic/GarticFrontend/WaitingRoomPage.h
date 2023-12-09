@@ -6,13 +6,23 @@ class WaitingRoomPage : public QWidget
 {
 	Q_OBJECT
 public:
+
+	enum class Difficulty : uint8_t
+	{
+		Easy,
+		Medium,
+		Hard,
+		Ascending
+	};
+
 	WaitingRoomPage(PageController* controller, QWidget* parent = nullptr);
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
 	void OnPlayerJoin(const QString& playerName);
 	void UpdateMainPaddingSize();
-
+	int difficultyToInt(Difficulty difficulty);
+	QString difficultyToQString(Difficulty difficulty);
 	~WaitingRoomPage();
 private:
 	QVBoxLayout* layout;
@@ -27,6 +37,7 @@ private:
 
 	QVector<QWidget*> profilePaddings;
 	QVector<QHBoxLayout*> profileLayouts;
+	Difficulty currentDifficulty;
 
 
 };
