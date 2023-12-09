@@ -10,12 +10,24 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
+	void OnPlayerJoin(const QString& playerName);
+	void UpdateMainPaddingSize();
+
 	~WaitingRoomPage();
 private:
-	QPushButton* startButton, * easyButton, * mediumButton, * hardButton;
+	QVBoxLayout* layout;
+	QVBoxLayout* profilesLayout;
 	QLabel* imageLabel;
-	QHBoxLayout* topLayout, * infoGame, * buttonsLayout;
-	QVBoxLayout* layout, * infoPlayers, * roomInfo;
-	QTextEdit* listPlayers, * status, * playersNumber, * roomCode, * difficulty;
+	QPushButton* returnButton;
+	QPushButton* startButton;
+
+	QWidget* mainPadding;
+	QPushButton* difficultyButton;
+	QLabel* playersNumber;
+
+	QVector<QWidget*> profilePaddings;
+	QVector<QHBoxLayout*> profileLayouts;
+
+
 };
 
