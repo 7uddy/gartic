@@ -19,11 +19,14 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
+
 	void OnPlayerJoin(const QString& playerName);
 	void UpdateMainPaddingSize();
+
 	int difficultyToInt(Difficulty difficulty);
 	QString difficultyToQString(Difficulty difficulty);
 	~WaitingRoomPage();
+
 private:
 	QVBoxLayout* layout;
 	QVBoxLayout* profilesLayout;
@@ -37,6 +40,7 @@ private:
 
 	QVector<QWidget*> profilePaddings;
 	QVector<QHBoxLayout*> profileLayouts;
+
 	Difficulty currentDifficulty;
 
 
