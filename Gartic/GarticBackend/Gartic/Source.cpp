@@ -15,15 +15,15 @@ using namespace gartic;
 Storage CreateDatabase() 
 {
 	const std::string db_file = "logincredentials.sqlite";
-	Storage db = createStorage(db_file);
+	Storage db = CreateStorage(db_file);
 	db.sync_schema();
 	auto initLoginCredentialCount = db.count<LoginCredential>();
 	if (initLoginCredentialCount == 0)
-		getLoginCredentials(db);
+		GetLoginCredentials(db);
 
 	auto initWords = db.count<Word>();
 	if (initWords == 0)
-		getWords(db);
+		GetWords(db);
 
 	auto loginCredentialCount = db.count<LoginCredential>();
 	std::cout << "## There are currently " << loginCredentialCount << " items in the database.##\n";

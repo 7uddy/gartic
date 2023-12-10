@@ -1,5 +1,6 @@
 #include "Database.h"
 #include <fstream>
+#include <random>
 
 LoginCredential::LoginCredential(std::string_view argUsername, std::string_view argPassword, std::string_view argEmail)
 	: username(argUsername), password(argPassword), email(argEmail)
@@ -21,7 +22,7 @@ GamesScores::GamesScores(const int& argUserID, const float& argFinalScore)
 	//Empty
 }
 
-void getWords(Storage& storage)
+void GetWords(Storage& storage) noexcept
 {
 	std::ifstream fin{ "words.txt" };
 	std::string word; int difficulty;
@@ -32,7 +33,51 @@ void getWords(Storage& storage)
 	fin.close();
 }
 
-void getLoginCredentials(Storage& storage)
+int GetRandomDigit(const int& start,const int& maxim) noexcept
+{
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> distrib(start, maxim);
+	return distrib(gen);
+
+}
+
+int GetNextID(Storage& storage) noexcept
+{
+	int lastID=-1;
+	for (const auto& logincredential : storage.iterate<LoginCredential>())
+	{
+		lastID = logincredential.userID;
+	}
+	return lastID;
+}
+
+std::string RequestWord(Storage& storage, std::string_view difficulty) noexcept
+{
+	int firstID = -1, lastID = -1, randomID = -1;
+
+	for (const auto& word : storage.iterate<Word>())
+	{
+		if (firstID == -1 && std::to_string(word.difficulty) == difficulty)
+		{
+			firstID = word.wordID;
+		}
+		if (std::to_string(word.difficulty) == difficulty)
+		{
+			lastID = word.wordID;
+		}
+	}
+	randomID = GetRandomDigit(firstID, lastID);
+	for (const auto& word : storage.iterate<Word>())
+	{
+		if (word.wordID == randomID)
+			return word.word;
+	}
+	//TODO: Mark the word as used.
+}
+
+void GetLoginCredentials(Storage& storage) noexcept
 {
 	std::ifstream fin{ "credentials.txt" };
 	std::string username;

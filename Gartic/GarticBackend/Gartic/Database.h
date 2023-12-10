@@ -50,7 +50,7 @@ public:
 
 };
 
-inline auto createStorage(const std::string& filename)
+inline auto CreateStorage(const std::string& filename)
 {
 	return sql::make_storage(
 		filename,
@@ -78,9 +78,13 @@ inline auto createStorage(const std::string& filename)
 	);
 }
 
-using Storage = decltype(createStorage(""));
-void getLoginCredentials(Storage& storage);
-void getWords(Storage& storage);
+using Storage = decltype(CreateStorage(""));
+void GetLoginCredentials(Storage& storage) noexcept;
+void GetWords(Storage& storage) noexcept;
+int GetNextID(Storage& storage) noexcept;
+std::string RequestWord(Storage& storage,std::string_view difficulty) noexcept;
+int GetRandomDigit(const int& start, const int& maxim) noexcept;
+
 
 
 class AddUserHandler {
