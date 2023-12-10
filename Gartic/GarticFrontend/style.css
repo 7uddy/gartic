@@ -1,4 +1,6 @@
 QPushButton, QTextEdit {
+    font-family: 'Helvetica', sans-serif;
+
     border-radius: 10px;
     background-color: #F2D300;
     color: black;
@@ -39,7 +41,7 @@ QPushButton[accessibleName="returnButton"] {
     height: 50px;
 }
 
-.QWidget[accessibleName="leaderboardPadding"] {
+.QWidget[accessibleName="mainPadding"] {
     border: 1px;
     border-radius: 20px;
     background-color: #F2D300;
@@ -48,5 +50,37 @@ QPushButton[accessibleName="returnButton"] {
 .QWidget[accessibleName="profilePadding"] {
     border: 1px;
     border-radius: 20px;
-    background-color: #646464;
+    background-color: #d9bd00;
+}
+
+QLabel {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 20pt;
+}
+
+QLabel[accessibleName="statusLabel"] {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 20pt;
+    color: white;
+}
+
+QPushButton[accessibleName="difficultyButton"] {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 14pt;
+    border-radius: 10px;
+    background-color: #B2AB99;
+    color: black;
+    font-weight: normal;
+}
+
+QPushButton[accessibleName="startButton"] {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 20pt;
+    border: none;
+    border-radius: 19px;
+    width: 170px;
+    height: 50px;
+    background-color: #63BAAB;
+    color: black;
+    font-weight: bold;
 }

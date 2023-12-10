@@ -22,6 +22,9 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 		controller->ShowPage("Game");
 		});
 
+	connect(returnButton, &QPushButton::clicked, controller, [controller]() {
+		controller->ShowPage("MainMenu");
+		});
 
 	SetSize();
 	StyleElements();
@@ -47,13 +50,14 @@ void WaitingRoomPage::PlaceElements()
 
 	QHBoxLayout* statusLayout = new QHBoxLayout;
 	QLabel* statusText = new QLabel("Waiting..");
+	statusText->setAccessibleName("statusLabel");
 	statusLayout->addWidget(statusText);
 	statusLayout->addWidget(playersNumber, 0, Qt::AlignRight);
 
 
 	QGridLayout* mainPaddingLayout = new QGridLayout;
 	QLabel* roomCode = new QLabel("Room Code");
-	QLabel* code = new QLabel("AB345");
+	QLabel* code = new QLabel("AB345"); //to be changed
 	QLabel* difficulty = new QLabel("Difficulty");
 
 	mainPaddingLayout->addWidget(roomCode, 0, 0, Qt::AlignCenter);
@@ -71,7 +75,12 @@ void WaitingRoomPage::PlaceElements()
 	roomSettingLayout->addLayout(mainPaddingLayout);
 	roomSettingLayout->addWidget(startButton, 0, Qt::AlignCenter | Qt::AlignBottom);
 
+	QPushButton* testButton = new QPushButton("Test me");
+	middleLayout->addWidget(testButton, 0, 0);
 
+	connect(testButton, &QPushButton::clicked, this, [=]() {
+		OnPlayerJoin("Caramel"); //for testing
+		});
 
 	middleLayout->addLayout(statusLayout, 0, 1);
 	middleLayout->addLayout(profilesLayout, 1, 0);
@@ -86,6 +95,12 @@ void WaitingRoomPage::PlaceElements()
 
 void WaitingRoomPage::StyleElements()
 {
+	returnButton->setAccessibleName("returnButton");
+	difficultyButton->setAccessibleName("difficultyButton");
+	startButton->setAccessibleName("startButton");
+	mainPadding->setAccessibleName("mainPadding");
+	playersNumber->setAccessibleName("statusLabel");
+
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
@@ -94,8 +109,53 @@ void WaitingRoomPage::StyleElements()
 
 void WaitingRoomPage::SetSize()
 {
+	mainPadding->setFixedSize(600, 300);
+	difficultyButton->setFixedSize(90, 30);
+	profilesLayout->setSpacing(2);
+
+
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	startButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+}
+
+void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
+{
+	QWidget* newProfilePadding = new QWidget;
+	newProfilePadding->setAccessibleName("profilePadding");
+	newProfilePadding->setFixedSize(300, 60);
+
+	profilesLayout->addWidget(newProfilePadding);
+
+	QHBoxLayout* newProfileLayout = new QHBoxLayout(newProfilePadding);
+
+	QLabel* newProfileImage = new QLabel;
+	newProfileImage->setPixmap(QPixmap("Images/[PNG] App_icon.png"));
+	newProfileImage->setFixedSize(40, 40);
+	newProfileImage->setScaledContents(true);
+
+	QLabel* newProfileName = new QLabel;
+	newProfileName->setText(playerName);
+
+	newProfileLayout->addWidget(newProfileImage, Qt::AlignLeft);
+	newProfileLayout->addWidget(newProfileName);
+	newProfileLayout->setAlignment(Qt::AlignCenter);
+
+	newProfilePadding->setVisible(true);
+	newProfileImage->setVisible(true);
+	newProfileName->setVisible(true);
+
+	profilePaddings.append(newProfilePadding);
+	profileLayouts.append(newProfileLayout);
+	// profileNames.append(newProfileName);
+
+	// UpdateMainPaddingSize();
+
+	playersNumber->setText(QString::number(profilePaddings.size()) + "/4");
+}
+
+void WaitingRoomPage::UpdateMainPaddingSize()
+{
+	/*Empty*/
 }
 
 QString WaitingRoomPage::difficultyToQString(Difficulty difficulty) {
@@ -126,6 +186,8 @@ int WaitingRoomPage::difficultyToInt(Difficulty difficulty) {
 
 WaitingRoomPage::~WaitingRoomPage()
 {
-	
+	delete layout, profilesLayout, imageLabel, returnButton, startButton,
+		mainPadding, difficultyButton, playersNumber,
+		profilePaddings, profileLayouts;
 }
 

@@ -31,6 +31,9 @@ LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 		});
 	//FOR TESTING
 
+	connect(returnButton, &QPushButton::clicked, controller, [controller]() {
+		controller->ShowPage("MainMenu");
+		});
 
 	SetSize();
 	StyleElements();
@@ -72,7 +75,7 @@ void LeaderboardPage::PlaceElements()
 void LeaderboardPage::StyleElements()
 {
 	returnButton->setAccessibleName("returnButton");
-	boardPadding->setAccessibleName("leaderboardPadding");
+	boardPadding->setAccessibleName("mainPadding");
 
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);

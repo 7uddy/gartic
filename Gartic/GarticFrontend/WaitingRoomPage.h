@@ -21,7 +21,7 @@ public:
 	void SetSize();
 
 	void OnPlayerJoin(const QString& playerName);
-	void UpdateMainPaddingSize();
+	void UpdateMainPaddingSize(); //to be discussed
 
 	int difficultyToInt(Difficulty difficulty);
 	QString difficultyToQString(Difficulty difficulty);
@@ -40,6 +40,7 @@ private:
 
 	QVector<QWidget*> profilePaddings;
 	QVector<QHBoxLayout*> profileLayouts;
+	//QVector<QLabel*> profileNames;
 
 	Difficulty currentDifficulty;
 
