@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\MC\HttpApp\HTTPServer\HTTPServer\utils.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game.cppm" />
@@ -157,6 +156,7 @@
     <ClCompile Include="round.cpp" />
     <ClCompile Include="round.cppm" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="utils.cpp" />
     <ClCompile Include="utils.cppm" />
   </ItemGroup>
   <ItemGroup>

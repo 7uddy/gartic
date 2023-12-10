@@ -1,6 +1,5 @@
 module utils;
 
-// See https://stackoverflow.com/a/57346888/12388382
 std::vector<std::string> split(const std::string& str, const std::string& delim)
 {
     std::vector<std::string> result;
