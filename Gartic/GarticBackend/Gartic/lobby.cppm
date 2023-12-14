@@ -1,11 +1,13 @@
 module;
 export module lobby;
 
-import game;
-import <cstdint>;
-import <string>;
-import <vector>;
-import <iostream>;
+export import game;
+
+//import <iostream>;
+//import <string>;
+//import <cstdint>;
+//import <unordered_map>;
+//import <memory>;
 import <random>;
 
 namespace gartic
@@ -22,32 +24,31 @@ namespace gartic
 	public:
 		Lobby();
 
-		void addPlayer(Player&& player) noexcept;
-		void removePlayer(const std::string& username);
-		bool isInLobby(const std::string& username) const;
+		void AddPlayer(std::unique_ptr<Player>&);
+		void RemovePlayer(const std::string& username);
+		bool IsInLobby(const std::string& username) const;
 
 		//FOR GUI
-		uint16_t getNumberOfPlayers() const noexcept;
-		int getStatusOfLobby() const noexcept;
+		uint16_t GetNumberOfPlayers() const noexcept;
+		int GetStatusOfLobby() const noexcept;
 
-		const std::string& getLobbyCode() const noexcept;
+		const std::string& GetLobbyCode() const noexcept;
 		bool CheckLobbyCode(const std::string&) const;
 
-		void StartGame(Game& game);
-		void CloseLobby(Game& game);
-		//
+		//FOR TEST
+		void PrintPlayers() const noexcept;
+		void MovePlayersToGame(Game& game);
 
 	private:
-		void GenerateLobbyCode();
-		int GetRandomDigit(int) const;
-		int ConvertLobbyStatusToInteger() const noexcept;
-
-		void clearLobby() noexcept;
+		void GenerateLobbyCode() noexcept;
+		int GetRandomDigit(const std::pair<int, int>&) const;
+		int ConvertStatusToInteger(const Status&) const noexcept;
+		void ClearLobby() noexcept;
 
 	private:
-		static const char k_lengthOfLobbyCode = 4;
+		static const char k_lengthOfLobbyCode = 5;
 	private:
-		std::vector<Player> m_players;
+		std::unordered_map<std::string, std::unique_ptr<Player>> m_players;
 		std::string m_lobbyCode;
 		Status m_lobbyStatus;
 	};

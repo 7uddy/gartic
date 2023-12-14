@@ -2,103 +2,99 @@ module game;
 
 using namespace gartic;
 
-
-void gartic::Game::changeDifficulty(int difficultyIndex) noexcept
-{
-	m_round.SetDifficulty(difficultyIndex);
-}
-
-uint16_t gartic::Game::GetDifficulty() const noexcept
-{
-	return m_round.GetDifficulty();
-}
-
-void Game::startAnotherRound() noexcept
-{
-	m_round.startRound();
-}
-
-void gartic::Game::showAllPlayers() const noexcept
-{
-	for (auto& player : m_players)
-		std::cout << player.GetUsername() << " ";
-}
-
-bool gartic::Game::IsPlayerInGame(const Player& newPlayer) const noexcept
-{
-	for (const auto& player : m_players)
-	{
-		if (player.GetID() == newPlayer.GetID())
-			return true;
-	}
-	return false;
-}
-
-uint16_t gartic::Game::getTimer() const noexcept
-{
-	return m_round.getSecondsFromStart();
-}
-
-const std::vector<Player>& gartic::Game::getPlayers() const noexcept
-{
-	return m_players;
-}
-
-void gartic::Game::AddMessageToChat(const uint16_t& id, const std::string& message) noexcept
-{
-	if (id == 0)
-	{
-		m_chat.emplace_back(std::make_pair(std::optional<uint16_t>(), message));
-	}
-	else
-	{
-		m_chat.emplace_back(std::make_pair(std::optional<uint16_t>(id), message));
-	}
-}
-
-void gartic::Game::ClearChat() noexcept
-{
-	m_chat.clear();
-}
-
-std::string gartic::Game::GetChat(const uint16_t& id) const noexcept
-{
-	std::string chat{};
-	for (auto& message : m_chat)
-	{
-		if (!message.first.has_value())
-		{
-			chat += message.second + '\n';
-			continue;
-		}
-		if(message.first.value()==id)
-			chat += message.second + '\n';
-	}
-	return chat;
-}
-
-const uint16_t& gartic::Game::getGameID() const noexcept
+const std::string& Game::GetGameID() const noexcept
 {
 	return m_gameID;
 }
 
-void Game::setPlayers(std::vector<Player>&& players) noexcept
+void Game::StartAnotherRound() noexcept
 {
-	m_players = std::move(players);
+	m_round.StartRound();
 }
 
-void Game::addPlayerToGame(Player&& newPlayer)
+void Game::AddPlayerToGame(std::unique_ptr<Player> player)
 {
-	m_players.emplace_back(std::move(newPlayer));
+	m_players.emplace(std::make_pair(player.get()->GetUsername(), std::move(player)));
 }
 
-void gartic::Game::deletePlayerFromGameWithID(const uint16_t& id)
+bool Game::IsPlayerInGame(std::string_view username) const noexcept
 {
-	for (auto it = m_players.begin(); it != m_players.end(); ++it)
-		if (it->GetID() == id)
-		{
-			m_players.erase(it);
-			return;
-		}
-	throw std::exception("DELETE ERROR: ID NOT FOUND");
+	return m_players.contains(std::string(username));
+}
+
+uint16_t Game::GetTimer() const noexcept
+{
+	return m_round.GetSecondsFromStart();
+}
+
+void Game::AddMessageToChat(std::string_view username, std::string_view message) noexcept
+{
+	if (message.find(' ') == message.npos)
+	{
+		//if(IsHiddenWord(message))
+		// {
+		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), message));
+		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), "FELICITARI! AI GHICIT CUVANTUL));
+		// }
+		//else
+		// {
+		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), message));
+		// }
+		//return;
+	}
+	//m_chat.emplace_back(std::make_pair(std::optional<std::string>(), message));
+}
+
+void Game::ClearChat() noexcept
+{
+	m_chat.clear();
+}
+
+std::vector<std::string> Game::GetChat(std::string_view user) const noexcept
+{
+	std::vector<std::string> chat;
+	std::string username(user);
+	for (const auto& message : m_chat)
+	{
+		if (!message.first.has_value())
+			chat.emplace_back(message.first.value() + message.second);
+		else
+			if(message.first.value()==username)
+				chat.emplace_back(message.first.value() + message.second);
+	}
+	return chat;
+}
+
+void Game::RemovePlayer(std::string_view username)
+{
+	if (std::string usernameString(username); !m_players.contains(usernameString))
+		throw std::exception("UNABLE TO DELETE PLAYER FROM GAME: DOESN'T EXIST");
+	else
+		m_players.erase(usernameString);
+}
+
+void Game::ChangeDifficulty(int difficulty) noexcept
+{
+	m_round.SetDifficulty(difficulty);
+}
+
+uint16_t Game::GetDifficulty() const noexcept
+{
+	return m_round.GetDifficulty();
+}
+
+std::vector<std::shared_ptr<Player>> Game::GetPlayers() const noexcept
+{
+	std::vector<std::shared_ptr<Player>> players;
+	for (const auto& play : m_players)
+		players.push_back(play.second);
+	return players;
+}
+
+void Game::ShowAllPlayers() const noexcept
+{
+	for (const auto& player : m_players)
+	{
+		std::cout << player.first << "\n";
+	}
 }

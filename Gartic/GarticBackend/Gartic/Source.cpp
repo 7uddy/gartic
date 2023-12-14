@@ -7,9 +7,7 @@ namespace sql = sqlite_orm;
 
 
 #include "Database.h"
-//import game;
-//import lobby;
-import player;
+import lobby;
 using namespace gartic;
 
 Storage CreateDatabase() 

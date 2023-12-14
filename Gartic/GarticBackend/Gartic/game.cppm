@@ -2,13 +2,17 @@ module;
 
 export module game;
 
+//import <array>;
 
 export import round;
-export import <string>;
-export import <iostream>;
-export import <vector>;
-export import <optional>;
-export import <cstdint>;
+
+//import <iostream>;
+//import <string>;
+//import <string_view>;
+//import <optional>;
+//export import <memory>;
+//import <cstdint>;
+//import <unordered_map>;
 
 namespace gartic
 {
@@ -23,36 +27,43 @@ namespace gartic
 			Finished
 		};
 
+		static const size_t kNumberOfLines{ 80 };
+		static const size_t kNumberOfColumns{ 80 };
+
 		/*-------Game variables related functions-------*/
 		Game() = default;
 
 
-		const uint16_t& getGameID() const noexcept;
+		void StartAnotherRound() noexcept;
 
-		void setPlayers(std::vector<Player>&&) noexcept;
-		void addPlayerToGame(Player&&);
-		void deletePlayerFromGameWithID(const uint16_t&);
+		void AddPlayerToGame(std::unique_ptr<Player>);
+		void RemovePlayer(std::string_view);
 
-		//void changeGameStatus() noexcept;
-		void changeDifficulty(int) noexcept;
+		void ChangeDifficulty(int) noexcept;
 
-		uint16_t GetDifficulty() const noexcept;
+		//For Test
+		void ShowAllPlayers() const noexcept; //for test
+		bool IsPlayerInGame(std::string_view) const noexcept;
 
-		void startAnotherRound() noexcept;
-		void showAllPlayers() const noexcept; //for test
-		bool IsPlayerInGame(const Player& newPlayer) const noexcept;
-		 
 		//FOR GUI
-		uint16_t getTimer() const noexcept;
-		const std::vector<Player>& getPlayers() const noexcept;
-		void AddMessageToChat(const uint16_t&, const std::string&) noexcept;
+		const std::string& GetGameID() const noexcept;
+		uint16_t GetTimer() const noexcept;
+		uint16_t GetDifficulty() const noexcept;
+		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
+		std::vector<std::string> GetChat(std::string_view) const noexcept;
+		void AddMessageToChat(std::string_view, std::string_view) noexcept;
+		//
+
 		void ClearChat() noexcept;
-		std::string GetChat(const uint16_t&) const noexcept;
-	 private:
-		std::vector<Player> m_players;
-		uint16_t m_gameID;
+
+	private:
+		static const size_t kSize{ kNumberOfColumns * kNumberOfLines };
+	private:
+		std::unordered_map<std::string, std::shared_ptr<Player>> m_players;
+		std::string m_gameID;
 		Status m_gameState;
 		Round m_round;
-		std::vector<std::pair<std::optional<uint16_t>, std::string>> m_chat;
+		std::vector<std::pair<std::optional<std::string>, std::string>> m_chat;
+		//std::array<uint16_t, kSize> m_board;
 	};
 }

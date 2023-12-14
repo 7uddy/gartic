@@ -2,98 +2,127 @@ module lobby;
 
 using namespace gartic;
 
-gartic::Lobby::Lobby() : m_lobbyStatus{Status::WaitingForPlayers}, m_lobbyCode{}
+Lobby::Lobby() : m_lobbyStatus{ Status::WaitingForPlayers }
 {
 	GenerateLobbyCode();
 }
 
-void Lobby::addPlayer(Player&& player) noexcept
+void Lobby::AddPlayer(std::unique_ptr<Player>& player)
 {
-	m_players.emplace_back(std::move(player));
+	if(IsInLobby(player.get()->GetUsername()))
+		throw std::exception("ADD ERROR: PLAYER ALREADY IN LOBBY");
+	m_players.emplace(std::make_pair(player.get()->GetUsername(), std::move(player)));
 }
 
-void Lobby::removePlayer(const std::string& username)
+void Lobby::RemovePlayer(const std::string& username)
 {
-	for (auto it = m_players.begin(); it!=m_players.end();++it)
-		if (it->GetUsername() == username)
-		{
-			m_players.erase(it);
-			return;
-		}
-	throw std::exception("DELETE ERROR: USERNAME NOT FOUND");
+	if (!IsInLobby(username))
+		throw std::exception("REMOVE ERROR: PLAYER NOT FOUND IN LOBBY");
+	m_players.erase(username);
 }
 
-void Lobby::clearLobby() noexcept
+void Lobby::ClearLobby() noexcept
 {
 	m_players.clear();
-	m_lobbyStatus = Status::Terminated;
+	m_lobbyStatus = Status::Launched;
 }
 
-uint16_t Lobby::getNumberOfPlayers() const noexcept
+uint16_t Lobby::GetNumberOfPlayers() const noexcept
 {
 	return static_cast<uint16_t>(m_players.size());
 }
 
-const std::string& Lobby::getLobbyCode() const noexcept
+const std::string& Lobby::GetLobbyCode() const noexcept
 {
 	return m_lobbyCode;
 }
 
-int gartic::Lobby::getStatusOfLobby() const noexcept
+int Lobby::GetStatusOfLobby() const noexcept
 {
-	return ConvertLobbyStatusToInteger();
+	return ConvertStatusToInteger(m_lobbyStatus);
 }
 
-void gartic::Lobby::StartGame(gartic::Game& game)
-{
-	game.setPlayers(std::move(m_players));
-	m_lobbyStatus = Status::Launched;
-}
-
-void gartic::Lobby::CloseLobby(Game& game)
-{
-	m_lobbyStatus = Status::Terminated;
-	clearLobby();
-}
-
-bool gartic::Lobby::CheckLobbyCode(const std::string& code) const
+bool Lobby::CheckLobbyCode(const std::string& code) const
 {
 	return m_lobbyCode == code;
 }
 
-void gartic::Lobby::GenerateLobbyCode()
+void Lobby::PrintPlayers() const noexcept
 {
-	const int ASCIIValueOfZ = 57;
-	for (int i = 0; i < k_lengthOfLobbyCode; i++)
+	for (const auto& element : m_players)
 	{
-		m_lobbyCode.push_back(static_cast<char>(GetRandomDigit(ASCIIValueOfZ)));
+		std::cout << element.first << '\n';
 	}
 }
 
-int Lobby::GetRandomDigit(int maxim) const
+void Lobby::MovePlayersToGame(Game& game)
+{
+	for (auto& player : m_players)
+	{
+		game.AddPlayerToGame(std::move(player.second));
+	}
+	m_players.clear();
+}
+
+void gartic::Lobby::GenerateLobbyCode() noexcept
+{
+	std::pair<int, int> ASCIIValueOfAAndZ{ 65,90 };
+	std::pair<int, int> ASCIIValueOfaAndz{ 97,122 };
+	std::pair<int, int> ASCIIValueOf0And9{ 48,57 };
+
+	int choice{};
+	do
+	{
+		choice = GetRandomDigit({ 0,2 });
+		switch (choice)
+		{
+			case 0:
+			{
+				m_lobbyCode.push_back(static_cast<char>(GetRandomDigit(ASCIIValueOfAAndZ)));
+				break;
+			}
+			case 1:
+			{
+				m_lobbyCode.push_back(static_cast<char>(GetRandomDigit(ASCIIValueOfaAndz)));
+				break;
+			}
+			case 2:
+			{
+				m_lobbyCode.push_back(static_cast<char>(GetRandomDigit(ASCIIValueOf0And9)));
+				break;
+			}
+			default:
+			{
+				/*EMPTY*/
+			}
+		}
+	} while (m_lobbyCode.size() != k_lengthOfLobbyCode);
+}
+
+int Lobby::GetRandomDigit(const std::pair<int, int>& values) const
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	std::uniform_int_distribution<> distrib(48, maxim);
+	std::uniform_int_distribution<> distrib(values.first, values.second);
 	return distrib(gen);
 }
 
-int Lobby::ConvertLobbyStatusToInteger() const noexcept
+int Lobby::ConvertStatusToInteger(const Status& current) const noexcept
 {
-	switch (m_lobbyStatus)
+	switch (current)
 	{
-	case (Status::WaitingForPlayers):
-		return 0;
-	case (Status::Launched):
-		return 1;
-	case (Status::Terminated):
-		return -1;
+		case (Status::WaitingForPlayers):
+			return 0;
+		case (Status::Launched):
+			return 1;
+		case (Status::Terminated):
+			return 2;
+		default:
+			return -1;
 	}
 }
 
-bool Lobby::isInLobby(const std::string& username) const
+bool Lobby::IsInLobby(const std::string& username) const
 {
-	for (auto& player : m_players)
-		if (player.GetUsername() == username) return true;
-	return false;
+	return m_players.contains(username);
 }
