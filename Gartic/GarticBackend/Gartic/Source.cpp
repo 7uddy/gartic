@@ -7,8 +7,8 @@ namespace sql = sqlite_orm;
 
 
 #include "Database.h"
-import game;
-import lobby;
+//import game;
+//import lobby;
 import player;
 using namespace gartic;
 
@@ -29,7 +29,7 @@ Storage CreateDatabase()
 	std::cout << "## There are currently " << loginCredentialCount << " items in the database.##\n";
 	return db;
 }
-
+/*
 void ServerRoutes(Storage& db, crow::SimpleApp& app)
 {
 	CROW_ROUTE(app, "/")([]() {
@@ -124,12 +124,12 @@ void ServerRoutes(Storage& db, crow::SimpleApp& app)
 				return crow::response(404);
 			});
 }
-
+*/
 int main()
 {
 	Storage db=CreateDatabase();
 	crow::SimpleApp app;
-	ServerRoutes(db,app);
+	//ServerRoutes(db,app);
 	app.port(18080).multithreaded().run();
 	return 0;
 }

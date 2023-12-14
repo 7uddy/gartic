@@ -1,11 +1,19 @@
 module player;
 using namespace gartic;
 
-Player::Player(std::string_view username, std::string_view password,std::string_view email,const int& uniqueId) :
+Player::Player(const std::string& username, const std::string& email, const std::string& password) :
 	m_username{ username }, m_password{ password }, m_score{ 0 },
-	m_email {email}
+	m_email{ email }
 {
-	m_uniqueId = uniqueId;
+	/*EMPTY*/
+}
+
+Player::Player(const Player& other)
+{
+	m_username = other.m_username;
+	m_email = other.m_email;
+	m_password = other.m_password;
+	m_score = other.m_score;
 }
 
 Player::Player(Player&& otherPlayer)
@@ -17,43 +25,42 @@ Player& Player::operator=(Player&& other) noexcept
 {
 	if (this != &other)
 	{
-		m_uniqueId = std::exchange(other.m_uniqueId, 0);
-		m_username = std::exchange(other.m_username, std::string());
-		m_password = std::exchange(other.m_password, std::string());
-		m_score = std::exchange(other.m_score, 0);
-		m_email = std::exchange(other.m_email, std::string());
+		std::exchange(m_username, other.m_username);
+		std::exchange(m_email, other.m_email);
+		std::exchange(m_password, other.m_password);
+		std::exchange(m_score, other.m_score);
 	}
 	return *this;
 }
 
-void Player::SetUsername(std::string_view username) noexcept
+void Player::SetUsername(const std::string& username) noexcept
 {
 	m_username = username;
 }
 
-std::string_view gartic::Player::GetUsername() const noexcept
+const std::string& Player::GetUsername() const noexcept
 {
 	return m_username;
 }
 
-void gartic::Player::SetEmail(std::string_view email) noexcept
-{
-	m_email = email;
-}
-
-std::string_view Player::GetEmail() const noexcept
-{
-	return m_username;
-}
-
-void Player::SetPassword(std::string_view password) noexcept
+void Player::SetPassword(const std::string& password) noexcept
 {
 	m_password = password;
 }
 
-std::string_view gartic::Player::GetPassword() const noexcept
+void Player::SetEmail(const std::string& email) noexcept
+{
+	m_email = email;
+}
+
+const std::string& Player::GetPassword() const noexcept
 {
 	return m_password;
+}
+
+const std::string& Player::GetEmail() const noexcept
+{
+	return m_email;
 }
 
 void Player::SetScoreTo(const float& score) noexcept
@@ -71,20 +78,9 @@ void Player::ResetScore() noexcept
 	m_score = 0;
 }
 
-const float& Player::GetScore() const noexcept
+float Player::GetScore() const noexcept
 {
 	return m_score;
-}
-
-
-const int Player::GetID() const noexcept
-{
-	return m_uniqueId;
-}
-
-void Player::SetID(const int id) noexcept
-{
-	m_uniqueId = id;
 }
 
 bool Player::operator<(const Player& player) noexcept
@@ -94,18 +90,22 @@ bool Player::operator<(const Player& player) noexcept
 	return false;
 }
 
-bool Player::operator==(const Player& player) const 
+bool Player::operator==(const Player& player) const
 {
 	if (this == &player) return true;
 	if (m_password != player.m_password) return false;
 	if (m_username != player.m_username) return false;
-	if (m_uniqueId != player.m_uniqueId) return false;
 	if (m_score != player.m_score) return false;
-	if (m_email != player.m_email) return false;
 	return true;
 }
 
-bool gartic::Player::operator!=(const Player& otherPlayer) const
+bool Player::operator!=(const Player& otherPlayer) const
 {
 	return !((*this) == otherPlayer);
+}
+
+std::ostream& operator<<(std::ostream& os, const Player& player)
+{
+	os << player.GetUsername() << ' ' << player.GetEmail() << ' ' << player.GetPassword() << ' ' << player.GetScore();
+	return os;
 }

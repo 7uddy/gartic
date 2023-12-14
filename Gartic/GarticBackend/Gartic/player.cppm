@@ -2,8 +2,8 @@ module;
 export module player;
 
 export import <string>;
-export import <cstdint>;
-
+export import <iostream>;
+import <fstream>;
 
 namespace gartic
 {
@@ -12,28 +12,27 @@ namespace gartic
 	public:
 		/*-------Constructors-------*/
 		Player() = default;
-		Player(std::string_view username,std::string_view password,std::string_view email,const int& uniqueId);
+		Player(const std::string& username, const std::string& email, const std::string& password);
+		Player(const Player&);
 		Player(Player&& otherPlayer);
 
 		Player& operator=(Player&& other) noexcept;
 
-		/*-------Player variables related functions-------*/
-		const int GetID() const noexcept;
-		void SetID(const int id) noexcept;
-
-		void SetUsername(std::string_view username) noexcept;
-		std::string_view GetUsername() const noexcept;
-
-		void SetEmail(std::string_view email) noexcept;
-		std::string_view GetEmail() const noexcept;
-
-		void SetPassword(std::string_view password) noexcept;
-		std::string_view GetPassword() const noexcept;
-
+		//Setters
+		void SetUsername(const std::string& username) noexcept;
+		void SetPassword(const std::string& password) noexcept;
 		void SetScoreTo(const float& score) noexcept;
 		void AddToScore(const float& score) noexcept;
+		void SetEmail(const std::string& email) noexcept;
+
+		//Getters
+		const std::string& GetUsername() const noexcept;
+		const std::string& GetPassword() const noexcept;
+		float GetScore() const noexcept;
+		const std::string& GetEmail() const noexcept;
+
+		//Functions
 		void ResetScore() noexcept;
-		const float& GetScore() const noexcept;
 
 		/*-------Operator overloading-------*/
 
@@ -42,12 +41,12 @@ namespace gartic
 		bool operator!=(const Player&) const;
 
 	private:
-		int m_uniqueId;
 		std::string m_username;
 		std::string m_password;
-		float m_score;
 		std::string m_email;
+		float m_score;
 	};
+	export std::ostream& operator<< (std::ostream& os, const Player& player);
 
 
 }

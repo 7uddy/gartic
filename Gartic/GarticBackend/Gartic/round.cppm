@@ -1,10 +1,13 @@
 module;
 export module round;
+
 export import player;
 
 import <chrono>;
-import <iostream>;
-import <string>;
+//import <iostream>;
+//import <string>;
+export import <unordered_map>;
+export import <cstdint>;
 
 namespace gartic
 {
@@ -22,44 +25,45 @@ namespace gartic
 
 	public:
 		Round() = default;
-		Round(Difficulty, std::vector<Player>*);
+
 		//FUNCTIONS FOR ROUND AND SCORE 
-		void startRound() noexcept;
-		void endRound() noexcept;
+		void StartRound();
+		void EndRound() noexcept;
 
-		bool isWordCorrectAndAddUserGuessTime(const uint16_t& id, const std::string& guess) noexcept;
-		std::string getWord(const uint16_t& id) const noexcept;
-
-		uint16_t getSecondsFromStart() const noexcept;
+		uint16_t GetSecondsFromStart() const noexcept;
 		void SetDifficulty(int);
 		uint16_t GetDifficulty() const noexcept;
+		const std::string& GetPainterUsername() const noexcept;
 
 		//FOR TEST
-		void showAllPlayers() const noexcept;
+		void ShowAllPlayers() const noexcept;
+		void ShowAllPlayerGuessTimes() const noexcept;
+		void AddPlayer(std::shared_ptr<Player> player);
 
 	private:
-		void addPlayerGuessTime(const uint16_t& id);
-		void choosePainter() noexcept;
-		void updateScoreForPlayer(Player*, const uint16_t&) noexcept;
+		void AddPlayerGuessTime(const std::string&);
+		void ChoosePainter() noexcept;
+		void CalculateScoreForPlayers() noexcept;
+		void UpdateScoreForPlayer(std::shared_ptr<Player>) noexcept;
 		uint16_t DifficultyToInteger(const Difficulty&) const;
 		Difficulty IntegerToDifficulty(int) const;
+
 	private:
-		static Player* m_painter;
+		static std::shared_ptr<Player> m_painter;
 		static const uint16_t k_numberOfRounds = 4;
-		static const uint16_t kWordNumber = 499;
-
 
 	private:
-		std::vector<Player>* m_players;
+		std::vector<std::shared_ptr<Player>> m_players;
 		Difficulty m_difficulty;
+		bool m_difficultyIsAscending;
 		uint16_t m_miniRoundNumber;
 		Time m_startRoundTime;
-		std::vector<std::pair<Player*, uint16_t>> m_guessTimes;
+		std::unordered_map<std::string, uint16_t> m_guessTimes;
 
 
-		//Variables related to word
-		std::string m_hiddenWord;
-		std::string m_shownWord;
-		uint8_t m_lettersToShow;
+		////Variables related to word
+		//std::string m_hiddenWord;
+		//std::string m_shownWord;
+		//uint8_t m_lettersToShow;
 	};
 }

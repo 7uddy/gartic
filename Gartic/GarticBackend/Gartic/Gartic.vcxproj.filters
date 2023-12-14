@@ -39,18 +39,6 @@
     <ClCompile Include="round.cppm">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="game.cppm">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="lobby.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="lobby.cppm">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -1,54 +1,58 @@
 module round;
 using namespace gartic;
 
-Player* Round::m_painter = nullptr;
-Round::Round(Difficulty newDifficulty, std::vector<Player>* addressOfPlayers):
-	m_difficulty{ newDifficulty }, m_players{ addressOfPlayers }, m_miniRoundNumber{ 0 }
-{
-	/*EMPTY*/;
-}
+std::shared_ptr<Player> Round::m_painter{nullptr};
 
-void Round::startRound() noexcept
+void Round::StartRound()
 {
-	const int numberOfDifficulties = 2;
-	choosePainter();
+	static const int numberOfDifficulties = 2;
+	ChoosePainter();
+	if (m_miniRoundNumber > m_players.size() * k_numberOfRounds)
+		throw std::exception("NUMBER OF ROUND IS BIGGER THAN POSSIBLE");
 	++m_miniRoundNumber;
 	//Template to changing difficulty between rounds
 	if (m_miniRoundNumber - 1 != 0)
 	{
-		if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
-		{
-			auto difficultyAsInt = GetDifficulty();
-			if (difficultyAsInt + 1 <= numberOfDifficulties)
-				SetDifficulty(difficultyAsInt + 1);
-		}
+		if (!m_difficultyIsAscending)
+			;
+		else
+			if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
+			{
+				auto difficultyAsInt = GetDifficulty();
+				if (difficultyAsInt + 1 <= numberOfDifficulties)
+					SetDifficulty(difficultyAsInt + 1);
+			}
 	}
 	//std::string word{ GetHiddenWord() };
 	m_startRoundTime = std::chrono::steady_clock::now();
 }
 
-void Round::choosePainter() noexcept
+void Round::ChoosePainter() noexcept
 {
-	auto index_of_new_painter = (m_miniRoundNumber + m_miniRoundNumber / k_numberOfRounds * m_players->size()) % m_players->size();
-	m_painter = &(*m_players)[index_of_new_painter];
+	int index_of_new_painter = (m_miniRoundNumber + m_miniRoundNumber / k_numberOfRounds * static_cast<int>(m_players.size())) % static_cast<int>(m_players.size());
+	m_painter = m_players[index_of_new_painter];
 }
 
-void Round::addPlayerGuessTime(const uint16_t& id)
+void Round::CalculateScoreForPlayers() noexcept
 {
-	Time timeNow = std::chrono::steady_clock::now();
-	auto seconds = std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime).count();
-	for (auto& player : *m_players)
+	for (auto& player : m_players)
 	{
-		if (player.GetID() == id)
-		{
-			m_guessTimes.emplace_back(&player, seconds);
-			return;
-		}
+		UpdateScoreForPlayer(player);
 	}
-	throw std::exception("PLAYER NOT FOUND");
+	m_guessTimes.clear();
 }
 
-void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) noexcept
+void Round::AddPlayerGuessTime(const std::string& username)
+{
+	uint16_t seconds{ GetSecondsFromStart() };
+	auto result = std::find_if(m_players.begin(), m_players.end(), [username](const std::shared_ptr<Player>& player) {
+		return player.get()->GetUsername() == username; });
+	if (result == m_players.end()) 
+		throw std::exception("PLAYER NOT FOUND");
+	m_guessTimes.insert({result->get()->GetUsername(), seconds});
+}
+
+void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
 {
 	if (player == m_painter)
 	{
@@ -56,10 +60,10 @@ void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) n
 			player->AddToScore(-100);
 		else
 		{
-			float average = 0;
-			for (auto& item : m_guessTimes)
+			float average {0};
+			for (const auto& pairOfUsernameAndGuessTime : m_guessTimes)
 			{
-				average += item.second;
+				average += pairOfUsernameAndGuessTime.second;
 			}
 			average /= m_guessTimes.size();
 			auto score = (60 - average) * 100 / 60;
@@ -67,7 +71,8 @@ void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) n
 		}
 		return;
 	}
-	if(seconds==60)
+	float seconds = m_guessTimes.at(player.get()->GetUsername());
+	if (seconds == 60)
 	{
 		player->AddToScore(-50);
 		return;
@@ -81,95 +86,92 @@ void Round::updateScoreForPlayer(Player* player, const uint16_t& seconds = 60) n
 	player->AddToScore(score);
 }
 
-uint16_t gartic::Round::DifficultyToInteger(const Difficulty& difficulty) const
+uint16_t Round::DifficultyToInteger(const Difficulty& difficulty) const
 {
 	switch (difficulty)
 	{
 	case Difficulty::Easy:
-		return 0;
+		return 0u;
 	case Difficulty::Medium:
-		return 1;
+		return 1u;
 	case Difficulty::Hard:
-		return 2;
+		return 2u;
+	default:
+		throw std::exception("UNABLE TO CONVERT DIFFICULTY TO INT");
 	}
-	throw std::exception("UNABLE TO CONVERT DIFFICULTY TO INT");
 }
 
-Round::Difficulty gartic::Round::IntegerToDifficulty(int difficulty) const
+Round::Difficulty Round::IntegerToDifficulty(int difficulty) const
 {
-	switch (difficulty)
+	auto resultAsUInt = static_cast<uint8_t>(difficulty);
+	switch (resultAsUInt)
 	{
-	case 0:
+	case 0u:
 		return Difficulty::Easy;
-	case 1:
+	case 1u:
 		return Difficulty::Medium;
-	case 2:
+	case 2u:
 		return Difficulty::Hard;
 	}
 	throw std::exception("UNABLE TO CONVERT INT TO DIFFICULTY");
 }
 
-void Round::endRound() noexcept
+void Round::EndRound() noexcept
 {
-	bool found;
-	for (auto& player : *m_players)
+	CalculateScoreForPlayers();
+}
+
+uint16_t Round::GetSecondsFromStart() const noexcept
+{
+	const Time timeNow = std::chrono::steady_clock::now();
+	auto integer = std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime);
+	return static_cast<uint16_t>(integer.count());
+
+}
+
+void Round::SetDifficulty(int difficultyAsInt)
+{
+	if (difficultyAsInt < 0 || difficultyAsInt>3)
+		throw std::exception("UNABLE TO SET DIFFICULTY: INVALID DATA");
+	switch (difficultyAsInt)
 	{
-		found = false;
-		for (auto& item : m_guessTimes)
-		{
-			if (item.first == &player)
-			{
-				updateScoreForPlayer(&player, item.second);
-				found = true;
-				break;
-			}
-		}
-		if(!found)
-			updateScoreForPlayer(&player);
+	case 3:
+		m_difficultyIsAscending = true;
+		m_difficulty = Difficulty::Easy;
+		break;
+	default:
+		m_difficultyIsAscending = false;
+		m_difficulty = IntegerToDifficulty(difficultyAsInt);
 	}
-	updateScoreForPlayer(m_painter);
-	m_guessTimes.clear();
 }
 
-bool Round::isWordCorrectAndAddUserGuessTime(const uint16_t& id, const std::string& guess) noexcept
-{
-	if (guess == m_hiddenWord)
-	{
-		addPlayerGuessTime(id);
-		return true;
-	}
-	return false;
-}
-
-std::string gartic::Round::getWord(const uint16_t& id) const noexcept
-{
-	if (id == m_painter->GetID())
-		return m_hiddenWord;
-	else
-		return m_shownWord;
-}
-
-uint16_t Round::getSecondsFromStart() const noexcept
-{
-	Time timeNow = std::chrono::steady_clock::now();
-	return std::chrono::duration_cast<std::chrono::seconds>(timeNow - m_startRoundTime).count();
-}
-
-void gartic::Round::SetDifficulty(int difficultyAsInt)
-{
-	auto difficulty = IntegerToDifficulty(difficultyAsInt);
-	m_difficulty = difficulty;
-}
-
-uint16_t gartic::Round::GetDifficulty() const noexcept
+uint16_t Round::GetDifficulty() const noexcept
 {
 	return DifficultyToInteger(m_difficulty);
 }
 
-void Round::showAllPlayers() const noexcept
+const std::string& Round::GetPainterUsername() const noexcept
 {
-	for (auto& element : *m_players)
+	return m_painter.get()->GetUsername();
+}
+
+void Round::ShowAllPlayers() const noexcept
+{
+	for (const auto& player: m_players)
 	{
-		std::cout << element.GetUsername() << " ";
+		std::cout << player.get()->GetUsername() << " ";
 	}
+}
+
+void Round::ShowAllPlayerGuessTimes() const noexcept
+{
+	for (const auto& pair : m_guessTimes)
+	{
+		std::cout << pair.first << " " << pair.second << "\n";
+	}
+}
+
+void Round::AddPlayer(std::shared_ptr<Player> player)
+{
+	m_players.emplace_back(player);
 }
