@@ -145,7 +145,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Database.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game.cppm" />
     <ClCompile Include="garticDatabase.cpp" />
@@ -163,7 +162,6 @@
     <ClCompile Include="word.cppm" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Database.h" />
     <ClInclude Include="garticDatabase.h" />
     <ClInclude Include="Input.h" />
   </ItemGroup>
