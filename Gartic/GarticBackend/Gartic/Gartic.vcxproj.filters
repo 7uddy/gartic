@@ -54,12 +54,24 @@
     <ClCompile Include="lobby.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="word.cppm">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="word.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="garticDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="garticDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

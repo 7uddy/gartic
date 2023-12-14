@@ -148,6 +148,7 @@
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game.cppm" />
+    <ClCompile Include="garticDatabase.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="lobby.cpp" />
     <ClCompile Include="lobby.cppm" />
@@ -158,9 +159,12 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="utils.cppm" />
+    <ClCompile Include="word.cpp" />
+    <ClCompile Include="word.cppm" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h" />
+    <ClInclude Include="garticDatabase.h" />
     <ClInclude Include="Input.h" />
   </ItemGroup>
   <ItemGroup>
