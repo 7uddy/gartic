@@ -1,5 +1,6 @@
 #pragma once
 
+#include <crow.h>
 #include <filesystem>
 #include <memory>
 #include <sqlite_orm/sqlite_orm.h>

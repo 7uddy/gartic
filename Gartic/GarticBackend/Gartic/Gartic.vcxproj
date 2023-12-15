@@ -155,7 +155,6 @@
     <ClCompile Include="player.cppm" />
     <ClCompile Include="round.cpp" />
     <ClCompile Include="round.cppm" />
-    <ClCompile Include="routing.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="utils.cpp" />
     <ClCompile Include="utils.cppm" />
@@ -165,7 +164,6 @@
   <ItemGroup>
     <ClInclude Include="garticDatabase.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="routing.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="credentials.txt" />
