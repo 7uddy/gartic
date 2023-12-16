@@ -3,6 +3,7 @@
 #include <QtWidgets/QStackedWidget>
 #include <QMessageBox>
 #include "../DLL/DLL/Player.h"
+#include <cpr/cpr.h>
 
 class PageController:public QStackedWidget
 {

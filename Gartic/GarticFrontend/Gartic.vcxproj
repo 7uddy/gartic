@@ -68,16 +68,20 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link />
     <ClCompile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
-      <EnableModules>true</EnableModules>
+      <EnableModules>false</EnableModules>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
-      <EnableModules>true</EnableModules>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <EnableModules>false</EnableModules>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link />
   </ItemDefinitionGroup>
