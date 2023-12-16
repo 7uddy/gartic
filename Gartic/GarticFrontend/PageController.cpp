@@ -49,5 +49,21 @@ bool PageController::VerifyLogin(const QString& enteredUsername, const QString& 
 
 bool PageController::VerifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword)
 {
-	return player.VerifyRegister(enteredUsername.toStdString(), enteredEmail.toStdString(), enteredPassword.toStdString());
+	std::string username = enteredUsername.toUtf8().constData();
+	std::string email = enteredEmail.toUtf8().constData();
+	std::string password = enteredPassword.toUtf8().constData();
+	if (player.VerifyRegister(username, email, password))
+	{
+		auto responseVerify = cpr::Put(
+			cpr::Url{ "http://localhost:18080/register" },
+			cpr::Parameters{
+					{ "username", username},
+					{ "password", password},
+					{ "email", email },
+			}
+		);
+		if (responseVerify.status_code == 201)
+			return true;
+	}
+	return false;
 }

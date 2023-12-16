@@ -22,7 +22,7 @@ public:
 	Player& operator=(const Player& player) = default;
 	Player& operator=(Player&& player) noexcept;
 	bool VerifyLogin(std::string_view username, std::string_view password) const;
-	bool VerifyRegister(const std::string& username,const std::string& email, const std::string&password) const;
+	bool VerifyRegister(std::string_view username, std::string_view email, std::string_view password) const;
 	~Player();
 private:
 	std::string m_username;

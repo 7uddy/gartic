@@ -70,13 +70,13 @@ bool Player::VerifyLogin(std::string_view username, std::string_view password) c
 	return std::regex_match(std::string(username), usernamePattern) && std::regex_match(std::string(password), passwordPattern);
 }
 
-bool Player::VerifyRegister(const std::string& username, const std::string& email, const std::string& password) const
+bool Player::VerifyRegister(std::string_view username, std::string_view email, std::string_view password) const
 {
 	std::regex usernamePattern("^[a-zA-Z0-9_]+$");
 	std::regex passwordPattern("^(?=.*[a-z])(?=.*[A-Z]).+$");
 	std::regex emailPattern(R"(\b[A-Za-z0-9.]+@[A-Za-z0-9]+\.[A-Z|a-z]{2,}\b)");
-	return std::regex_match(username, usernamePattern) && std::regex_match(email, emailPattern)
-		&& std::regex_match(password, passwordPattern);
+	return std::regex_match(std::string(username), usernamePattern) && std::regex_match(std::string(email), emailPattern)
+		&& std::regex_match(std::string(password), passwordPattern);
 }
 
 Player::~Player()
