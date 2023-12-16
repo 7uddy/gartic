@@ -15,7 +15,6 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 	connect(loginButton, &QPushButton::clicked, controller, [=]() {
 		if (controller->VerifyLogin(username->text(), password->text())) 
 		{
-			QMessageBox::information(controller, "Login Success", "Welcome back!You can now access the game.");
 			controller->ShowPage("MainMenu");
 		}
 		else 

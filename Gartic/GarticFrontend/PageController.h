@@ -2,6 +2,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QStackedWidget>
 #include <QMessageBox>
+#include <string>
 #include "../DLL/DLL/Player.h"
 #include <cpr/cpr.h>
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
+#include <string_view>
 #include <regex>
 
 class __declspec(dllexport) Player
@@ -20,7 +21,7 @@ public:
 	float GetScore();
 	Player& operator=(const Player& player) = default;
 	Player& operator=(Player&& player) noexcept;
-	bool VerifyLogin(const std::string& username, const std::string& password) const;
+	bool VerifyLogin(std::string_view username, std::string_view password) const;
 	bool VerifyRegister(const std::string& username,const std::string& email, const std::string&password) const;
 	~Player();
 private:

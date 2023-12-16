@@ -63,11 +63,11 @@ Player& Player::operator=(Player&& player) noexcept
 	return *this;
 }
 
-bool Player::VerifyLogin(const std::string& username, const std::string& password) const
+bool Player::VerifyLogin(std::string_view username, std::string_view password) const
 {
 	std::regex usernamePattern("^[a-zA-Z0-9_]+$");
 	std::regex passwordPattern("^(?=.*[a-z])(?=.*[A-Z]).+$");
-	return std::regex_match(username, usernamePattern) && std::regex_match(password, passwordPattern);
+	return std::regex_match(std::string(username), usernamePattern) && std::regex_match(std::string(password), passwordPattern);
 }
 
 bool Player::VerifyRegister(const std::string& username, const std::string& email, const std::string& password) const
