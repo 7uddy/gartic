@@ -22,6 +22,8 @@ public:
     void Show();
     void SetBackground();
     void AddPages();
+protected:
+    void closeEvent(QCloseEvent* event) override;
 private:
     Ui::MainWindowClass ui;
     LoginPage* loginPage;

@@ -14,13 +14,18 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	sendButton = new QPushButton("Send", this);
 	chatHistory = new QTextEdit(this);
 	gameLayout = new QHBoxLayout();
+	buttonsLayout = new QHBoxLayout();
 	board = new BoardWidget();
 	gameGridLayout = new QGridLayout();
+	drawButton = new QPushButton("Draw", this);
+	eraseButton = new QPushButton("Erase", this);
 	SetSize();
 	StyleElements();
 	PlaceElements();
 	connect(sendButton, &QPushButton::clicked, this, &GamePage::SendMessage);
 	connect(board, &BoardWidget::MouseDraw, this, &GamePage::UpdateBoard);
+	connect(drawButton, &QPushButton::clicked, this, &GamePage::SetDrawMode);
+	connect(eraseButton, &QPushButton::clicked, this, &GamePage::SetEraseMode);
 }
 
 void GamePage::PlaceElements()
@@ -46,13 +51,15 @@ void GamePage::PlaceElements()
 
 	gameGridLayout->setContentsMargins(20, 0, 20, 0);
 	gameGridLayout->addWidget(listPlayers, 0, 0, 1, 1);
-	gameGridLayout->addWidget(board, 0, 1, 1, 1);
-	gameGridLayout->addLayout(chatLayout, 0, 2, 1, 1);
+	gameGridLayout->addWidget(board, 0, 1, 3, 2);
+	gameGridLayout->addWidget(drawButton, 3, 1, 1, 1);
+	gameGridLayout->addWidget(eraseButton, 3, 2, 1, 1);
+	gameGridLayout->addLayout(chatLayout, 0, 3, 1, 1);
 
 	layout->addLayout(topLayout);
 	layout->addLayout(gameGridLayout);
-	layout->addSpacing(200);
 	layout->setAlignment(topLayout, Qt::AlignTop);
+	layout->addSpacing(100);
 }
 
 void GamePage::StyleElements()
@@ -76,6 +83,8 @@ void GamePage::SetSize()
 	round->setFixedSize(200, 50);
 	time->setFixedSize(200, 50);
 	word->setFixedSize(200, 50);
+	drawButton->setFixedSize(300, 50);
+	eraseButton->setFixedSize(300, 50);
 	chatHistory->setFixedSize(300, 350);
 	messageInput->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	sendButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -84,6 +93,8 @@ void GamePage::SetSize()
 	time->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	word->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	chatHistory->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	drawButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+	eraseButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
 void GamePage::UpdateBoard(QMouseEvent* event)
@@ -93,9 +104,19 @@ void GamePage::UpdateBoard(QMouseEvent* event)
 	int row = localPos.y() / 10;
 	if ((col >= 0 && col < board->GetNumCols()) && (row >= 0 && row < board->GetNumRows()))
 	{
-		board->drawingMatrix[row][col] = 1;
+		board->drawingMatrix.at(row * board->GetNumCols() + col) = currentMode;
 		board->update();
 	}
+}
+
+void GamePage::SetDrawMode()
+{
+	currentMode = true;
+}
+
+void GamePage::SetEraseMode()
+{
+	currentMode = false;
 }
 
 void GamePage::SendMessage()
@@ -111,5 +132,5 @@ void GamePage::SendMessage()
 GamePage::~GamePage()
 {
 	delete imageLabel, listPlayers, round, time, word, topLayout, layout, chatLayout, messageInput,
-		sendButton, chatHistory, board, gameGridLayout;
+		sendButton, chatHistory, board, gameGridLayout, buttonsLayout;
 }

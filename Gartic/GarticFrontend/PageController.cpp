@@ -42,7 +42,11 @@ bool PageController::VerifyLogin(const QString& enteredUsername, const QString& 
 			}
 		);
 		if (responseVerify.status_code == 202)
+		{
+			player.SetUsername(username);
+			player.SetPassword(password);
 			return true;
+		}
 	}
 	return false;
 }

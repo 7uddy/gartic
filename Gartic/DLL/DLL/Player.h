@@ -11,8 +11,8 @@ public:
 	Player(const std::string& username, const std::string& email, const std::string& password);
 	Player(const Player& player) = default;
 	Player(Player&& player) noexcept;
-	void SetUsername(const std::string& username);
-	void SetPassword(const std::string& password);
+	void SetUsername(std::string_view username);
+	void SetPassword(std::string_view  password);
 	void SetEmail(const std::string& email);
 	void SetScore(float score);
 	std::string& GetUsername();

@@ -14,16 +14,19 @@ public:
 	void StyleElements();
 	void SetSize();
 	void UpdateBoard(QMouseEvent* event);
+	void SetDrawMode();
+	void SetEraseMode();
 	~GamePage();
 private slots:
 	void SendMessage();
 private:
 	QLabel* imageLabel;
 	QTextEdit* listPlayers, * round, * time, * word, * chatHistory;
-	QHBoxLayout* topLayout, * gameLayout;
+	QHBoxLayout* topLayout, * gameLayout,* buttonsLayout;
 	QVBoxLayout* layout, * chatLayout;
 	QLineEdit* messageInput;
-	QPushButton* sendButton;
+	QPushButton* sendButton, *drawButton, *eraseButton;
 	BoardWidget* board;
 	QGridLayout* gameGridLayout;
+	bool currentMode = true;
 };

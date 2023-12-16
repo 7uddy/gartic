@@ -1,6 +1,6 @@
 #include "BoardWidget.h"
 
-BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), drawingMatrix(numRows, std::vector<int>(numCols, 0))
+BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), drawingMatrix{}
 {
 	setFixedSize(numCols * 10, numRows * 10);
 }
@@ -34,13 +34,13 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 		for (int jndex = 0; jndex < numCols; jndex++)
 		{
 			QRect rectangle(startX + jndex * pixelSize, startY + index * pixelSize, pixelSize, pixelSize);
-			if (drawingMatrix[index][jndex] == 0)
+			if (drawingMatrix[index*numCols+jndex] == 0)
 			{
 				paint.setPen(QPen(Qt::white, 0));
 				paint.setBrush(Qt::white);
 				paint.drawRect(rectangle);
 			}
-			else if (drawingMatrix[index][jndex] == 1)
+			else if (drawingMatrix[index * numCols + jndex] == 1)
 			{
 				paint.setPen(QPen(Qt::black, 0));
 				paint.setBrush(Qt::black);

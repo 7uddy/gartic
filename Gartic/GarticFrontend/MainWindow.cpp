@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     setGeometry(100, 100, 1200, 800);
     QIcon appIcon("Images/App_icon.ico");
     setWindowIcon(appIcon);
+    connect(this, &MainWindow::closeEvent, this, &MainWindow::closeEvent);
 }
 
 MainWindow::~MainWindow()
@@ -52,4 +53,14 @@ void MainWindow::AddPages()
     pageController->AddPage(selectRoomPage, "SelectRoom");
     pageController->AddPage(gamePage, "Game");
     pageController->AddPage(leaderboardPage, "Leaderboard");
+}
+
+void MainWindow::closeEvent(QCloseEvent* event)
+{
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, "Confirmation", "Do you really want to close the game?",
+        QMessageBox::Yes | QMessageBox::No);
+    if (reply == QMessageBox::Yes)
+        std::exit(0);
+    event->ignore();
 }

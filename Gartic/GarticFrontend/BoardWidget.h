@@ -18,10 +18,11 @@ protected:
     virtual void mousePressEvent(QMouseEvent* event) override;
     virtual void mouseMoveEvent(QMouseEvent* event) override;
 private:
-    const int numRows = 50;
-    const int numCols = 80;
+    static const size_t numRows{ 50 };
+    static const size_t numCols{ 90 };
+    static const size_t kSize{ numRows*numCols};
 public:
-    std::vector<std::vector<int>> drawingMatrix;
+    std::array<uint16_t, kSize> drawingMatrix;
 };
 
 

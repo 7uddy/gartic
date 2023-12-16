@@ -11,12 +11,12 @@ Player::Player(Player&& player) noexcept
 	*this = std::move(player);
 }
 
-void Player::SetUsername(const std::string& username)
+void Player::SetUsername(std::string_view  username)
 {
 	m_username = username;
 }
 
-void Player::SetPassword(const std::string& password)
+void Player::SetPassword(std::string_view  password)
 {
 	m_password = password;
 }
