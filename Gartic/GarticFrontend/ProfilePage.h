@@ -12,10 +12,14 @@ public:
 	void SetSize();
 	~ProfilePage();
 private:
-	QVBoxLayout* layout,*infoLayout;
-	QHBoxLayout* topLayout, *buttonLayout;
-	QLabel* imageLabel;
-	QTextEdit* username, * averageScore,* matchHistory;
-	QPushButton* returnButton;
+    QVBoxLayout* layout;
+    QLabel* imageLabel;
+    QPushButton* returnButton;
+
+    QWidget* mainPadding;
+    QLabel* username;
+    QLabel* userImage;
+    QLabel* averageScore;
+    QTextEdit* matchHistory;
 };
 

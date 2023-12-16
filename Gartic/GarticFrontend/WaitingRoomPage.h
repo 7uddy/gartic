@@ -21,7 +21,7 @@ public:
 	void SetSize();
 
 	void OnPlayerJoin(const QString& playerName);
-	void UpdateMainPaddingSize(); //to be discussed
+	void UpdateMainPaddingSize();
 
 	int difficultyToInt(Difficulty difficulty);
 	QString difficultyToQString(Difficulty difficulty);

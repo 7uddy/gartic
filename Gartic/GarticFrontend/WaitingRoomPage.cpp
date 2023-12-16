@@ -148,14 +148,24 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 	profileLayouts.append(newProfileLayout);
 	// profileNames.append(newProfileName);
 
-	// UpdateMainPaddingSize();
+	 UpdateMainPaddingSize();
 
 	playersNumber->setText(QString::number(profilePaddings.size()) + "/4");
 }
 
 void WaitingRoomPage::UpdateMainPaddingSize()
 {
-	/*Empty*/
+	int totalProfilesHeight = 0;
+	for (int index = 0; index < profilePaddings.size(); ++index)
+	{
+		totalProfilesHeight += profilePaddings[index]->height();
+	}
+
+	if (totalProfilesHeight > mainPadding->height())
+	{
+		mainPadding->setFixedHeight(totalProfilesHeight);
+		mainPadding->setFixedWidth(mainPadding->width() + 10);
+	}
 }
 
 QString WaitingRoomPage::difficultyToQString(Difficulty difficulty) {
