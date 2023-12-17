@@ -84,3 +84,10 @@ QPushButton[accessibleName="startButton"] {
     color: black;
     font-weight: bold;
 }
+
+.QTextEdit[accessibleName="matchHistory"] {
+    border-radius: 10px;
+    background-color: #d9bd00;
+    color: black;
+    font-weight: bold;
+}

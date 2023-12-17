@@ -2,15 +2,15 @@
 
 ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 {
-	imageLabel = new QLabel(this);
 	layout = new QVBoxLayout(this);
-	username = new QTextEdit("Username", this);
-	averageScore = new QTextEdit("Average Score", this);
-	matchHistory = new QTextEdit("Match History", this);
-	topLayout = new QHBoxLayout(this);
-	infoLayout = new QVBoxLayout(this);
-	buttonLayout = new QHBoxLayout(this);
+	imageLabel = new QLabel(this);
 	returnButton = new QPushButton(this);
+	mainPadding = new QWidget;
+	username = new QLabel;
+	userImage = new QLabel;
+	averageScore = new QLabel;
+	matchHistory = new QTextEdit("Match History");
+
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -22,57 +22,56 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 void ProfilePage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Images/Title.png");
+	QHBoxLayout* topLeftLayout = new QHBoxLayout;
+	QPixmap image("Images/Game_Name.png");
 	imageLabel->setPixmap(image);
-	imageLabel->setFixedSize(image.width(), image.height());
-	topLayout->addWidget(imageLabel);
-	topLayout->setAlignment(imageLabel, Qt::AlignLeft);
+	topLeftLayout->addWidget(imageLabel);
+	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-	infoLayout->addWidget(username);
-	infoLayout->addSpacing(5);
-	infoLayout->addWidget(averageScore);
-	infoLayout->addSpacing(5);
-	infoLayout->addWidget(matchHistory);
-	infoLayout->setAlignment(Qt::AlignCenter);
-
+	QVBoxLayout* bottomLeftLayout = new QVBoxLayout;
 	returnButton->setIconSize(QSize(50, 50));
 	returnButton->setFixedSize(40, 40);
-	buttonLayout->addWidget(returnButton);
+	bottomLeftLayout->addWidget(returnButton);
+	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
-	layout->addLayout(topLayout);
-	layout->addLayout(infoLayout);
-	layout->addSpacing(100);
-	layout->addLayout(buttonLayout);
-	layout->setAlignment(topLayout, Qt::AlignTop);
-	layout->setAlignment(infoLayout, Qt::AlignCenter);
-	layout->setAlignment(buttonLayout, Qt::AlignLeft);
-}
+	QVBoxLayout* middleLayout = new QVBoxLayout;
+	middleLayout->addWidget(mainPadding);
+	middleLayout->setAlignment(Qt::AlignCenter);
+
+
+	layout->addLayout(topLeftLayout);
+	layout->addLayout(middleLayout);
+	layout->addLayout(bottomLeftLayout);
+	}
 
 void ProfilePage::StyleElements()
 {
-	username->setReadOnly(true);
-	averageScore->setReadOnly(true);
-	matchHistory->setReadOnly(true);
+	returnButton->setAccessibleName("returnButton");
+	mainPadding->setAccessibleName("mainPadding");
+	matchHistory->setAccessibleName("matchHistory");
+
+	userImage->setPixmap(QPixmap("Images\[PNG] App_icon.png"));
+	userImage->setFixedSize(150, 150);
+	userImage->setScaledContents(true);
+	QRegion* region = new QRegion(0, 0, userImage->width(), userImage->height(), QRegion::Ellipse);
+	userImage->setMask(*region);
+
+	username->setText("Username");
+
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
-	returnButton->setAccessibleName("returnButton");
 	setStyleSheet(styleSheet);
 }
 
 void ProfilePage::SetSize()
 {
-	username->setFixedSize(200, 50);
-	averageScore->setFixedSize(200, 50);
-	matchHistory->setFixedSize(200, 350);
-	username->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	averageScore->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
-	matchHistory->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+	mainPadding->setFixedSize(600, 500);
 }
 
 ProfilePage::~ProfilePage()
 {
-	delete  layout, infoLayout, topLayout, buttonLayout, imageLabel, username, 
+	delete  layout, imageLabel, username, userImage, mainPadding,
 		averageScore, matchHistory, returnButton;
 }

@@ -35,7 +35,7 @@ void WaitingRoomPage::PlaceElements()
 {
 	setLayout(layout);
 	QHBoxLayout* topLeftLayout = new QHBoxLayout;
-	QPixmap image("Images/Title.png");
+	QPixmap image("Images/Game_Name.png");
 	imageLabel->setPixmap(image);
 	topLeftLayout->addWidget(imageLabel);
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
