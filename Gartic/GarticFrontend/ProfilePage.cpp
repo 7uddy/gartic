@@ -8,7 +8,7 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 	mainPadding = new QWidget;
 	username = new QLabel;
 	userImage = new QLabel;
-	averageScore = new QLabel;
+	averageScore = new QLabel("Average Score: ");
 	matchHistory = new QTextEdit("Match History");
 
 	SetSize();
@@ -38,6 +38,16 @@ void ProfilePage::PlaceElements()
 	middleLayout->addWidget(mainPadding);
 	middleLayout->setAlignment(Qt::AlignCenter);
 
+	QHBoxLayout* mainPaddingLayout = new QHBoxLayout(mainPadding);
+	
+	QVBoxLayout* leftSideLayout = new QVBoxLayout;
+	leftSideLayout->addWidget(userImage);
+	leftSideLayout->addWidget(username);
+	leftSideLayout->addWidget(averageScore);
+
+
+	mainPaddingLayout->addLayout(leftSideLayout);
+	mainPaddingLayout->addWidget(matchHistory);
 
 	layout->addLayout(topLeftLayout);
 	layout->addLayout(middleLayout);
@@ -50,7 +60,7 @@ void ProfilePage::StyleElements()
 	mainPadding->setAccessibleName("mainPadding");
 	matchHistory->setAccessibleName("matchHistory");
 
-	userImage->setPixmap(QPixmap("Images\[PNG] App_icon.png"));
+	userImage->setPixmap(QPixmap("Images/[PNG] App_icon.png"));
 	userImage->setFixedSize(150, 150);
 	userImage->setScaledContents(true);
 	QRegion* region = new QRegion(0, 0, userImage->width(), userImage->height(), QRegion::Ellipse);
@@ -68,6 +78,7 @@ void ProfilePage::SetSize()
 {
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	mainPadding->setFixedSize(600, 500);
+	matchHistory->setFixedSize(300,400);
 }
 
 ProfilePage::~ProfilePage()
