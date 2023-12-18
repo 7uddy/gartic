@@ -17,6 +17,11 @@ void Game::AddPlayerToGame(std::unique_ptr<Player> player)
 	m_players.emplace(std::make_pair(player.get()->GetUsername(), std::move(player)));
 }
 
+void Game::UpdateBoard(const std::array<uint16_t, kSize>& newBoard)
+{
+	m_board = newBoard;
+}
+
 bool Game::IsPlayerInGame(std::string_view username) const noexcept
 {
 	return m_players.contains(std::string(username));
@@ -97,4 +102,9 @@ void Game::ShowAllPlayers() const noexcept
 	{
 		std::cout << player.first << "\n";
 	}
+}
+
+std::array<uint16_t, Game::kSize> Game::GetBoard() const noexcept
+{
+	return m_board;
 }

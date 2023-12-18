@@ -2,7 +2,7 @@ module;
 
 export module game;
 
-//import <array>;
+import <array>;
 
 export import round;
 
@@ -29,14 +29,17 @@ namespace gartic
 
 		static const size_t kNumberOfLines{ 80 };
 		static const size_t kNumberOfColumns{ 80 };
+		static const size_t kSize{ kNumberOfColumns * kNumberOfLines };
 
 		/*-------Game variables related functions-------*/
 		Game() = default;
+		~Game() = default;
 
 
 		void StartAnotherRound() noexcept;
 
 		void AddPlayerToGame(std::unique_ptr<Player>);
+		void UpdateBoard(const std::array<uint16_t, kSize>&);
 		void RemovePlayer(std::string_view);
 
 		void ChangeDifficulty(int) noexcept;
@@ -49,6 +52,7 @@ namespace gartic
 		const std::string& GetGameID() const noexcept;
 		uint16_t GetTimer() const noexcept;
 		uint16_t GetDifficulty() const noexcept;
+		std::array<uint16_t, kSize> GetBoard() const noexcept;
 		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 		std::vector<std::string> GetChat(std::string_view) const noexcept;
 		void AddMessageToChat(std::string_view, std::string_view) noexcept;
@@ -57,13 +61,11 @@ namespace gartic
 		void ClearChat() noexcept;
 
 	private:
-		static const size_t kSize{ kNumberOfColumns * kNumberOfLines };
-	private:
 		std::unordered_map<std::string, std::shared_ptr<Player>> m_players;
 		std::string m_gameID;
 		Status m_gameState;
 		Round m_round;
 		std::vector<std::pair<std::optional<std::string>, std::string>> m_chat;
-		//std::array<uint16_t, kSize> m_board;
+		std::array<uint16_t, kSize> m_board;
 	};
 }

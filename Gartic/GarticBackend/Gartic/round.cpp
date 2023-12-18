@@ -23,7 +23,7 @@ void Round::StartRound()
 					SetDifficulty(difficultyAsInt + 1);
 			}
 	}
-	//std::string word{ GetHiddenWord() };
+	////std::string word{ GetHiddenWord() };
 	m_startRoundTime = std::chrono::steady_clock::now();
 }
 

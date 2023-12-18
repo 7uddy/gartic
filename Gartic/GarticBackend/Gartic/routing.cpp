@@ -88,8 +88,8 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				return crow::response(404);
 			});
 
-		CROW_ROUTE(m_app, "/join")
-			.methods(crow::HTTPMethod::GET)([&lobby, &db](const crow::request& req)
+	CROW_ROUTE(m_app, "/join")
+		.methods(crow::HTTPMethod::GET)([&lobby, &db](const crow::request& req)
 				{
 					std::string receivedLobbyID = req.url_params.get("lobbyid");
 					std::string receivedUserID = req.url_params.get("username");
@@ -122,6 +122,39 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 					}
 					return crow::response(404);
 				});
+
+	CROW_ROUTE(m_app, "/gettimer")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				return crow::json::wvalue{ game->GetTimer() };
+			});
+
+	CROW_ROUTE(m_app, "/getboard")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				auto board = game->GetBoard();
+				std::string boardToSend;
+				for (size_t i = 0; i < board.size(); ++i) 
+				{
+					boardToSend.push_back(char(board[i] + '0'));
+				}
+				return crow::json::wvalue{ {"board", boardToSend} };
+			});
+	
+	CROW_ROUTE(m_app, "/sendboard")
+		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req)
+			{
+				std::string stringBoard = req.url_params.get("board");
+				if (stringBoard.size() != Game::kSize)
+					return crow::response(400);
+				std::array<uint16_t, Game::kSize> newBoard;
+				for (size_t i = 0; i < stringBoard.size(); ++i)
+				{
+					newBoard[i] = static_cast<uint16_t>(stringBoard[i]-'0');
+				}
+				game->UpdateBoard(newBoard);
+				return crow::response(200);
+			});
 
 }
 
