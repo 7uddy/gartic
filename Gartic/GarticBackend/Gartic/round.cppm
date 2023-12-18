@@ -30,10 +30,12 @@ namespace gartic
 		void StartRound();
 		void EndRound() noexcept;
 
+		uint16_t GetCurrentRound() const noexcept;
 		uint16_t GetSecondsFromStart() const noexcept;
 		void SetDifficulty(int);
 		uint16_t GetDifficulty() const noexcept;
 		const std::string& GetPainterUsername() const noexcept;
+		const std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 
 		//FOR TEST
 		void ShowAllPlayers() const noexcept;

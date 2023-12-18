@@ -42,6 +42,7 @@ namespace gartic
 		void UpdateBoard(const std::array<uint16_t, kSize>&);
 		void RemovePlayer(std::string_view);
 
+		void AddMessageToChat(std::string_view, std::string_view) noexcept;
 		void ChangeDifficulty(int) noexcept;
 
 		//For Test
@@ -52,10 +53,10 @@ namespace gartic
 		const std::string& GetGameID() const noexcept;
 		uint16_t GetTimer() const noexcept;
 		uint16_t GetDifficulty() const noexcept;
+		uint16_t GetRoundNumber() const noexcept;
 		std::array<uint16_t, kSize> GetBoard() const noexcept;
 		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 		std::vector<std::string> GetChat(std::string_view) const noexcept;
-		void AddMessageToChat(std::string_view, std::string_view) noexcept;
 		//
 
 		void ClearChat() noexcept;

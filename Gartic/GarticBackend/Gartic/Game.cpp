@@ -14,7 +14,9 @@ void Game::StartAnotherRound() noexcept
 
 void Game::AddPlayerToGame(std::unique_ptr<Player> player)
 {
-	m_players.emplace(std::make_pair(player.get()->GetUsername(), std::move(player)));
+	std::shared_ptr<Player> newPlayer{ std::move(player) };
+	m_players.emplace(std::make_pair(newPlayer->GetUsername(), newPlayer));
+	m_round.AddPlayer(newPlayer);
 }
 
 void Game::UpdateBoard(const std::array<uint16_t, kSize>& newBoard)
@@ -88,12 +90,18 @@ uint16_t Game::GetDifficulty() const noexcept
 	return m_round.GetDifficulty();
 }
 
+uint16_t gartic::Game::GetRoundNumber() const noexcept
+{
+	return m_round.GetCurrentRound();
+}
+
 std::vector<std::shared_ptr<Player>> Game::GetPlayers() const noexcept
 {
-	std::vector<std::shared_ptr<Player>> players;
+	/*std::vector<std::shared_ptr<Player>> players;
 	for (const auto& play : m_players)
 		players.push_back(play.second);
-	return players;
+	return players;*/
+	return m_round.GetPlayers();
 }
 
 void Game::ShowAllPlayers() const noexcept

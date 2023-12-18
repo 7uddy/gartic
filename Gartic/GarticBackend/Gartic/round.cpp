@@ -121,6 +121,11 @@ void Round::EndRound() noexcept
 	CalculateScoreForPlayers();
 }
 
+uint16_t Round::GetCurrentRound() const noexcept
+{
+	return m_miniRoundNumber / k_numberOfRounds + 1;
+}
+
 uint16_t Round::GetSecondsFromStart() const noexcept
 {
 	const Time timeNow = std::chrono::steady_clock::now();
@@ -153,6 +158,18 @@ uint16_t Round::GetDifficulty() const noexcept
 const std::string& Round::GetPainterUsername() const noexcept
 {
 	return m_painter.get()->GetUsername();
+}
+
+const std::vector<std::shared_ptr<Player>> Round::GetPlayers() const noexcept
+{
+	if (m_players.at(0) != m_painter)
+	{
+		//to be done
+		std::cout << "FIRST PLAYER IS NOT PAINTER";
+		/*auto painter = std::find(m_players.begin(), m_players.end(), m_painter);
+		std::swap(painter, m_players[0]);*/
+	}
+	return m_players;
 }
 
 void Round::ShowAllPlayers() const noexcept

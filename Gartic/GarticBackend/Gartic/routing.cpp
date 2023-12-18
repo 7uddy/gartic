@@ -129,6 +129,18 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				return crow::json::wvalue{ game->GetTimer() };
 			});
 
+	CROW_ROUTE(m_app, "/getroundnumber")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				return crow::json::wvalue{ game->GetRoundNumber()};
+			});
+	
+	CROW_ROUTE(m_app, "/getlobbycode")
+		.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
+			{
+				return crow::json::wvalue{ lobby->GetLobbyCode()};
+			});
+
 	CROW_ROUTE(m_app, "/getboard")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
@@ -156,6 +168,19 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				return crow::response(200);
 			});
 
+	CROW_ROUTE(m_app, "/getplayersdatafromgame")
+		.methods(crow::HTTPMethod::GET)([&game]() {
+		std::vector<crow::json::wvalue> gameData_json;
+		auto players = game->GetPlayers();
+		for (const auto& player : players)
+		{
+			gameData_json.push_back(crow::json::wvalue{
+				{"username", player->GetUsername()},
+				{"score", std::to_string(player->GetScore())}
+				});
+		}
+		return crow::json::wvalue{ gameData_json };
+		});
 }
 
 crow::SimpleApp& Routing::GetApp()
