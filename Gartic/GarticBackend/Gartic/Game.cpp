@@ -90,7 +90,7 @@ uint16_t Game::GetDifficulty() const noexcept
 	return m_round.GetDifficulty();
 }
 
-uint16_t gartic::Game::GetRoundNumber() const noexcept
+uint16_t Game::GetRoundNumber() const noexcept
 {
 	return m_round.GetCurrentRound();
 }

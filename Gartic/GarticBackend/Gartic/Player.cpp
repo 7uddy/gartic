@@ -8,6 +8,12 @@ Player::Player(const std::string& username, const std::string& email, const std:
 	/*EMPTY*/
 }
 
+Player::Player(const std::string& username):
+	m_username{ username }, m_email{ "" }, m_password{ "" }, m_score{ 0 }
+{
+	/*EMPTY*/
+}
+
 Player::Player(const Player& other)
 {
 	m_username = other.m_username;

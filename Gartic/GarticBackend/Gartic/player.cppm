@@ -13,6 +13,7 @@ namespace gartic
 		/*-------Constructors-------*/
 		Player() = default;
 		Player(const std::string& username, const std::string& email, const std::string& password);
+		Player(const std::string& username);
 		Player(const Player&);
 		Player(Player&& otherPlayer);
 

@@ -5,6 +5,8 @@ using namespace gartic;
 
 void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_ptr<Lobby>& lobby)
 {
+	//getelement => send element from server to client
+	//sendelement => send element from client to server
 	CROW_ROUTE(m_app, "/")([]() {
 		return "Server is running.This is the main branch";
 			});
@@ -88,6 +90,21 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				return crow::response(404);
 			});
 
+	CROW_ROUTE(m_app, "/createlobby")
+		.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
+			{
+				//IF LOBBY ALREADY EXISTS
+				if (lobby.get())
+					return crow::response(409);
+				std::string receivedUsername = req.url_params.get("username");
+				if (receivedUsername.empty())
+					return crow::response(204);
+				lobby = std::make_unique<Lobby>();
+				std::unique_ptr<Player> player = std::make_unique<Player>(receivedUsername);
+				lobby->AddPlayer(player);
+				return crow::response(201);
+			});
+
 	CROW_ROUTE(m_app, "/join")
 		.methods(crow::HTTPMethod::GET)([&lobby, &db](const crow::request& req)
 				{
@@ -135,6 +152,12 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				return crow::json::wvalue{ game->GetRoundNumber()};
 			});
 	
+	CROW_ROUTE(m_app, "/getlobbystatus")
+		.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
+			{
+				return crow::json::wvalue{ lobby->GetStatusOfLobby() };
+			});
+	
 	CROW_ROUTE(m_app, "/getlobbycode")
 		.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
 			{
@@ -166,6 +189,21 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				}
 				game->UpdateBoard(newBoard);
 				return crow::response(200);
+			});
+
+	CROW_ROUTE(m_app, "/senddifficulty")
+		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req)
+			{
+				try
+				{
+					int difficulty = std::stoi(req.url_params.get("difficulty"));
+					game->ChangeDifficulty(difficulty);
+					return crow::response(200);
+				}
+				catch(...)
+				{
+					return crow::response(400);
+				}
 			});
 
 	CROW_ROUTE(m_app, "/getplayersdatafromgame")
