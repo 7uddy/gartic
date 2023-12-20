@@ -30,6 +30,7 @@ namespace gartic
 
 		//FOR GUI
 		uint16_t GetNumberOfPlayers() const noexcept;
+		std::vector<std::string> GetUsernamesOfPlayers() const noexcept;
 		int GetStatusOfLobby() const noexcept;
 
 		const std::string& GetLobbyCode() const noexcept;

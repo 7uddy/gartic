@@ -5,6 +5,7 @@ using namespace gartic;
 
 void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_ptr<Lobby>& lobby)
 {
+	//IF MULTIPLE LOBBIES ARE ALLOWED -> lobby SHOULD BE CHANGED TO vector of LOBBY AND ALL RESPECTIVE ROUTES
 	//getelement => send element from server to client
 	//sendelement => send element from client to server
 	CROW_ROUTE(m_app, "/")([]() {
@@ -61,7 +62,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 			});
 
 	CROW_ROUTE(m_app, "/login")
-		.methods(crow::HTTPMethod::GET)([&db](const crow::request& req)
+		.methods(crow::HTTPMethod::GET)([&db, &lobby, &game](const crow::request& req)
 			{
 				std::string receivedUsername = req.url_params.get("username");
 				std::string receivedPassword = req.url_params.get("password");
@@ -70,9 +71,22 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 					return crow::response(400);
 
 				if (db.PlayerIsInDatabase(receivedUsername, receivedPassword))
-					return crow::response(202);
+					return crow::response(404);
 
-				return crow::response(404);
+				//CHECK IF USERNAME IS IN LOBBY OR GAME
+				//IF USER ALREADY LOGGED IN, BUT NOT JOINED OR CREATED LOBBY, THEN IT WILL STILL LET IT PASS
+				//CAN BE FIXED BY HAVING A VECTOR OF LOGGED IN PLAYER USERNAMES?
+				if (lobby) 
+				{
+					if (lobby->IsInLobby(receivedUsername))
+						return crow::response(409);
+				}
+				if (game)
+				{
+					if (game->IsPlayerInGame(receivedUsername))
+						return crow::response(409);
+				}
+				return crow::response(202);
 			});
 
 	CROW_ROUTE(m_app, "/deleteuser")
@@ -94,7 +108,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 		.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
 			{
 				//IF LOBBY ALREADY EXISTS
-				if (lobby.get())
+				if (lobby)
 					return crow::response(409);
 				std::string receivedUsername = req.url_params.get("username");
 				if (receivedUsername.empty())
@@ -106,52 +120,34 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 			});
 
 	CROW_ROUTE(m_app, "/join")
-		.methods(crow::HTTPMethod::GET)([&lobby, &db](const crow::request& req)
-				{
-					std::string receivedLobbyID = req.url_params.get("lobbyid");
-					std::string receivedUserID = req.url_params.get("username");
+		.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
+			{
+				std::string receivedLobbyCode = req.url_params.get("lobbycode");
+				std::string receivedUsername = req.url_params.get("username");
 
-					if (receivedLobbyID.empty() || receivedUserID.empty())
-						return crow::response(400);
+				//CHECK DATA
+				if (receivedLobbyCode.empty() || receivedUsername.empty())
+					return crow::response(400);
 
-					else {
-						if (lobby->GetLobbyCode() == receivedLobbyID)
-						{
-							std::unique_ptr<Player> player = std::make_unique<Player>(receivedUserID, "", "");
-							try {
-								lobby->AddPlayer(player);
-								return crow::response(200);
-							}
-							catch (...)
-							{
-								return crow::response(400);
-							}
-							/*for (const auto& logincredential : db.iterate<LoginCredential>())
-							{
-								if (std::to_string(logincredential.userID) == receivedUserID)
-								{
-									gartic::Player newPlayer(logincredential.username, logincredential.password,logincredential.email,logincredential.userID);
-									lobby.addPlayer(std::move(newPlayer));
-									return crow::response(200);
-								}
-							}*/
-						}
-					}
+				//CHECK IF THERE IS A LOBBY
+				if (!lobby)
 					return crow::response(404);
-				});
 
-	CROW_ROUTE(m_app, "/gettimer")
-		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
-			{
-				return crow::json::wvalue{ game->GetTimer() };
+				if (lobby->GetLobbyCode() == receivedLobbyCode)
+				{
+					std::unique_ptr<Player> player = std::make_unique<Player>(receivedUsername);
+					try {
+						lobby->AddPlayer(player);
+						return crow::response(200);
+					}
+					catch (...)
+					{
+						return crow::response(400);
+					}
+				}
+				return crow::response(404);
 			});
 
-	CROW_ROUTE(m_app, "/getroundnumber")
-		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
-			{
-				return crow::json::wvalue{ game->GetRoundNumber()};
-			});
-	
 	CROW_ROUTE(m_app, "/getlobbystatus")
 		.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
 			{
@@ -164,6 +160,86 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				return crow::json::wvalue{ lobby->GetLobbyCode()};
 			});
 
+	/*CROW_ROUTE(m_app, "/senddifficulty")
+		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req)
+			{
+				try
+				{
+					int difficulty = std::stoi(req.url_params.get("difficulty"));
+					game->ChangeDifficulty(difficulty);
+					return crow::response(200);
+				}
+				catch(...)
+				{
+					return crow::response(400);
+				}
+			});*/
+
+	CROW_ROUTE(m_app, "/getusernamesfromlobby")
+		.methods(crow::HTTPMethod::GET)([&lobby]()
+			{
+				std::vector<crow::json::wvalue> gameData_json;
+				auto playersUsername = lobby->GetUsernamesOfPlayers();
+				for (const auto& username : playersUsername)
+				{
+					gameData_json.push_back(crow::json::wvalue{
+						{"username", username}
+					});
+				}
+				return crow::json::wvalue{ gameData_json };
+		});
+	
+	CROW_ROUTE(m_app, "/startgame")
+		.methods(crow::HTTPMethod::GET)([&lobby, &game](const crow::request& req)
+			{
+				if (game)
+					return crow::response(400);
+				game = std::make_unique<Game>();
+				//SET DIFFICULTY OF GAME
+				try
+				{
+					//WILL BREAK SERVER IF DIFFICULTY IS NOT SENT
+					int difficulty = std::stoi(req.url_params.get("difficulty"));
+					game->ChangeDifficulty(difficulty);
+				}
+				catch (...)
+				{
+					return crow::response(400);
+				}
+				//MOVE PLAYERS FROM LOBBY TO GAME
+				lobby->MovePlayersToGame(*(game.get()));
+				game->StartAnotherRound();
+				return crow::response(200);
+		});
+
+	//ROUTES RELATED TO GAME
+		
+	CROW_ROUTE(m_app, "/getplayersdatafromgame")
+		.methods(crow::HTTPMethod::GET)([&game]() {
+				std::vector<crow::json::wvalue> gameData_json;
+				auto players = game->GetPlayers();
+				for (const auto& player : players)
+				{
+					gameData_json.push_back(crow::json::wvalue{
+						{"username", player->GetUsername()},
+						{"score", std::to_string(player->GetScore())}
+						});
+				}
+				return crow::json::wvalue{ gameData_json };
+			});
+
+	CROW_ROUTE(m_app, "/getroundnumber")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				return crow::json::wvalue{ game->GetRoundNumber()};
+			});
+
+	CROW_ROUTE(m_app, "/gettimer")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				return crow::json::wvalue{ game->GetTimer() };
+			});
+	
 	CROW_ROUTE(m_app, "/getboard")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
@@ -190,35 +266,6 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unique_p
 				game->UpdateBoard(newBoard);
 				return crow::response(200);
 			});
-
-	CROW_ROUTE(m_app, "/senddifficulty")
-		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req)
-			{
-				try
-				{
-					int difficulty = std::stoi(req.url_params.get("difficulty"));
-					game->ChangeDifficulty(difficulty);
-					return crow::response(200);
-				}
-				catch(...)
-				{
-					return crow::response(400);
-				}
-			});
-
-	CROW_ROUTE(m_app, "/getplayersdatafromgame")
-		.methods(crow::HTTPMethod::GET)([&game]() {
-		std::vector<crow::json::wvalue> gameData_json;
-		auto players = game->GetPlayers();
-		for (const auto& player : players)
-		{
-			gameData_json.push_back(crow::json::wvalue{
-				{"username", player->GetUsername()},
-				{"score", std::to_string(player->GetScore())}
-				});
-		}
-		return crow::json::wvalue{ gameData_json };
-		});
 }
 
 crow::SimpleApp& Routing::GetApp()

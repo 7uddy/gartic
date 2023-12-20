@@ -32,6 +32,16 @@ uint16_t Lobby::GetNumberOfPlayers() const noexcept
 	return static_cast<uint16_t>(m_players.size());
 }
 
+std::vector<std::string> Lobby::GetUsernamesOfPlayers() const noexcept
+{
+	std::vector<std::string> usernames;
+	for (const auto& player : m_players)
+	{
+		usernames.emplace_back(player.first);
+	}
+	return usernames;
+}
+
 const std::string& Lobby::GetLobbyCode() const noexcept
 {
 	return m_lobbyCode;
@@ -61,10 +71,11 @@ void Lobby::MovePlayersToGame(Game& game)
 	{
 		game.AddPlayerToGame(std::move(player.second));
 	}
+	m_lobbyStatus = Lobby::Status::Launched;
 	m_players.clear();
 }
 
-void gartic::Lobby::GenerateLobbyCode() noexcept
+void Lobby::GenerateLobbyCode() noexcept
 {
 	std::pair<int, int> ASCIIValueOfAAndZ{ 65,90 };
 	std::pair<int, int> ASCIIValueOfaAndz{ 97,122 };
