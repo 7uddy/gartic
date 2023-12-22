@@ -10,7 +10,7 @@ namespace gartic
 	class Routing
 	{
 	public:
-		void Run(GarticDatabase& storage, std::unique_ptr<Game>&, std::unique_ptr<Lobby>&);
+		void Run(GarticDatabase& storage, std::unique_ptr<Game>&, std::vector<std::unique_ptr<Lobby>>&);
 		crow::SimpleApp& GetApp();
 
 	private:

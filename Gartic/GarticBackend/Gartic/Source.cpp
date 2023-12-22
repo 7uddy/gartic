@@ -159,9 +159,10 @@ int main()
 	std::unique_ptr<Game> game; /*std::make_unique<Game>();
 	game->AddPlayerToGame(std::make_unique<Player>("andrei", "email", ""));
 	game->StartAnotherRound();*/
-	std::unique_ptr<Lobby> lobby/* = std::make_unique<Lobby>()*/;
+	std::vector<std::unique_ptr<Lobby>> lobbies;
+	//std::unique_ptr<Lobby> lobby/* = std::make_unique<Lobby>()*/;
 	Routing r;
-	r.Run(storage, game, lobby);
+	r.Run(storage, game, lobbies);
 	r.GetApp().port(18080).multithreaded().run();
 	return 0;
 }

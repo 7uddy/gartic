@@ -82,7 +82,14 @@ void Game::RemovePlayer(std::string_view username)
 
 void Game::ChangeDifficulty(int difficulty) noexcept
 {
-	m_round.SetDifficulty(difficulty);
+	try 
+	{
+		m_round.SetDifficulty(difficulty);
+	}
+	catch (...)
+	{
+		throw std::exception("INVALID DIFFICULTY");
+	}
 }
 
 uint16_t Game::GetDifficulty() const noexcept
