@@ -289,6 +289,44 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 						});
 				}
 				return crow::json::wvalue{ gameData_json };
+			});	
+
+	CROW_ROUTE(m_app, "/addmessagetochat")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				//CHECK DATA
+				std::string receivedUsername = req.url_params.get("username");
+				std::string receivedMessage = req.url_params.get("message");
+				if (receivedUsername.empty() || receivedMessage.empty())
+					return crow::response(400);
+				//CHECK IF THERE IS A GAME
+				if (!game)
+					return crow::response(404);
+				//ADD MESSAGES TO CHAT
+				//game->AddMessageToChat(std::string{}, std::string{ "Test de la server." });
+				game->AddMessageToChat(receivedUsername, receivedMessage);
+				return crow::response(200);
+			});
+
+	CROW_ROUTE(m_app, "/getchat")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req) {
+				//CHECK DATA
+				std::string receivedUsername = req.url_params.get("username");
+				if (receivedUsername.empty())
+					return crow::json::wvalue{ "ERROR: NO USERNAME IN PARAMETERS" };
+				if(!game)
+					return crow::json::wvalue{ "ERROR: NO GAME IN PROCESS" };
+
+				//GET CHAT
+				std::vector<crow::json::wvalue> gameData_json;
+				auto messages = game->GetChat(receivedUsername);
+				for (const auto& message : messages)
+				{
+					gameData_json.push_back(crow::json::wvalue{
+						{"message", message}
+						});
+				}
+				return crow::json::wvalue{ gameData_json };
 			});
 
 	CROW_ROUTE(m_app, "/getroundnumber")

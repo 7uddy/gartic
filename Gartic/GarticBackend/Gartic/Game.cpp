@@ -36,20 +36,29 @@ uint16_t Game::GetTimer() const noexcept
 
 void Game::AddMessageToChat(std::string_view username, std::string_view message) noexcept
 {
+	//TO BE REWORKED
+	// 
+	// 
+	//CHECK IF MESSAGE HAS A SPACE IN IT => IT IS A GUESS
 	if (message.find(' ') == message.npos)
 	{
+		//CHECK IF THE MESSAGE IS THE HIDDEN WORD
 		//if(IsHiddenWord(message))
 		// {
 		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), message));
-		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), "FELICITARI! AI GHICIT CUVANTUL));
+		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::string{"FELICITARI! AI GHICIT CUVANTUL}));
 		// }
+		// //ADD MESSAGE FOR EVERYONE SINCE IT WAS NOT CORRECT
 		//else
 		// {
 		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), message));
 		// }
-		//return;
 	}
-	//m_chat.emplace_back(std::make_pair(std::optional<std::string>(), message));
+	//ADD MESSAGE FOR EVERYONE SINCE IT IS NOT A GUESS
+	else
+	{
+		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::string{ message }));
+	}
 }
 
 void Game::ClearChat() noexcept
@@ -64,10 +73,12 @@ std::vector<std::string> Game::GetChat(std::string_view user) const noexcept
 	for (const auto& message : m_chat)
 	{
 		if (!message.first.has_value())
-			chat.emplace_back(message.first.value() + message.second);
+			chat.emplace_back("SYSTEM: " + message.second);
 		else
-			if(message.first.value()==username)
-				chat.emplace_back(message.first.value() + message.second);
+		{
+			if (message.first.value() == username)
+				chat.emplace_back(message.first.value() + ": " + message.second);
+		}
 	}
 	return chat;
 }
