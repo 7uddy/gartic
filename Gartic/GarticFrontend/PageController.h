@@ -15,6 +15,7 @@ public:
 	void SetStartupPage(const QString& name);
 	bool VerifyLogin(const QString& enteredUsername, const QString& enteredPassword);
 	bool VerifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword);
+	bool CreateRoom();
 private:
 	QMap<QString, QWidget*> pagesMap;
 	Player player;

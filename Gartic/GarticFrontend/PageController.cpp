@@ -71,3 +71,16 @@ bool PageController::VerifyRegister(const QString& enteredUsername, const QStrin
 	}
 	return false;
 }
+
+bool PageController::CreateRoom()
+{
+	auto responseCreate = cpr::Get(
+		cpr::Url{ "http://localhost:18080/createlobby" },
+		cpr::Parameters{
+				{ "username", player.GetUsername()},
+		}
+	);
+	//if (responseCreate.status_code == 201)
+		return true;
+	return false;
+}

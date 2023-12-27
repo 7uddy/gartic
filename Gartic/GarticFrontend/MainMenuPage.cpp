@@ -13,7 +13,10 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(createButton, &QPushButton::clicked, controller, [controller]() {
-		controller->ShowPage("WaitingRoom");
+		if (controller->CreateRoom())
+			controller->ShowPage("WaitingRoom");
+		else 
+			QMessageBox::warning(controller, "Create Room Error", "A room is already created or something went wrong.");
 		});
 	connect(joinButton, &QPushButton::clicked, controller, [controller]() {
 		controller->ShowPage("SelectRoom");

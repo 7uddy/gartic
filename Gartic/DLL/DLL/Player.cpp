@@ -13,12 +13,12 @@ Player::Player(Player&& player) noexcept
 
 void Player::SetUsername(std::string_view  username)
 {
-	m_username = username;
+	m_username = std::string(username);
 }
 
 void Player::SetPassword(std::string_view  password)
 {
-	m_password = password;
+	m_password = std::string(password);
 }
 
 void Player::SetEmail(const std::string& email)
