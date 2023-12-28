@@ -61,6 +61,6 @@ void MainWindow::closeEvent(QCloseEvent* event)
     reply = QMessageBox::question(this, "Confirmation", "Do you really want to close the game?",
         QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes)
-        std::exit(0);
+        close();
     event->ignore();
 }

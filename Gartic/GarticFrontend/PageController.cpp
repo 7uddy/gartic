@@ -80,7 +80,7 @@ bool PageController::CreateRoom()
 				{ "username", player.GetUsername()},
 		}
 	);
-	//if (responseCreate.status_code == 201)
+	if (responseCreate.status_code == 200)
 		return true;
 	return false;
 }
