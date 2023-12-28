@@ -58,6 +58,9 @@ namespace gartic
 		std::array<uint16_t, kSize> GetBoard() const noexcept;
 		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 		std::vector<std::string> GetChat(std::string_view) const noexcept;
+		const std::string& GetPainterUsername() const noexcept;
+		const std::string& GetHiddenWord() const noexcept;
+		const std::string& GetShownWord() const noexcept;
 		//
 
 		void ClearChat() noexcept;

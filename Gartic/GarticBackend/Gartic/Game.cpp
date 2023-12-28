@@ -92,6 +92,21 @@ std::vector<std::string> Game::GetChat(std::string_view user) const noexcept
 	return chat;
 }
 
+const std::string& gartic::Game::GetPainterUsername() const noexcept
+{
+	return m_round.GetPainterUsername();
+}
+
+const std::string& gartic::Game::GetHiddenWord() const noexcept
+{
+	return m_round.GetHiddenWord();
+}
+
+const std::string& gartic::Game::GetShownWord() const noexcept
+{
+	return m_round.GetShownWord();
+}
+
 void Game::RemovePlayer(std::string_view username)
 {
 	if (std::string usernameString(username); !m_players.contains(usernameString))

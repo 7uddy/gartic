@@ -35,6 +35,9 @@ namespace gartic
 		void SetDifficulty(int);
 		uint16_t GetDifficulty() const noexcept;
 		const std::string& GetPainterUsername() const noexcept;
+		const std::string& GetHiddenWord() const noexcept;
+		const std::string& GetShownWord() const noexcept;
+		bool IsHiddenWord(const std::string& receivedWord);
 		const std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 
 		//FOR TEST

@@ -367,6 +367,24 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				game->UpdateBoard(newBoard);
 				return crow::response(200);
 			});
+	CROW_ROUTE(m_app, "/getword")
+		.methods(crow::HTTPMethod::Get)([&game](const crow::request& req)
+			{
+				std::string receivedUsername = req.url_params.get("username");
+				if (receivedUsername.empty())
+					return crow::json::wvalue{ "ERROR: NO USERNAME IN PARAMETERS" };
+				//CHECK IF THERE IS A GAME
+				if (!game)
+					return crow::json::wvalue{ "ERROR: NO GAME IN PROGRESS." };
+				if (receivedUsername == game->GetPainterUsername())
+				{
+					return crow::json::wvalue{ {"Word", game->GetHiddenWord()}};
+				}
+				else
+				{
+					return crow::json::wvalue{ {"Word", game->GetShownWord()} };
+				}
+			});
 }
 
 crow::SimpleApp& Routing::GetApp()

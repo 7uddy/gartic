@@ -156,9 +156,9 @@ int main()
 	}
 	/*for (const auto& word : storage.GetWords())
 		std::cout << word << ' ';*/
-	std::unique_ptr<Game> game=std::make_unique<Game>();
+	std::unique_ptr<Game> game;/*=std::make_unique<Game>();
 	game->AddPlayerToGame(std::make_unique<Player>("andrei", "email", ""));
-	game->StartAnotherRound(storage);
+	game->StartAnotherRound(storage);*/
 	std::vector<std::unique_ptr<Lobby>> lobbies;
 	//std::unique_ptr<Lobby> lobby/* = std::make_unique<Lobby>()*/;
 	Routing r;
