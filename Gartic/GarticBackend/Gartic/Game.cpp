@@ -10,8 +10,15 @@ const std::string& Game::GetGameID() const noexcept
 
 void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 {
-	Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
-	m_round.StartRound(word);
+	do {
+		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
+		if (std::find(pastWords.begin(), pastWords.end(), word) == pastWords.end())
+		{
+			pastWords.emplace_back(word);
+			m_round.StartRound(word);
+			break;
+		}
+	} while (true);
 }
 
 void Game::AddPlayerToGame(std::unique_ptr<Player> player)

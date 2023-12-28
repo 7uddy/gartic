@@ -2,9 +2,9 @@ module;
 
 #include "garticDatabase.h"
 export module game;
-
 import <array>;
 
+export import word;
 export import round;
 
 //import <iostream>;
@@ -69,5 +69,6 @@ namespace gartic
 		Round m_round;
 		std::vector<std::pair<std::optional<std::string>, std::string>> m_chat;
 		std::array<uint16_t, kSize> m_board;
+		std::vector<Word> pastWords;
 	};
 }
