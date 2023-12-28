@@ -21,6 +21,7 @@ namespace gartic
 		//Getteri
 		const std::string& GetWord() const noexcept;
 		int GetDifficulty() const noexcept;
+		bool operator==(const Word& other)const noexcept;
 	private:
 		std::string m_word;
 		int m_difficulty;

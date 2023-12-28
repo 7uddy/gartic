@@ -1,9 +1,10 @@
 module;
 
+#include "garticDatabase.h"
 export module game;
-
 import <array>;
 
+export import word;
 export import round;
 
 //import <iostream>;
@@ -36,7 +37,7 @@ namespace gartic
 		~Game() = default;
 
 
-		void StartAnotherRound() noexcept;
+		void StartAnotherRound(GarticDatabase& storage) noexcept;
 
 		void AddPlayerToGame(std::unique_ptr<Player>);
 		void UpdateBoard(const std::array<uint16_t, kSize>&);
@@ -57,6 +58,9 @@ namespace gartic
 		std::array<uint16_t, kSize> GetBoard() const noexcept;
 		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 		std::vector<std::string> GetChat(std::string_view) const noexcept;
+		const std::string& GetPainterUsername() const noexcept;
+		const std::string& GetHiddenWord() const noexcept;
+		const std::string& GetShownWord() const noexcept;
 		//
 
 		void ClearChat() noexcept;
@@ -68,5 +72,6 @@ namespace gartic
 		Round m_round;
 		std::vector<std::pair<std::optional<std::string>, std::string>> m_chat;
 		std::array<uint16_t, kSize> m_board;
+		std::vector<Word> pastWords;
 	};
 }

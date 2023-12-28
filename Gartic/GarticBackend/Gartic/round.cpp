@@ -3,7 +3,7 @@ using namespace gartic;
 
 std::shared_ptr<Player> Round::m_painter{nullptr};
 
-void Round::StartRound()
+void Round::StartRound(const Word& word)
 {
 	static const int numberOfDifficulties = 2;
 	ChoosePainter();
@@ -11,7 +11,7 @@ void Round::StartRound()
 		throw std::exception("NUMBER OF ROUND IS BIGGER THAN POSSIBLE");
 	++m_miniRoundNumber;
 	//Template to changing difficulty between rounds
-	if (m_miniRoundNumber - 1 != 0)
+	/*if (m_miniRoundNumber - 1 != 0)
 	{
 		if (!m_difficultyIsAscending)
 			;
@@ -22,9 +22,16 @@ void Round::StartRound()
 				if (difficultyAsInt + 1 <= numberOfDifficulties)
 					SetDifficulty(difficultyAsInt + 1);
 			}
-	}
+	}*/
 	////std::string word{ GetHiddenWord() };
 	m_startRoundTime = std::chrono::steady_clock::now();
+	if (word.GetDifficulty() == DifficultyToInteger(m_difficulty))
+	{
+		m_hiddenWord = word.GetWord();
+		m_lettersToShow = m_hiddenWord.size() / 2;
+	}
+	else
+		throw std::exception("Word difficulty doesn't match with round difficulty");
 }
 
 void Round::ChoosePainter() noexcept
@@ -157,7 +164,22 @@ uint16_t Round::GetDifficulty() const noexcept
 
 const std::string& Round::GetPainterUsername() const noexcept
 {
-	return m_painter.get()->GetUsername();
+	return m_painter->GetUsername();
+}
+
+const std::string& gartic::Round::GetHiddenWord() const noexcept
+{
+	return m_hiddenWord;
+}
+
+const std::string& gartic::Round::GetShownWord() const noexcept
+{
+	return m_shownWord;
+}
+
+bool gartic::Round::IsHiddenWord(const std::string& receivedWord)
+{
+	return receivedWord == m_hiddenWord;
 }
 
 const std::vector<std::shared_ptr<Player>> Round::GetPlayers() const noexcept

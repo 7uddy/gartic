@@ -1,6 +1,6 @@
 module;
 export module round;
-
+export import word;
 export import player;
 
 import <chrono>;
@@ -27,7 +27,7 @@ namespace gartic
 		Round() = default;
 
 		//FUNCTIONS FOR ROUND AND SCORE 
-		void StartRound();
+		void StartRound(const Word& word);
 		void EndRound() noexcept;
 
 		uint16_t GetCurrentRound() const noexcept;
@@ -35,6 +35,9 @@ namespace gartic
 		void SetDifficulty(int);
 		uint16_t GetDifficulty() const noexcept;
 		const std::string& GetPainterUsername() const noexcept;
+		const std::string& GetHiddenWord() const noexcept;
+		const std::string& GetShownWord() const noexcept;
+		bool IsHiddenWord(const std::string& receivedWord);
 		const std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 
 		//FOR TEST
@@ -63,9 +66,9 @@ namespace gartic
 		std::unordered_map<std::string, uint16_t> m_guessTimes;
 
 
-		////Variables related to word
-		//std::string m_hiddenWord;
-		//std::string m_shownWord;
-		//uint8_t m_lettersToShow;
+		//Variables related to word
+		std::string m_shownWord;
+		int m_lettersToShow;
+		std::string m_hiddenWord;
 	};
 }

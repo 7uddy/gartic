@@ -1,4 +1,5 @@
 module game;
+import word;
 
 using namespace gartic;
 
@@ -7,9 +8,17 @@ const std::string& Game::GetGameID() const noexcept
 	return m_gameID;
 }
 
-void Game::StartAnotherRound() noexcept
+void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 {
-	m_round.StartRound();
+	do {
+		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
+		if (std::find(pastWords.begin(), pastWords.end(), word) == pastWords.end())
+		{
+			pastWords.emplace_back(word);
+			m_round.StartRound(word);
+			break;
+		}
+	} while (true);
 }
 
 void Game::AddPlayerToGame(std::unique_ptr<Player> player)
@@ -81,6 +90,21 @@ std::vector<std::string> Game::GetChat(std::string_view user) const noexcept
 		}
 	}
 	return chat;
+}
+
+const std::string& gartic::Game::GetPainterUsername() const noexcept
+{
+	return m_round.GetPainterUsername();
+}
+
+const std::string& gartic::Game::GetHiddenWord() const noexcept
+{
+	return m_round.GetHiddenWord();
+}
+
+const std::string& gartic::Game::GetShownWord() const noexcept
+{
+	return m_round.GetShownWord();
 }
 
 void Game::RemovePlayer(std::string_view username)
