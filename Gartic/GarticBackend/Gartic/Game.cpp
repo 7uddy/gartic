@@ -1,4 +1,5 @@
 module game;
+import word;
 
 using namespace gartic;
 
@@ -7,9 +8,10 @@ const std::string& Game::GetGameID() const noexcept
 	return m_gameID;
 }
 
-void Game::StartAnotherRound() noexcept
+void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 {
-	m_round.StartRound();
+	Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
+	m_round.StartRound(word);
 }
 
 void Game::AddPlayerToGame(std::unique_ptr<Player> player)

@@ -3,7 +3,7 @@ using namespace gartic;
 
 std::shared_ptr<Player> Round::m_painter{nullptr};
 
-void Round::StartRound()
+void Round::StartRound(const Word& word)
 {
 	static const int numberOfDifficulties = 2;
 	ChoosePainter();
@@ -25,6 +25,13 @@ void Round::StartRound()
 	}
 	////std::string word{ GetHiddenWord() };
 	m_startRoundTime = std::chrono::steady_clock::now();
+	if (word.GetDifficulty() == DifficultyToInteger(m_difficulty))
+	{
+		m_hiddenWord = word.GetWord();
+		m_lettersToShow = m_hiddenWord.size() / 2;
+	}
+	else
+		throw std::exception("Word difficulty doesn't match with round difficulty");
 }
 
 void Round::ChoosePainter() noexcept

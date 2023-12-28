@@ -1,5 +1,6 @@
 module;
 
+#include "garticDatabase.h"
 export module game;
 
 import <array>;
@@ -36,7 +37,7 @@ namespace gartic
 		~Game() = default;
 
 
-		void StartAnotherRound() noexcept;
+		void StartAnotherRound(GarticDatabase& storage) noexcept;
 
 		void AddPlayerToGame(std::unique_ptr<Player>);
 		void UpdateBoard(const std::array<uint16_t, kSize>&);
