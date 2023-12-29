@@ -16,6 +16,7 @@ public:
 	bool VerifyLogin(const QString& enteredUsername, const QString& enteredPassword);
 	bool VerifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword);
 	bool CreateRoom();
+	bool VerifyCode(const QString& enteredCode);
 private:
 	QMap<QString, QWidget*> pagesMap;
 	Player player;

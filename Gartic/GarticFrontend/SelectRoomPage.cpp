@@ -16,8 +16,15 @@ SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
        controller->ShowPage("MainMenu");
    });
 
-    connect(joinButton, &QPushButton::clicked, controller, [controller]() {
-        controller->ShowPage("Leaderboard");
+    connect(joinButton, &QPushButton::clicked, controller, [=]() {
+        if (controller->VerifyCode(roomCode->text()))
+        {
+            controller->ShowPage("WaitingRoom");
+        }
+        else
+        {
+            QMessageBox::warning(controller, "Join Room Error", "There is no room with the entered code or something went wrong.");
+        }
         });
 }
 

@@ -84,3 +84,18 @@ bool PageController::CreateRoom()
 		return true;
 	return false;
 }
+
+bool PageController::VerifyCode(const QString& enteredCode)
+{
+	std::string lobbyCode = enteredCode.toUtf8().constData();
+	auto responseJoin = cpr::Get(
+		cpr::Url{ "http://localhost:18080/joinlobby" },
+		cpr::Parameters{
+				{ "lobbycode", lobbyCode },
+				{ "username", player.GetUsername()},
+		}
+	);
+	if (responseJoin.status_code == 200)
+		return true;
+	return false;
+}
