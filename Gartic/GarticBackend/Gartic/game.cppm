@@ -43,7 +43,7 @@ namespace gartic
 		void UpdateBoard(const std::array<uint16_t, kSize>&);
 		void RemovePlayer(std::string_view);
 
-		void AddMessageToChat(std::string_view, std::string_view) noexcept;
+		void AddMessageToChat(const std::string& message, const std::string& username="") noexcept;
 		void ChangeDifficulty(int) noexcept;
 
 		//For Test

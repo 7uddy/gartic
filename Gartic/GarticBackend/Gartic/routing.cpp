@@ -304,7 +304,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					return crow::response(404);
 				//ADD MESSAGES TO CHAT
 				//game->AddMessageToChat(std::string{}, std::string{ "Test de la server." });
-				game->AddMessageToChat(receivedUsername, receivedMessage);
+				game->AddMessageToChat(receivedMessage, receivedUsername);
 				return crow::response(200);
 			});
 

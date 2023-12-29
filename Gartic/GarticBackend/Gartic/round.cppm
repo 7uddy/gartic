@@ -45,8 +45,8 @@ namespace gartic
 		void ShowAllPlayerGuessTimes() const noexcept;
 		void AddPlayer(std::shared_ptr<Player> player);
 
-	private:
 		void AddPlayerGuessTime(const std::string&);
+	private:
 		void ChoosePainter() noexcept;
 		void CalculateScoreForPlayers() noexcept;
 		void UpdateScoreForPlayer(std::shared_ptr<Player>) noexcept;

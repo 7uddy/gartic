@@ -43,31 +43,43 @@ uint16_t Game::GetTimer() const noexcept
 	return m_round.GetSecondsFromStart();
 }
 
-void Game::AddMessageToChat(std::string_view username, std::string_view message) noexcept
+void Game::AddMessageToChat(const std::string& message, const std::string& username) noexcept
 {
-	//TO BE REWORKED
-	// 
-	// 
-	//CHECK IF MESSAGE HAS A SPACE IN IT => IT IS A GUESS
-	if (message.find(' ') == message.npos)
+	//IN CASE THE MESSAGE IS FROM SYSTEM
+	/*if (username.empty())
 	{
-		//CHECK IF THE MESSAGE IS THE HIDDEN WORD
-		//if(IsHiddenWord(message))
-		// {
-		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), message));
-		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::string{"FELICITARI! AI GHICIT CUVANTUL}));
-		// }
-		// //ADD MESSAGE FOR EVERYONE SINCE IT WAS NOT CORRECT
-		//else
-		// {
-		//		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), message));
-		// }
-	}
-	//ADD MESSAGE FOR EVERYONE SINCE IT IS NOT A GUESS
-	else
+		std::string messageToBeAdded{ "[SYSTEM]: " + message };
+		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::move(messageToBeAdded));
+		return;
+	}*/
+
+	//FORMAT NEW MESSAGE
+	std::string messageToBeAdded{ "[" + username + "]: " + message };
+
+	//CHECK IF MESSAGE HAS A SPACE IN IT => IT IS NOT A GUESS
+	if (message.find(' ') != message.npos)
 	{
-		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::string{ message }));
+		//ADD MESSAGE FOR EVERYONE SINCE IT IS NOT A GUESS
+		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::move(messageToBeAdded)));
+		return;
 	}
+
+	//MESSAGE DOES NOT HAVE A SPACE => IT IS A GUESS
+
+	//CHECK IF THE MESSAGE IS THE HIDDEN WORD
+	if (!m_round.IsHiddenWord(message))
+	{
+		//ADD MESSAGE FOR EVERYONE SINCE IT WAS NOT CORRECT
+		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::move(messageToBeAdded)));
+		return;
+	}
+	//IF HERE => MESSAGE IS HIDDEN WORD => ADD GUESS TIME FOR PLAYER
+	m_round.AddPlayerGuessTime(username);
+	//ADD MESSAGE ONLY FOR PLAYER
+	m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::move(messageToBeAdded)));
+	//ADD MESSAGE OF CONGRATULATIONS ONLY TO PLAYER
+	m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::string{ "[SYSTEM]: FELICITARI! AI GHICIT CUVANTUL" }));
+
 }
 
 void Game::ClearChat() noexcept
@@ -82,11 +94,11 @@ std::vector<std::string> Game::GetChat(std::string_view user) const noexcept
 	for (const auto& message : m_chat)
 	{
 		if (!message.first.has_value())
-			chat.emplace_back("SYSTEM: " + message.second);
+			chat.emplace_back(message.second);
 		else
 		{
 			if (message.first.value() == username)
-				chat.emplace_back(message.first.value() + ": " + message.second);
+				chat.emplace_back(message.second);
 		}
 	}
 	return chat;
