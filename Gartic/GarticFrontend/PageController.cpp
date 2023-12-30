@@ -80,8 +80,9 @@ bool PageController::CreateRoom()
 				{ "username", player.GetUsername()},
 		}
 	);
-	auto response = crow::json::load(responseCreate.text);
-	lobbyCode = response["text"].s();
+	std::string responseText = responseCreate.text;
+	auto json = nlohmann::json::parse(responseText);
+    lobbyCode = json["text"];
 	static const int responseLength = 5;
 	if (lobbyCode.size() == responseLength)
 		return true;
