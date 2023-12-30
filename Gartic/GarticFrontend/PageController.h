@@ -1,10 +1,11 @@
 #pragma once
+#include <cpr/cpr.h>
+#include <crow.h>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QStackedWidget>
 #include <QMessageBox>
 #include <string>
 #include "../DLL/DLL/Player.h"
-#include <cpr/cpr.h>
 
 class PageController:public QStackedWidget
 {
@@ -20,5 +21,6 @@ public:
 private:
 	QMap<QString, QWidget*> pagesMap;
 	Player player;
+	std::string lobbyCode;
 };
 

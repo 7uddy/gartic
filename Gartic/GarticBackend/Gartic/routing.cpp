@@ -137,13 +137,13 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				//CHECK DATA
 				std::string receivedUsername = req.url_params.get("username");
 				if (receivedUsername.empty())
-					return crow::json::wvalue{ "ERROR: NO USERNAME"};
+					return crow::json::wvalue{ {"text", "ERROR: NO USERNAME"} };
 				if (!lobbies.empty())
 				{
 					//IF PLAYER IS ALREADY IN A LOBBY
 					auto foundLobby = GetLobbyWithPlayer(lobbies, receivedUsername);
 					if (foundLobby->get())
-						return crow::json::wvalue{ "ERROR: USER ALREADY IN A LOBBY"};
+						return crow::json::wvalue{ {"text","ERROR: USER ALREADY IN A LOBBY"} };
 				}
 				//CREATE NEW LOBBY AND ADD PLAYER TO LOBBY
 				std::unique_ptr<Lobby> lobby = std::make_unique<Lobby>();
@@ -154,7 +154,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				//ADD LOBBY TO LOBBIES VECTOR
 				lobbies.emplace_back(std::move(lobby));
 				//RETURN LOBBY CODE
-				return crow::json::wvalue{ lobbyCode };
+				return crow::json::wvalue{ {"text",lobbyCode} };
 			});
 
 	CROW_ROUTE(m_app, "/joinlobby")
