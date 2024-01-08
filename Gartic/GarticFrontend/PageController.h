@@ -11,13 +11,18 @@ class PageController:public QStackedWidget
 {
 public:
 	PageController(QWidget* parent = nullptr);
+	// PAGE MECHANISM
 	void AddPage(QWidget *page, const QString& name);
 	void ShowPage(const QString& name);
 	void SetStartupPage(const QString& name);
+	// VERIFIES LOGIN/REGISTER
 	bool VerifyLogin(const QString& enteredUsername, const QString& enteredPassword);
 	bool VerifyRegister(const QString& enteredUsername, const QString& enteredEmail, const QString& enteredPassword);
+	// FUNCTIONS RELATED TO THE SERVER CONNECTION
 	bool CreateRoom();
 	bool VerifyCode(const QString& enteredCode);
+	bool LeaveRoom();
+	// GETTERS 
 	std::string GetLobbyCode();
 private:
 	QMap<QString, QWidget*> pagesMap;

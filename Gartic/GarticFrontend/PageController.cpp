@@ -105,6 +105,19 @@ bool PageController::VerifyCode(const QString& enteredCode)
 	return false;
 }
 
+bool PageController::LeaveRoom()
+{
+	auto responseLeave = cpr::Get(
+		cpr::Url{ "http://localhost:18080/disconnectfromlobby" },
+		cpr::Parameters{
+				{ "username", player.GetUsername()},
+		}
+	);
+	if (responseLeave.status_code == 200)
+		return true;
+	return false;
+}
+
 std::string PageController::GetLobbyCode()
 {
 	return lobbyCode;

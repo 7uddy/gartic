@@ -17,13 +17,18 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 		currentDifficulty = static_cast<Difficulty>((difficultyToInt(currentDifficulty) + 1) % 4);
 		difficultyButton->setText(difficultyToQString(currentDifficulty));
 		});
-
 	connect(startButton, &QPushButton::clicked, controller, [controller]() {
 		controller->ShowPage("Game");
 		});
-
-	connect(returnButton, &QPushButton::clicked, controller, [controller]() {
-		controller->ShowPage("MainMenu");
+	connect(returnButton, &QPushButton::clicked, controller, [=]() {
+		if (controller->LeaveRoom())
+		{
+			code->setEnabled(true);
+			code->setText("Press here");
+			controller->ShowPage("MainMenu");
+		}
+		else 
+		    QMessageBox::warning(controller, "Exit Room Error", "Something went wrong.");
 		});
 	connect(code, &QPushButton::clicked, this, [=]()
 	    {
