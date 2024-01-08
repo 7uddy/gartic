@@ -81,6 +81,16 @@ void GarticDatabase::AddWordToDatabase(std::string word, int difficulty)
 	m_db.insert(Word{ word, difficulty });
 }
 
+void GarticDatabase::AddScoreToDatabase(int gameID, std::string username, float score)
+{
+	m_db.insert(GameScore{ gameID,username,score });
+}
+
+std::vector<GameScore> GarticDatabase::GetScoresOfPlayer(std::string username)
+{
+	return m_db.get_all<GameScore>(sql::where(sql::c(&GameScore::GetUsername) == username));
+}
+
 void GarticDatabase::PopulatePlayerStorage()
 {
 	std::ifstream fin{ "credentials.txt" };

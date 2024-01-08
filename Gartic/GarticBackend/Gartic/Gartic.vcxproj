@@ -145,8 +145,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\..\SoloGartic\SoloGartic\gamescore.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game.cppm" />
+    <ClCompile Include="gamescore.cppm" />
     <ClCompile Include="garticDatabase.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="lobby.cpp" />

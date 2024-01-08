@@ -422,6 +422,26 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					return crow::json::wvalue{ {"Word", game->GetShownWord()} };
 				}
 			});
+
+	//Profile Page
+	CROW_ROUTE(m_app, "/getgamescores")
+		.methods(crow::HTTPMethod::Get)([&db](const crow::request& req)
+			{
+				std::string receivedUsername = req.url_params.get("username");
+				if (receivedUsername.empty())
+					return crow::json::wvalue{ "ERROR: NO USERNAME IN PARAMETERS" };
+
+				std::vector<crow::json::wvalue> gameData_json;
+				auto scores = db.GetScoresOfPlayer(receivedUsername);
+				for (const auto& score : scores)
+				{
+					gameData_json.push_back(crow::json::wvalue{
+						{"gameid", score.GetGameId()},
+						{"score", score.GetScore()}
+						});
+				}
+				return crow::json::wvalue{ gameData_json };
+			});
 }
 
 crow::SimpleApp& Routing::GetApp()
