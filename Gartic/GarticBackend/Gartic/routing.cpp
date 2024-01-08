@@ -189,6 +189,43 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				}
 			});
 
+	CROW_ROUTE(m_app, "/disconnectfromlobby")
+		.methods(crow::HTTPMethod::GET)([&lobbies](const crow::request& req)
+			{
+				std::string receivedUsername = req.url_params.get("username");
+
+				//CHECK DATA
+				if (receivedUsername.empty())
+					return crow::response(400);
+
+				//CHECK IF THERE IS A LOBBY
+				if (lobbies.empty())
+					return crow::response(404);
+
+				//CHECK IF THERE IS A LOBBY WITH USERNAME IN IT
+				auto foundLobby = GetLobbyWithPlayer(lobbies, receivedUsername);
+				if (!foundLobby->get())
+					return crow::response(400);
+				try
+				{
+					//REMOVE PLAYER FROM LOBBY
+					foundLobby->get()->RemovePlayer(receivedUsername);
+					//DELETE LOBBY IF NO PLAYERS ARE IN IT
+					if (foundLobby->get()->GetNumberOfPlayers() == 0)
+					{
+						lobbies.erase(std::remove_if(lobbies.begin(), lobbies.end(),
+							[&](const std::unique_ptr<Lobby>& ptr) {
+								return ptr.get() == foundLobby->get();
+							}));
+					}
+					return crow::response(200);
+				}
+				catch (...)
+				{
+					return crow::response(409);
+				}
+			});
+
 	CROW_ROUTE(m_app, "/getlobbystatus")
 		.methods(crow::HTTPMethod::GET)([&lobbies](const crow::request& req)
 			{
