@@ -22,11 +22,13 @@ public:
 
 	void OnPlayerJoin(const QString& playerName);
 	void UpdateMainPaddingSize();
-	void UpdateLobbyCode(const std::string& codeLobby);
+	void UpdateRoomCode(const std::string& codeLobby);
 
-	int difficultyToInt(Difficulty difficulty);
-	QString difficultyToQString(Difficulty difficulty);
+	int DifficultyToInt(Difficulty difficulty);
+	QString DifficultyToQString(Difficulty difficulty);
 	~WaitingRoomPage();
+
+	void UpdateDataFromRoom();
 
 private:
 	QVBoxLayout* layout;
@@ -38,13 +40,13 @@ private:
 	QWidget* mainPadding;
 	QPushButton* difficultyButton;
 	QLabel* playersNumber;
-
+	QLabel* statusText;
 	QVector<QWidget*> profilePaddings;
 	QVector<QHBoxLayout*> profileLayouts;
 	//QVector<QLabel*> profileNames;
 
 	Difficulty currentDifficulty;
-	std::string lobbyCode;
-
+	std::string roomCode;
+	int statusRoom;
 };
 

@@ -12,10 +12,11 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	playersNumber = new QLabel("0/4");
 	code = new QPushButton("Press here");
 	currentDifficulty = Difficulty::Easy;
+	statusText = new QLabel();
 
 	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
-		currentDifficulty = static_cast<Difficulty>((difficultyToInt(currentDifficulty) + 1) % 4);
-		difficultyButton->setText(difficultyToQString(currentDifficulty));
+		currentDifficulty = static_cast<Difficulty>((DifficultyToInt(currentDifficulty) + 1) % 4);
+		difficultyButton->setText(DifficultyToQString(currentDifficulty));
 		});
 	connect(startButton, &QPushButton::clicked, controller, [controller]() {
 		controller->ShowPage("Game");
@@ -32,7 +33,7 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 		});
 	connect(code, &QPushButton::clicked, this, [=]()
 	    {
-			UpdateLobbyCode(controller->GetLobbyCode());
+			UpdateRoomCode(controller->GetLobbyCode());
 	    });
 	SetSize();
 	StyleElements();
@@ -57,7 +58,6 @@ void WaitingRoomPage::PlaceElements()
 	QGridLayout* middleLayout = new QGridLayout;
 
 	QHBoxLayout* statusLayout = new QHBoxLayout;
-	QLabel* statusText = new QLabel("Waiting..");
 	statusText->setAccessibleName("statusLabel");
 	statusLayout->addWidget(statusText);
 	statusLayout->addWidget(playersNumber, 0, Qt::AlignRight);
@@ -175,14 +175,33 @@ void WaitingRoomPage::UpdateMainPaddingSize()
 	}
 }
 
-void WaitingRoomPage::UpdateLobbyCode(const std::string& codeLobby)
+void WaitingRoomPage::UpdateDataFromRoom()
 {
-	lobbyCode = codeLobby;
-	code->setText(QString::fromUtf8(codeLobby.c_str()));
-	code->setEnabled(false);
+	auto responseStatus = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getlobbystatus" },
+		cpr::Parameters{
+				{ "username", roomCode},
+		}
+	);
+	statusRoom = responseStatus.status_code;
+	if ((statusRoom != 0) && (statusRoom != 1))
+		return;
+	else if (statusRoom == 0)
+		statusText->setText("WaitingForPlayers");
+	else
+		statusText->setText("Launched");
+	QTimer::singleShot(2000, this, SLOT(UpdateDataFromRoom()));
 }
 
-QString WaitingRoomPage::difficultyToQString(Difficulty difficulty) {
+void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby)
+{
+	roomCode = codeLobby;
+	code->setText(QString::fromUtf8(codeLobby.c_str()));
+	code->setEnabled(false);
+	QTimer::singleShot(0, this, SLOT(UpdateDataFromRoom()));
+}
+
+QString WaitingRoomPage::DifficultyToQString(Difficulty difficulty) {
 	if (difficulty == Difficulty::Easy)
 		return "Easy";
 	if (difficulty == Difficulty::Medium)
@@ -195,7 +214,7 @@ QString WaitingRoomPage::difficultyToQString(Difficulty difficulty) {
 	throw std::exception("Unable to convert difficulty to QString");
 }
 
-int WaitingRoomPage::difficultyToInt(Difficulty difficulty) {
+int WaitingRoomPage::DifficultyToInt(Difficulty difficulty) {
 	if (difficulty == Difficulty::Easy)
 		return 0;
 	if (difficulty == Difficulty::Medium)

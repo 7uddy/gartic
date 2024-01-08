@@ -27,6 +27,6 @@ public:
 private:
 	QMap<QString, QWidget*> pagesMap;
 	Player player;
-	std::string lobbyCode;
+	std::string roomCode;
 };
 

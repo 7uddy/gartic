@@ -82,11 +82,11 @@ bool PageController::CreateRoom()
 	);
 	std::string responseText = responseCreate.text;
 	auto json = nlohmann::json::parse(responseText);
-    lobbyCode = json["text"];
+    roomCode = json["text"];
 	static const int responseLength = 5;
-	if (lobbyCode.size() == responseLength)
+	if (roomCode.size() == responseLength)
 		return true;
-	lobbyCode.clear();
+	roomCode.clear();
 	return false;
 }
 
@@ -120,5 +120,5 @@ bool PageController::LeaveRoom()
 
 std::string PageController::GetLobbyCode()
 {
-	return lobbyCode;
+	return roomCode;
 }
