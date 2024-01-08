@@ -22,6 +22,7 @@ public:
 
 	void OnPlayerJoin(const QString& playerName);
 	void UpdateMainPaddingSize();
+	void UpdateLobbyCode(const std::string& codeLobby);
 
 	int difficultyToInt(Difficulty difficulty);
 	QString difficultyToQString(Difficulty difficulty);
@@ -33,7 +34,7 @@ private:
 	QLabel* imageLabel;
 	QPushButton* returnButton;
 	QPushButton* startButton;
-
+	QPushButton* code;
 	QWidget* mainPadding;
 	QPushButton* difficultyButton;
 	QLabel* playersNumber;
@@ -43,7 +44,7 @@ private:
 	//QVector<QLabel*> profileNames;
 
 	Difficulty currentDifficulty;
-
+	std::string lobbyCode;
 
 };
 

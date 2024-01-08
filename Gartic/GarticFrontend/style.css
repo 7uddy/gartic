@@ -91,3 +91,9 @@ QPushButton[accessibleName="startButton"] {
     color: black;
     font-weight: bold;
 }
+
+QPushButton[accessibleName="codeButton"] {
+    text-align: center;
+    color: black;
+    font-size: 20px;
+}

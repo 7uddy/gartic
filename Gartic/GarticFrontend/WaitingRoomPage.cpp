@@ -10,7 +10,7 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	difficultyButton = new QPushButton("Easy");
 	startButton = new QPushButton("Start");
 	playersNumber = new QLabel("0/4");
-
+	code = new QPushButton("Press here");
 	currentDifficulty = Difficulty::Easy;
 
 	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
@@ -25,7 +25,10 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	connect(returnButton, &QPushButton::clicked, controller, [controller]() {
 		controller->ShowPage("MainMenu");
 		});
-
+	connect(code, &QPushButton::clicked, this, [=]()
+	    {
+			UpdateLobbyCode(controller->GetLobbyCode());
+	    });
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -57,14 +60,12 @@ void WaitingRoomPage::PlaceElements()
 
 	QGridLayout* mainPaddingLayout = new QGridLayout;
 	QLabel* roomCode = new QLabel("Room Code");
-	QLabel* code = new QLabel("AB345"); //to be changed
 	QLabel* difficulty = new QLabel("Difficulty");
 
 	mainPaddingLayout->addWidget(roomCode, 0, 0, Qt::AlignCenter);
 	mainPaddingLayout->addWidget(code, 0, 1, Qt::AlignCenter);
 
 	roomCode->setAlignment(Qt::AlignLeft);
-	code->setAlignment(Qt::AlignCenter | Qt::AlignRight);
 
 	mainPaddingLayout->addWidget(difficulty, 1, 0, Qt::AlignCenter);
 	mainPaddingLayout->addWidget(difficultyButton, 1, 1, Qt::AlignCenter);
@@ -100,6 +101,7 @@ void WaitingRoomPage::StyleElements()
 	startButton->setAccessibleName("startButton");
 	mainPadding->setAccessibleName("mainPadding");
 	playersNumber->setAccessibleName("statusLabel");
+	code->setAccessibleName("codeButton");
 
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
@@ -112,7 +114,7 @@ void WaitingRoomPage::SetSize()
 	mainPadding->setFixedSize(600, 300);
 	difficultyButton->setFixedSize(90, 30);
 	profilesLayout->setSpacing(2);
-
+	code->setFixedSize(110, 30);
 
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	startButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
@@ -166,6 +168,13 @@ void WaitingRoomPage::UpdateMainPaddingSize()
 		mainPadding->setFixedHeight(totalProfilesHeight);
 		mainPadding->setFixedWidth(mainPadding->width() + 10);
 	}
+}
+
+void WaitingRoomPage::UpdateLobbyCode(const std::string& codeLobby)
+{
+	lobbyCode = codeLobby;
+	code->setText(QString::fromUtf8(codeLobby.c_str()));
+	code->setEnabled(false);
 }
 
 QString WaitingRoomPage::difficultyToQString(Difficulty difficulty) {

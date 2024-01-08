@@ -104,3 +104,8 @@ bool PageController::VerifyCode(const QString& enteredCode)
 		return true;
 	return false;
 }
+
+std::string PageController::GetLobbyCode()
+{
+	return lobbyCode;
+}
