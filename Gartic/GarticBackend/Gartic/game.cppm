@@ -37,6 +37,7 @@ namespace gartic
 		Game(int gameID);
 		~Game() = default;
 
+		void SetStatusOfGame(const Status& newStatus);
 		void StartAnotherRound(GarticDatabase& storage) noexcept;
 
 		void AddPlayerToGame(std::unique_ptr<Player>);

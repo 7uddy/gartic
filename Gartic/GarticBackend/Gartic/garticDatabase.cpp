@@ -63,7 +63,7 @@ std::vector<Word> GarticDatabase::GetWords()
 
 Word GarticDatabase::GetRandomWordWithDifficulty(int difficulty)
 {
-	auto generatedNumber = GenerateRandomNumber(1); //should be GenerateRandomNumber(kNumberOfWordsOfADifficulty), but not
+	auto generatedNumber = GenerateRandomNumber(kNumberOfWordsOfADifficulty); //should be GenerateRandomNumber(kNumberOfWordsOfADifficulty), but not
 	//enough words in database for it yet
 	int currentWordNumber{ 0 };
 	for (auto word : m_db.iterate<Word>())

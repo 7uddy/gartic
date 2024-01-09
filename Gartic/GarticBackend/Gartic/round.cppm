@@ -27,7 +27,7 @@ namespace gartic
 		Round() = default;
 
 		//FUNCTIONS FOR ROUND AND SCORE 
-		void StartRound(const Word& word);
+		bool StartRound(const Word& word);
 		void EndRound() noexcept;
 
 		uint16_t GetCurrentRound() const noexcept;
