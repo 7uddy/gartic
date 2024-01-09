@@ -30,9 +30,7 @@ auto GetLobbyWithCode(const std::vector<std::unique_ptr<Lobby>>& lobbies, std::s
 
 void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<std::unique_ptr<Lobby>>& lobbies)
 {
-	//IF MULTIPLE LOBBIES ARE ALLOWED -> lobby SHOULD BE CHANGED TO vector of LOBBY AND ALL RESPECTIVE ROUTES
-	//getelement => send element from server to client
-	//sendelement => send element from client to server
+	//FOR ERRORS RELATED TO PLAYERS LOGGING IN AND NOT CREATING LOBBIES -> vector of already logged in players
 	CROW_ROUTE(m_app, "/")([]() {
 		return "Server is running.This is the main branch";
 			});
@@ -130,6 +128,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				return crow::response(404);
 			});
 
+	//ROUTES RELATED TO LOBBY
 	CROW_ROUTE(m_app, "/createlobby")
 		.methods(crow::HTTPMethod::GET)([&lobbies](const crow::request& req)
 			{
@@ -404,6 +403,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				game->UpdateBoard(newBoard);
 				return crow::response(200);
 			});
+
 	CROW_ROUTE(m_app, "/getword")
 		.methods(crow::HTTPMethod::Get)([&game](const crow::request& req)
 			{
