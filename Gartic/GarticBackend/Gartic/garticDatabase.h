@@ -71,7 +71,7 @@ namespace gartic
 	private:
 		const std::string kDbFile{ "database.sqlite" };
 		const std::string kWordFile{ "words.txt" };
-		const int kNumberOfWordsOfADifficulty = 166; // 500 / 3
+		const int kNumberOfWordsOfADifficulty = 200;
 
 	private:
 		Storage m_db = CreateStorage(kDbFile);

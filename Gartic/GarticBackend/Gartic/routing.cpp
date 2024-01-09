@@ -304,6 +304,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				//SET DIFFICULTY OF GAME
 				game = std::make_unique<Game>(db.GetNextGameID());
 				game->ChangeDifficulty(difficulty);
+				game->SetStatusOfGame(Game::Status::Active);
 				//MOVE PLAYERS FROM LOBBY TO GAME
 				foundLobby->get()->MovePlayersToGame(*(game.get()));
 				//START FIRST ROUND
@@ -372,8 +373,11 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 			});
 
 	CROW_ROUTE(m_app, "/gettimer")
-		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
 			{
+				auto seconds = game->GetTimer();
+				if (seconds > 60)
+					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
 			});
 	

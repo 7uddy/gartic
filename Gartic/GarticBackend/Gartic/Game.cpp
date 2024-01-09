@@ -8,19 +8,35 @@ const int& Game::GetGameID() const noexcept
 	return m_gameID;
 }
 
-Game::Game(int gameID): m_gameID{gameID}
+Game::Game(int gameID): m_gameID{gameID}, m_gameState{Status::Inactive}
 {
 	/*EMPTY*/
 }
 
+void Game::SetStatusOfGame(const Status& newStatus)
+{
+	m_gameState = newStatus;
+}
+
 void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 {
+	if (m_gameState == Status::Finished || m_gameState == Status::Inactive)
+		return;
 	do {
 		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
 		if (std::find(pastWords.begin(), pastWords.end(), word) == pastWords.end())
 		{
-			pastWords.emplace_back(word);
-			m_round.StartRound(word);
+			pastWords.emplace_back(word); std::cout << "HERE\n";
+			if(!m_round.StartRound(word))
+			{
+				std::cout << "HERE";
+				m_gameState = Status::Finished;
+				for (const auto& player : m_players)
+				{
+					//void AddScoreToDatabase(int gameID, std::string username, float score);
+					storage.AddScoreToDatabase(m_gameID, player.first, player.second->GetScore());
+				}
+			}
 			break;
 		}
 	} while (true);

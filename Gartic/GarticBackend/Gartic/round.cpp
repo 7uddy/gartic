@@ -3,12 +3,12 @@ using namespace gartic;
 
 std::shared_ptr<Player> Round::m_painter{nullptr};
 
-void Round::StartRound(const Word& word)
+bool Round::StartRound(const Word& word)
 {
 	static const int numberOfDifficulties = 2;
+	if (m_miniRoundNumber + 1 > m_players.size() * k_numberOfRounds)
+		return false;
 	ChoosePainter();
-	if (m_miniRoundNumber > m_players.size() * k_numberOfRounds)
-		throw std::exception("NUMBER OF ROUND IS BIGGER THAN POSSIBLE");
 	++m_miniRoundNumber;
 	//Template to changing difficulty between rounds
 	/*if (m_miniRoundNumber - 1 != 0)
@@ -32,6 +32,7 @@ void Round::StartRound(const Word& word)
 	}
 	else
 		throw std::exception("Word difficulty doesn't match with round difficulty");
+	return true;
 }
 
 void Round::ChoosePainter() noexcept
