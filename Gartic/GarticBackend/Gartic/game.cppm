@@ -34,8 +34,8 @@ namespace gartic
 
 		/*-------Game variables related functions-------*/
 		Game() = default;
+		Game(int gameID);
 		~Game() = default;
-
 
 		void StartAnotherRound(GarticDatabase& storage) noexcept;
 
@@ -51,7 +51,7 @@ namespace gartic
 		bool IsPlayerInGame(std::string_view) const noexcept;
 
 		//FOR GUI
-		const std::string& GetGameID() const noexcept;
+		const int& GetGameID() const noexcept;
 		uint16_t GetTimer() const noexcept;
 		uint16_t GetDifficulty() const noexcept;
 		uint16_t GetRoundNumber() const noexcept;
@@ -67,7 +67,7 @@ namespace gartic
 
 	private:
 		std::unordered_map<std::string, std::shared_ptr<Player>> m_players;
-		std::string m_gameID;
+		int m_gameID;
 		Status m_gameState;
 		Round m_round;
 		std::vector<std::pair<std::optional<std::string>, std::string>> m_chat;

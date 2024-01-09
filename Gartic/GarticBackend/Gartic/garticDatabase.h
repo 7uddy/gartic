@@ -47,11 +47,11 @@ namespace gartic
 	class GarticDatabase
 	{
 	public:
-		bool Initialize() ;
+		bool Initialize();
 
 		bool AddPlayerToDatabase(std::string username, std::string email, std::string password);
 		bool DeletePlayerFromDatabase(std::string username);
-		bool PlayerIsInDatabase(std::string username, std::string password,std::string email="");
+		bool PlayerIsInDatabase(std::string username, std::string password, std::string email = "");
 		std::vector<Player> GetPlayers();
 
 		std::vector<Word> GetWords();
@@ -60,6 +60,8 @@ namespace gartic
 
 		void AddScoreToDatabase(int gameID, std::string username, float score);
 		std::vector<GameScore> GetScoresOfPlayer(std::string username);
+
+		int GetNextGameID();
 
 	private:
 		void PopulatePlayerStorage();
