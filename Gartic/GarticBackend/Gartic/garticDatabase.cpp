@@ -42,7 +42,7 @@ bool GarticDatabase::DeletePlayerFromDatabase(std::string username)
 	return true;
 }
 
-bool GarticDatabase::PlayerIsInDatabase(std::string username, std::string password,std::string email)
+bool GarticDatabase::PlayerIsInDatabase(std::string username, std::string password, std::string email)
 {
 	auto is = m_db.get_all<Player>(sql::where(sql::c(&Player::GetUsername) == username));
 	if (is.empty()) return false;
@@ -89,6 +89,14 @@ void GarticDatabase::AddScoreToDatabase(int gameID, std::string username, float 
 std::vector<GameScore> GarticDatabase::GetScoresOfPlayer(std::string username)
 {
 	return m_db.get_all<GameScore>(sql::where(sql::c(&GameScore::GetUsername) == username));
+}
+
+int GarticDatabase::GetNextGameID()
+{
+	auto selectStatement = m_db.max(&GameScore::GetGameId);
+	if (!selectStatement)
+		return 0;
+	return *selectStatement;
 }
 
 void GarticDatabase::PopulatePlayerStorage()

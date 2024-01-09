@@ -3,9 +3,14 @@ import word;
 
 using namespace gartic;
 
-const std::string& Game::GetGameID() const noexcept
+const int& Game::GetGameID() const noexcept
 {
 	return m_gameID;
+}
+
+Game::Game(int gameID): m_gameID{gameID}
+{
+	/*EMPTY*/
 }
 
 void Game::StartAnotherRound(GarticDatabase& storage) noexcept

@@ -279,7 +279,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 		});
 	
 	CROW_ROUTE(m_app, "/startgame")
-		.methods(crow::HTTPMethod::GET)([&lobbies, &game,&db](const crow::request& req)
+		.methods(crow::HTTPMethod::GET)([&lobbies, &game, &db](const crow::request& req)
 			{
 				if (game)
 					return crow::response(409);
@@ -302,7 +302,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 				//START GAME
 				//SET DIFFICULTY OF GAME
-				game = std::make_unique<Game>();
+				game = std::make_unique<Game>(db.GetNextGameID());
 				game->ChangeDifficulty(difficulty);
 				//MOVE PLAYERS FROM LOBBY TO GAME
 				foundLobby->get()->MovePlayersToGame(*(game.get()));
