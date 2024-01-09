@@ -10,6 +10,8 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
+    void UpdateData();
+    void showEvent(QShowEvent* event);
 	~ProfilePage();
 private:
     QVBoxLayout* layout;
@@ -21,5 +23,7 @@ private:
     QLabel* userImage;
     QLabel* averageScore;
     QTextEdit* matchHistory;
+    Player player;
+    PageController* m_controller;
 };
 

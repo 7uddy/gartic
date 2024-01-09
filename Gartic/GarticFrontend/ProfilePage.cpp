@@ -10,7 +10,7 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 	userImage = new QLabel;
 	averageScore = new QLabel("Average Score: ");
 	matchHistory = new QTextEdit("Match History");
-
+	m_controller = controller;
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -39,7 +39,7 @@ void ProfilePage::PlaceElements()
 	middleLayout->setAlignment(Qt::AlignCenter);
 
 	QHBoxLayout* mainPaddingLayout = new QHBoxLayout(mainPadding);
-	
+
 	QVBoxLayout* leftSideLayout = new QVBoxLayout;
 	leftSideLayout->addWidget(userImage);
 	leftSideLayout->addWidget(username);
@@ -52,7 +52,7 @@ void ProfilePage::PlaceElements()
 	layout->addLayout(topLeftLayout);
 	layout->addLayout(middleLayout);
 	layout->addLayout(bottomLeftLayout);
-	}
+}
 
 void ProfilePage::StyleElements()
 {
@@ -78,7 +78,46 @@ void ProfilePage::SetSize()
 {
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	mainPadding->setFixedSize(600, 500);
-	matchHistory->setFixedSize(300,400);
+	matchHistory->setFixedSize(300, 400);
+}
+
+void ProfilePage::UpdateData()
+{
+	player = m_controller->GetPlayer();
+	auto responseProfileData = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getgamescores" },
+		cpr::Parameters{
+			{ "username", player.GetUsername()},
+		}
+	);
+	if (responseProfileData.status_code != 200)
+	{
+		return;
+	}
+	auto gameScores = nlohmann::json::parse(responseProfileData.text);
+	if (gameScores.empty())
+	{
+		matchHistory->append("The player has not played any matches yet.");
+	}
+	else
+	{
+		for (const auto& gameScore : gameScores)
+		{
+			std::string gameInfo = gameScore["gameid"].get<std::string>() + "    " + std::to_string(gameScore["score"].get<int>());
+			matchHistory->append(QString::fromStdString(gameInfo));
+		}
+	}
+}
+
+void ProfilePage::showEvent(QShowEvent* event)
+{
+	QMessageBox::StandardButton reply;
+	reply = QMessageBox::information(this, "Profile", "You can access details about the matches played, the average score, and the associated usernames in this section.", QMessageBox::Ok);
+	if (reply == QMessageBox::Ok)
+	{
+		UpdateData();
+	}
+	QWidget::showEvent(event);
 }
 
 ProfilePage::~ProfilePage()

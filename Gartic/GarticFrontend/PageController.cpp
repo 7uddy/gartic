@@ -122,3 +122,8 @@ std::string PageController::GetLobbyCode()
 {
 	return roomCode;
 }
+
+Player PageController::GetPlayer()
+{
+	return player;
+}

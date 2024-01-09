@@ -24,6 +24,7 @@ public:
 	bool LeaveRoom();
 	// GETTERS 
 	std::string GetLobbyCode();
+	Player GetPlayer();
 private:
 	QMap<QString, QWidget*> pagesMap;
 	Player player;
