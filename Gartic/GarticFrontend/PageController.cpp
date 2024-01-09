@@ -85,23 +85,30 @@ bool PageController::CreateRoom()
     roomCode = json["text"];
 	static const int responseLength = 5;
 	if (roomCode.size() == responseLength)
+	{
+		owner = true;
 		return true;
+	}
 	roomCode.clear();
 	return false;
 }
 
 bool PageController::VerifyCode(const QString& enteredCode)
 {
-	std::string lobbyCode = enteredCode.toUtf8().constData();
+	std::string code = enteredCode.toUtf8().constData();
 	auto responseJoin = cpr::Get(
 		cpr::Url{ "http://localhost:18080/joinlobby" },
 		cpr::Parameters{
-				{ "lobbycode", lobbyCode },
+				{ "lobbycode", code },
 				{ "username", player.GetUsername()},
 		}
 	);
 	if (responseJoin.status_code == 200)
+	{
+		owner = false;
+		roomCode = code;
 		return true;
+	}
 	return false;
 }
 
@@ -126,4 +133,9 @@ std::string PageController::GetLobbyCode()
 Player PageController::GetPlayer()
 {
 	return player;
+}
+
+bool PageController::GetOwner()
+{
+	return owner;
 }

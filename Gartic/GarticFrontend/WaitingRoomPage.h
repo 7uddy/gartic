@@ -21,13 +21,15 @@ public:
 	void SetSize();
 
 	void OnPlayerJoin(const QString& playerName);
+	/*void OnPlayerLeave(const int& index);*/
 	void UpdateMainPaddingSize();
-	void UpdateRoomCode(const std::string& codeLobby);
+	void UpdateRoomCode(const std::string& codeLobby, const bool& owner);
 
 	int DifficultyToInt(Difficulty difficulty);
 	QString DifficultyToQString(Difficulty difficulty);
 	~WaitingRoomPage();
 
+private slots:
 	void UpdateDataFromRoom();
 
 private:
@@ -43,10 +45,14 @@ private:
 	QLabel* statusText;
 	QVector<QWidget*> profilePaddings;
 	QVector<QHBoxLayout*> profileLayouts;
-	//QVector<QLabel*> profileNames;
+	QVector<QLabel*> profileNames;
+	QTimer* timer;
 
 	Difficulty currentDifficulty;
 	std::string roomCode;
 	int statusRoom;
+	Player player;
+	bool ownerRoom;
+	std::vector<std::string> oldPlayers;
 };
 

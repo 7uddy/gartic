@@ -13,28 +13,32 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	code = new QPushButton("Press here");
 	currentDifficulty = Difficulty::Easy;
 	statusText = new QLabel();
+	timer = new QTimer(this);
 
 	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
 		currentDifficulty = static_cast<Difficulty>((DifficultyToInt(currentDifficulty) + 1) % 4);
 		difficultyButton->setText(DifficultyToQString(currentDifficulty));
 		});
-	connect(startButton, &QPushButton::clicked, controller, [controller]() {
+	connect(startButton, &QPushButton::clicked, controller, [=]() {
+		timer->stop();
 		controller->ShowPage("Game");
 		});
 	connect(returnButton, &QPushButton::clicked, controller, [=]() {
 		if (controller->LeaveRoom())
 		{
+			timer->stop();
 			code->setEnabled(true);
 			code->setText("Press here");
 			controller->ShowPage("MainMenu");
 		}
-		else 
-		    QMessageBox::warning(controller, "Exit Room Error", "Something went wrong.");
+		else
+			QMessageBox::warning(controller, "Exit Room Error", "Something went wrong.");
 		});
 	connect(code, &QPushButton::clicked, this, [=]()
-	    {
-			UpdateRoomCode(controller->GetLobbyCode());
-	    });
+		{
+			UpdateRoomCode(controller->GetLobbyCode(), controller->GetOwner());
+		});
+	connect(timer, &QTimer::timeout, this, &WaitingRoomPage::UpdateDataFromRoom);
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -80,13 +84,6 @@ void WaitingRoomPage::PlaceElements()
 	QVBoxLayout* roomSettingLayout = new QVBoxLayout(mainPadding);
 	roomSettingLayout->addLayout(mainPaddingLayout);
 	roomSettingLayout->addWidget(startButton, 0, Qt::AlignCenter | Qt::AlignBottom);
-
-	QPushButton* testButton = new QPushButton("Test me");
-	middleLayout->addWidget(testButton, 0, 0);
-
-	connect(testButton, &QPushButton::clicked, this, [=]() {
-		OnPlayerJoin("Caramel"); //for testing
-		});
 
 	middleLayout->addLayout(statusLayout, 0, 1);
 	middleLayout->addLayout(profilesLayout, 1, 0);
@@ -153,12 +150,21 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 
 	profilePaddings.append(newProfilePadding);
 	profileLayouts.append(newProfileLayout);
-	// profileNames.append(newProfileName);
+	profileNames.append(newProfileName);
 
-	 UpdateMainPaddingSize();
+	UpdateMainPaddingSize();
 
-	playersNumber->setText(QString::number(profilePaddings.size()) + "/4");
+	playersNumber->setText(QString::number(profilePaddings.size()) + "/6");
 }
+
+//void WaitingRoomPage::OnPlayerLeave(const int& index)
+//{
+//	profileNames.erase(profileNames.begin() + index);
+//	profilePaddings.erase(profilePaddings.begin() + index);
+//	profileLayouts.erase(profileLayouts.begin() + index);
+//	UpdateMainPaddingSize();
+//	playersNumber->setText(QString::number(profilePaddings.size()) + "/6");
+//}
 
 void WaitingRoomPage::UpdateMainPaddingSize()
 {
@@ -180,25 +186,55 @@ void WaitingRoomPage::UpdateDataFromRoom()
 	auto responseStatus = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getlobbystatus" },
 		cpr::Parameters{
-				{ "username", roomCode},
+				{ "lobbycode", roomCode},
 		}
 	);
-	statusRoom = responseStatus.status_code;
-	if ((statusRoom != 0) && (statusRoom != 1))
+	if (responseStatus.status_code != 200)
 		return;
-	else if (statusRoom == 0)
+	if (responseStatus.text == "0")
 		statusText->setText("WaitingForPlayers");
 	else
 		statusText->setText("Launched");
-	QTimer::singleShot(2000, this, SLOT(UpdateDataFromRoom()));
+
+	auto responsePlayers = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getusernamesfromlobby" },
+		cpr::Parameters{
+				{ "lobbycode", roomCode},
+		}
+	);
+	if (responseStatus.status_code != 200)
+		return;
+	auto players = nlohmann::json::parse(responsePlayers.text);
+	for (const auto& player : players)
+	{
+		if((oldPlayers.empty())|| (std::find(oldPlayers.begin(),oldPlayers.end(), player["username"].get<std::string>())==oldPlayers.end()))
+		{
+			OnPlayerJoin(QString::fromUtf8(player["username"].get<std::string>()));
+			oldPlayers.push_back(player["username"].get<std::string>());
+		}
+	}
+	/*for (int index = 0; index < profileNames.size(); index++)
+	{
+		const QString playerName = profileNames[index]->text(); 
+		auto it = std::find_if(players.begin(), players.end(), [&](const auto& player) {
+			return player["username"].get<std::string>() == playerName.toStdString();
+			});
+
+		if (it == players.end())
+		{
+			OnPlayerLeave(index);
+		}
+	}*/
+	timer->start(2000);
 }
 
-void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby)
+void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, const bool& owner)
 {
+	ownerRoom = owner;
 	roomCode = codeLobby;
 	code->setText(QString::fromUtf8(codeLobby.c_str()));
 	code->setEnabled(false);
-	QTimer::singleShot(0, this, SLOT(UpdateDataFromRoom()));
+	UpdateDataFromRoom();
 }
 
 QString WaitingRoomPage::DifficultyToQString(Difficulty difficulty) {

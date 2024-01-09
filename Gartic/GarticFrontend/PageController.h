@@ -25,9 +25,11 @@ public:
 	// GETTERS 
 	std::string GetLobbyCode();
 	Player GetPlayer();
+	bool GetOwner();
 private:
 	QMap<QString, QWidget*> pagesMap;
 	Player player;
 	std::string roomCode;
+	bool owner;
 };
 
