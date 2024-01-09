@@ -8,13 +8,14 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 	mainPadding = new QWidget;
 	username = new QLabel;
 	userImage = new QLabel;
-	averageScore = new QLabel("Average Score: ");
-	matchHistory = new QTextEdit("Match History");
+	averageScore = new QLabel();
+	matchHistory = new QTextEdit("Match History: ");
 	m_controller = controller;
 	SetSize();
 	StyleElements();
 	PlaceElements();
-	connect(returnButton, &QPushButton::clicked, controller, [controller]() {
+	connect(returnButton, &QPushButton::clicked, controller, [=]() {
+		matchHistory->setText("Match History: ");
 		controller->ShowPage("MainMenu");
 		});
 }
@@ -66,8 +67,6 @@ void ProfilePage::StyleElements()
 	QRegion* region = new QRegion(0, 0, userImage->width(), userImage->height(), QRegion::Ellipse);
 	userImage->setMask(*region);
 
-	username->setText("Username");
-
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
@@ -84,6 +83,7 @@ void ProfilePage::SetSize()
 void ProfilePage::UpdateData()
 {
 	player = m_controller->GetPlayer();
+	username->setText("Username:\n" + QString::fromUtf8(player.GetUsername().c_str()));
 	auto responseProfileData = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getgamescores" },
 		cpr::Parameters{
@@ -95,6 +95,8 @@ void ProfilePage::UpdateData()
 		return;
 	}
 	auto gameScores = nlohmann::json::parse(responseProfileData.text);
+	float mediumScore;
+	std::vector<float> scores;
 	if (gameScores.empty())
 	{
 		matchHistory->append("The player has not played any matches yet.");
@@ -103,16 +105,23 @@ void ProfilePage::UpdateData()
 	{
 		for (const auto& gameScore : gameScores)
 		{
-			std::string gameInfo = gameScore["gameid"].get<std::string>() + "    " + std::to_string(gameScore["score"].get<int>());
+			std::string gameInfo = gameScore["gameid"].get<std::string>() + "    " + std::to_string(gameScore["score"].get<float>());
 			matchHistory->append(QString::fromStdString(gameInfo));
+			scores.push_back(gameScore["score"].get<float>());
 		}
 	}
+	if (!scores.empty())
+		mediumScore = static_cast<float>(std::accumulate(scores.begin(), scores.end(), 0)) / scores.size();
+	else
+		mediumScore = 0;
+	QString score = QString::number(mediumScore, 'f', 2);
+	averageScore->setText("Average score: " + score);
 }
 
 void ProfilePage::showEvent(QShowEvent* event)
 {
 	QMessageBox::StandardButton reply;
-	reply = QMessageBox::information(this, "Profile", "You can access details about the matches played, the average score, and the associated usernames in this section.", QMessageBox::Ok);
+	reply = QMessageBox::information(this, "Profile", "You can access details about the matches played and the average score.", QMessageBox::Ok);
 	if (reply == QMessageBox::Ok)
 	{
 		UpdateData();

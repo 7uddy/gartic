@@ -1,5 +1,7 @@
 #pragma once
 #include <QtWidgets>
+#include <algorithm> 
+#include <numeric> 
 #include "PageController.h"
 
 class ProfilePage:public QWidget
