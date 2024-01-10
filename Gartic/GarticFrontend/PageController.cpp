@@ -125,6 +125,20 @@ bool PageController::LeaveRoom()
 	return false;
 }
 
+bool PageController::StartGame(int difficulty)
+{
+	auto responseStart = cpr::Get(
+		cpr::Url{ "http://localhost:18080/startgame" },
+		cpr::Parameters{
+				{ "lobbycode", roomCode},
+				{ "difficulty", std::to_string(difficulty)},
+		}
+	);
+	if (responseStart.status_code == 200)
+		return true;
+	return false;
+}
+
 std::string PageController::GetLobbyCode()
 {
 	return roomCode;

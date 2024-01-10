@@ -22,6 +22,7 @@ public:
 	bool CreateRoom();
 	bool VerifyCode(const QString& enteredCode);
 	bool LeaveRoom();
+	bool StartGame(int difficulty);
 	// GETTERS 
 	std::string GetLobbyCode();
 	Player GetPlayer();

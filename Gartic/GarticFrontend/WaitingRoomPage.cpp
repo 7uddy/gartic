@@ -16,12 +16,21 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	timer = new QTimer(this);
 
 	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
-		currentDifficulty = static_cast<Difficulty>((DifficultyToInt(currentDifficulty) + 1) % 4);
-		difficultyButton->setText(DifficultyToQString(currentDifficulty));
+		if (ownerRoom)
+		{
+			currentDifficulty = static_cast<Difficulty>((DifficultyToInt(currentDifficulty) + 1) % 4);
+			difficultyButton->setText(DifficultyToQString(currentDifficulty));
+		}
 		});
 	connect(startButton, &QPushButton::clicked, controller, [=]() {
 		timer->stop();
-		controller->ShowPage("Game");
+		if (ownerRoom)
+		{
+			if(controller->StartGame(DifficultyToInt(currentDifficulty)))
+				controller->ShowPage("Game");
+		}
+		else 
+			controller->ShowPage("Game");
 		});
 	connect(returnButton, &QPushButton::clicked, controller, [=]() {
 		if (controller->LeaveRoom())
