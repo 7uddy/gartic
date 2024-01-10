@@ -54,6 +54,7 @@ namespace gartic
 		bool IsPlayerInGame(std::string_view) const noexcept;
 
 		//FOR GUI
+		const int& GetGameStatus() const noexcept;
 		const int& GetGameID() const noexcept;
 		uint16_t GetTimer() const noexcept;
 		uint16_t GetDifficulty() const noexcept;
@@ -67,6 +68,8 @@ namespace gartic
 		//
 
 		void ClearChat() noexcept;
+	private:
+		int ConvertStatusToInteger(const Status&) const noexcept;
 
 	private:
 		std::unordered_map<std::string, std::shared_ptr<Player>> m_players;

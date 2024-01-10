@@ -201,3 +201,23 @@ std::array<uint16_t, Game::kSize> Game::GetBoard() const noexcept
 {
 	return m_board;
 }
+
+int Game::ConvertStatusToInteger(const Game::Status& current) const noexcept
+{
+	switch (current)
+	{
+	case (Status::Inactive):
+		return 0;
+	case (Status::Active):
+		return 1;
+	case (Status::Finished):
+		return 2;
+	default:
+		return -1;
+	}
+}
+
+const int& Game::GetGameStatus() const noexcept
+{
+	return ConvertStatusToInteger(m_gameState);
+}

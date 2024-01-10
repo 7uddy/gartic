@@ -314,6 +314,15 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 	//ROUTES RELATED TO GAME
 
+	CROW_ROUTE(m_app, "/getgamestatus")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				//CHECK IF THERE EXISTS A GAME
+				if(!game)
+					return crow::json::wvalue{ "ERROR: NO LOBBY WITH LOBBYCODE" };
+				return crow::json::wvalue{ game->GetGameStatus()};
+			});
+
 	CROW_ROUTE(m_app, "/getplayersdatafromgame")
 		.methods(crow::HTTPMethod::GET)([&game]() {
 		std::vector<crow::json::wvalue> gameData_json;
