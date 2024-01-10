@@ -20,6 +20,7 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	drawButton = new QPushButton("Draw", this);
 	eraseButton = new QPushButton("Erase", this);
 	timer = new QTimer(this);
+	m_controller = controller;
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -123,6 +124,7 @@ void GamePage::SetEraseMode()
 
 void GamePage::showEvent(QShowEvent* event)
 {
+	player = m_controller->GetPlayer();
 	QMessageBox::StandardButton reply;
 	reply = QMessageBox::information(this, "Game", "The game has begun.", QMessageBox::Ok);
 	if (reply == QMessageBox::Ok)
@@ -136,7 +138,7 @@ void GamePage::UpdateDataFromGame()
 {
 	auto responseTimer = cpr::Get(
 		cpr::Url{ "http://localhost:18080/gettimer" });
-    time->setText("Time:" + QString::fromUtf8(responseTimer.text.c_str()));
+	time->setText("Time:" + QString::fromUtf8(responseTimer.text.c_str()));
 	/*auto responsePlayers = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" });
 	auto players = nlohmann::json::parse(responsePlayers.text);
@@ -145,25 +147,23 @@ void GamePage::UpdateDataFromGame()
 		std::string playerInfo= username["username"].get<std::string>() + "    " + std::to_string(username["score"].get<float>());
 		listPlayers->append(QString::fromStdString(playerInfo));
 	}*/
-	
+
 	auto responseChat = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getchat" },
 		cpr::Parameters{
 			{ "username", player.GetUsername()},
 		});
-	if (responseChat.status_code != 200)
-			return;
-	/*auto chat = nlohmann::json::parse(responseChat.text);
+	auto chat = nlohmann::json::parse(responseChat.text);
 	if (!chat.empty())
 	{
 		chatHistory->clear();
-		for (const auto& message : chat)
+		while (chat.find("message") != chat.end())
 		{
-			std::string messageText = message["message"].get<std::string>();
+			std::string messageText = chat["message"];
 			chatHistory->append(QString::fromStdString(messageText));
 		}
-	}*/
-	timer->start(100);
+	}
+	timer->start(500);
 }
 
 void GamePage::SendMessage()
@@ -171,17 +171,18 @@ void GamePage::SendMessage()
 	QString message = messageInput->text();
 	if (!message.isEmpty())
 	{
-	    auto responseChat = cpr::Get(
-		cpr::Url{ "http://localhost:18080/addmessagetochat" },
-		cpr::Parameters{
-			{ "username", player.GetUsername()},
-			{"message", message.toUtf8().constData()},
-		});
+		std::string messageText = message.toUtf8().constData();
+		auto responseChat = cpr::Get(
+			cpr::Url{ "http://localhost:18080/addmessagetochat" },
+			cpr::Parameters{
+				{ "username", player.GetUsername()},
+				{"message", messageText},
+			});
 		messageInput->clear();
 		if (responseChat.status_code == 200)
 			qDebug() << "The message was sent with success.";
-		else 
-			qDebug() << "The message was not sent with success.";
+		else
+			qDebug() << "The message was not sent with success. Status code: " << responseChat.status_code;
 	}
 }
 

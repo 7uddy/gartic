@@ -33,4 +33,5 @@ private:
 	bool currentMode = true;
 	QTimer* timer;
 	Player player;
+	PageController* m_controller;
 };
