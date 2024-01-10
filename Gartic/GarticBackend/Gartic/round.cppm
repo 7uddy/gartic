@@ -8,6 +8,7 @@ import <chrono>;
 //import <string>;
 export import <unordered_map>;
 export import <cstdint>;
+export import <random>;
 
 namespace gartic
 {
@@ -52,10 +53,13 @@ namespace gartic
 		void UpdateScoreForPlayer(std::shared_ptr<Player>) noexcept;
 		uint16_t DifficultyToInteger(const Difficulty&) const;
 		Difficulty IntegerToDifficulty(int) const;
+		void GetNextHint() noexcept;
+		int GetRandomIndex() const noexcept;
 
 	private:
 		static std::shared_ptr<Player> m_painter;
 		static const uint16_t k_numberOfRounds = 4;
+		static const uint8_t k_roundSeconds = 60;
 
 	private:
 		std::vector<std::shared_ptr<Player>> m_players;
@@ -70,5 +74,6 @@ namespace gartic
 		std::string m_shownWord;
 		int m_lettersToShow;
 		std::string m_hiddenWord;
+		int m_timeForHint;
 	};
 }
