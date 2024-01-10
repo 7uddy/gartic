@@ -16,9 +16,11 @@ public:
 	void UpdateBoard(QMouseEvent* event);
 	void SetDrawMode();
 	void SetEraseMode();
+	void showEvent(QShowEvent* event) override;
 	~GamePage();
 private slots:
 	void SendMessage();
+	void UpdateDataFromGame();
 private:
 	QLabel* imageLabel;
 	QTextEdit* listPlayers, * round, * time, * word, * chatHistory;
@@ -29,4 +31,6 @@ private:
 	BoardWidget* board;
 	QGridLayout* gameGridLayout;
 	bool currentMode = true;
+	QTimer* timer;
+	Player player;
 };

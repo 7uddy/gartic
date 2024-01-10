@@ -7,7 +7,7 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	topLayout = new QHBoxLayout();
 	listPlayers = new QTextEdit("Players:", this);
 	round = new QTextEdit("Round: ?/4", this);
-	time = new QTextEdit("Time: ???", this);
+	time = new QTextEdit(this);
 	word = new QTextEdit("????", this);
 	chatLayout = new QVBoxLayout();
 	messageInput = new QLineEdit(this);
@@ -19,6 +19,7 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	gameGridLayout = new QGridLayout();
 	drawButton = new QPushButton("Draw", this);
 	eraseButton = new QPushButton("Erase", this);
+	timer = new QTimer(this);
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -26,6 +27,7 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	connect(board, &BoardWidget::MouseDraw, this, &GamePage::UpdateBoard);
 	connect(drawButton, &QPushButton::clicked, this, &GamePage::SetDrawMode);
 	connect(eraseButton, &QPushButton::clicked, this, &GamePage::SetEraseMode);
+	connect(timer, &QTimer::timeout, this, &GamePage::UpdateDataFromGame);
 }
 
 void GamePage::PlaceElements()
@@ -119,13 +121,67 @@ void GamePage::SetEraseMode()
 	currentMode = false;
 }
 
+void GamePage::showEvent(QShowEvent* event)
+{
+	QMessageBox::StandardButton reply;
+	reply = QMessageBox::information(this, "Game", "The game has begun.", QMessageBox::Ok);
+	if (reply == QMessageBox::Ok)
+	{
+		UpdateDataFromGame();
+	}
+	QWidget::showEvent(event);
+}
+
+void GamePage::UpdateDataFromGame()
+{
+	auto responseTimer = cpr::Get(
+		cpr::Url{ "http://localhost:18080/gettimer" });
+    time->setText("Time:" + QString::fromUtf8(responseTimer.text.c_str()));
+	/*auto responsePlayers = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" });
+	auto players = nlohmann::json::parse(responsePlayers.text);
+	for (const auto& username: players)
+	{
+		std::string playerInfo= username["username"].get<std::string>() + "    " + std::to_string(username["score"].get<float>());
+		listPlayers->append(QString::fromStdString(playerInfo));
+	}*/
+	
+	auto responseChat = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getchat" },
+		cpr::Parameters{
+			{ "username", player.GetUsername()},
+		});
+	if (responseChat.status_code != 200)
+			return;
+	/*auto chat = nlohmann::json::parse(responseChat.text);
+	if (!chat.empty())
+	{
+		chatHistory->clear();
+		for (const auto& message : chat)
+		{
+			std::string messageText = message["message"].get<std::string>();
+			chatHistory->append(QString::fromStdString(messageText));
+		}
+	}*/
+	timer->start(100);
+}
+
 void GamePage::SendMessage()
 {
 	QString message = messageInput->text();
 	if (!message.isEmpty())
 	{
-		chatHistory->append("Name: " + message);
+	    auto responseChat = cpr::Get(
+		cpr::Url{ "http://localhost:18080/addmessagetochat" },
+		cpr::Parameters{
+			{ "username", player.GetUsername()},
+			{"message", message.toUtf8().constData()},
+		});
 		messageInput->clear();
+		if (responseChat.status_code == 200)
+			qDebug() << "The message was sent with success.";
+		else 
+			qDebug() << "The message was not sent with success.";
 	}
 }
 

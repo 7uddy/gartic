@@ -13,7 +13,7 @@ public:
 	void StyleElements();
 	void SetSize();
     void UpdateData();
-    void showEvent(QShowEvent* event);
+    void showEvent(QShowEvent* event) override;
 	~ProfilePage();
 private:
     QVBoxLayout* layout;

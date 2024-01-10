@@ -14,7 +14,7 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	currentDifficulty = Difficulty::Easy;
 	statusText = new QLabel();
 	timer = new QTimer(this);
-
+	player = controller->GetPlayer();
 	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
 		if (ownerRoom)
 		{
