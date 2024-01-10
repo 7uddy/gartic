@@ -33,7 +33,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 	//FOR ERRORS RELATED TO PLAYERS LOGGING IN AND NOT CREATING LOBBIES -> vector of already logged in players
 	CROW_ROUTE(m_app, "/")([]() {
 		return "Server is running.This is the main branch";
-			});
+		});
 
 	CROW_ROUTE(m_app, "/logincredentials")([&db]() {
 		std::vector<crow::json::wvalue> logincredentials_json;
@@ -99,7 +99,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					return crow::response(404);
 
 				//CHECK IF USERNAME IS IN LOBBY OR GAME
-				if (!lobbies.empty()) 
+				if (!lobbies.empty())
 				{
 					auto foundLobby = GetLobbyWithPlayer(lobbies, receivedUsername);
 					if (foundLobby->get())
@@ -174,7 +174,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				auto foundLobby = GetLobbyWithCode(lobbies, receivedLobbyCode);
 				if (!foundLobby->get())
 					return crow::response(400);
-				try 
+				try
 				{
 					//TRY ADDING PLAYER
 					std::unique_ptr<Player> player = std::make_unique<Player>(receivedUsername);
@@ -232,20 +232,20 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 				//CHECK DATA
 				if (receivedLobbyCode.empty())
-					return crow::json::wvalue{ "ERROR: NO LOBBYCODE IN PARAMETERS"};
+					return crow::json::wvalue{ "ERROR: NO LOBBYCODE IN PARAMETERS" };
 
 				//CHECK IF THERE IS A LOBBY
 				if (lobbies.empty())
-					return crow::json::wvalue{ "ERROR: NO LOBBY"};
+					return crow::json::wvalue{ "ERROR: NO LOBBY" };
 
 				//CHECK IF THERE IS A LOBBY WITH LOBBYCODE
 				auto foundLobby = GetLobbyWithCode(lobbies, receivedLobbyCode);
 				if (!foundLobby->get())
-					return crow::json::wvalue{ "ERROR: NO LOBBY WITH LOBBYCODE"};
+					return crow::json::wvalue{ "ERROR: NO LOBBY WITH LOBBYCODE" };
 
 				return crow::json::wvalue{ foundLobby->get()->GetStatusOfLobby() };
 			});
-	
+
 	//CROW_ROUTE(m_app, "/getlobbycode")
 	//	.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
 	//		{
@@ -260,7 +260,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				if (receivedLobbyCode.empty())
 					return crow::json::wvalue{ "ERROR: NO LOBBY CODE IN PARAMETERS" };
 				//CHECK IF THERE EXISTS A LOBBY
-				if(lobbies.empty())
+				if (lobbies.empty())
 					return crow::json::wvalue{ "ERROR: NO LOBBY" };
 				//FIND LOBBY WITH LOBBYCODE 
 				auto foundLobby = GetLobbyWithCode(lobbies, receivedLobbyCode);
@@ -273,11 +273,11 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				{
 					gameData_json.push_back(crow::json::wvalue{
 						{"username", username}
-					});
+						});
 				}
 				return crow::json::wvalue{ gameData_json };
-		});
-	
+			});
+
 	CROW_ROUTE(m_app, "/startgame")
 		.methods(crow::HTTPMethod::GET)([&lobbies, &game, &db](const crow::request& req)
 			{
@@ -310,23 +310,23 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				//START FIRST ROUND
 				game->StartAnotherRound(db);
 				return crow::response(200);
-		});
+			});
 
 	//ROUTES RELATED TO GAME
-		
+
 	CROW_ROUTE(m_app, "/getplayersdatafromgame")
 		.methods(crow::HTTPMethod::GET)([&game]() {
-				std::vector<crow::json::wvalue> gameData_json;
-				auto players = game->GetPlayers();
-				for (const auto& player : players)
-				{
-					gameData_json.push_back(crow::json::wvalue{
-						{"username", player->GetUsername()},
-						{"score", std::to_string(player->GetScore())}
-						});
-				}
-				return crow::json::wvalue{ gameData_json };
-			});	
+		std::vector<crow::json::wvalue> gameData_json;
+		auto players = game->GetPlayers();
+		for (const auto& player : players)
+		{
+			gameData_json.push_back(crow::json::wvalue{
+				{"username", player->GetUsername()},
+				{"score", std::to_string(player->GetScore())}
+				});
+		}
+		return crow::json::wvalue{ gameData_json };
+			});
 
 	CROW_ROUTE(m_app, "/addmessagetochat")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
@@ -347,52 +347,53 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 	CROW_ROUTE(m_app, "/getchat")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req) {
-				//CHECK DATA
-				std::string receivedUsername = req.url_params.get("username");
-				if (receivedUsername.empty())
-					return crow::json::wvalue{ "ERROR: NO USERNAME IN PARAMETERS" };
-				if(!game)
-					return crow::json::wvalue{ "ERROR: NO GAME IN PROCESS" };
+		//CHECK DATA
+		std::string receivedUsername = req.url_params.get("username");
+		if (receivedUsername.empty())
+			return crow::json::wvalue{ "ERROR: NO USERNAME IN PARAMETERS" };
+		if (!game)
+			return crow::json::wvalue{ "ERROR: NO GAME IN PROCESS" };
 
-				//GET CHAT
-				std::vector<crow::json::wvalue> gameData_json;
-				auto messages = game->GetChat(receivedUsername);
-				for (const auto& message : messages)
-				{
-					gameData_json.push_back(crow::json::wvalue{
-						{"message", message}
-						});
-				}
-				return crow::json::wvalue{ gameData_json };
+		//GET CHAT
+		std::vector<crow::json::wvalue> gameData_json;
+		auto messages = game->GetChat(receivedUsername);
+		for (const auto& message : messages)
+		{
+			gameData_json.push_back(crow::json::wvalue{
+				{"message", message}
+				});
+		}
+		return crow::json::wvalue{ gameData_json };
 			});
 
 	CROW_ROUTE(m_app, "/getroundnumber")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
-				return crow::json::wvalue{ game->GetRoundNumber()};
+				return crow::json::wvalue{ game->GetRoundNumber() };
 			});
 
 	CROW_ROUTE(m_app, "/gettimer")
 		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
 			{
+				game->IsTimeForHint();
 				auto seconds = game->GetTimer();
 				if (seconds > 60)
 					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
 			});
-	
+
 	CROW_ROUTE(m_app, "/getboard")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
 				auto board = game->GetBoard();
 				std::string boardToSend;
-				for (size_t i = 0; i < board.size(); ++i) 
+				for (size_t i = 0; i < board.size(); ++i)
 				{
 					boardToSend.push_back(char(board[i] + '0'));
 				}
 				return crow::json::wvalue{ {"board", boardToSend} };
 			});
-	
+
 	CROW_ROUTE(m_app, "/sendboard")
 		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req)
 			{
@@ -402,7 +403,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				std::array<uint16_t, Game::kSize> newBoard;
 				for (size_t i = 0; i < stringBoard.size(); ++i)
 				{
-					newBoard[i] = static_cast<uint16_t>(stringBoard[i]-'0');
+					newBoard[i] = static_cast<uint16_t>(stringBoard[i] - '0');
 				}
 				game->UpdateBoard(newBoard);
 				return crow::response(200);
@@ -419,7 +420,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					return crow::json::wvalue{ "ERROR: NO GAME IN PROGRESS." };
 				if (receivedUsername == game->GetPainterUsername())
 				{
-					return crow::json::wvalue{ {"Word", game->GetHiddenWord()}};
+					return crow::json::wvalue{ {"Word", game->GetHiddenWord()} };
 				}
 				else
 				{

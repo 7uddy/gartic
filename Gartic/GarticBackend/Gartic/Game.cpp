@@ -8,7 +8,7 @@ const int& Game::GetGameID() const noexcept
 	return m_gameID;
 }
 
-Game::Game(int gameID): m_gameID{gameID}, m_gameState{Status::Inactive}
+Game::Game(int gameID) : m_gameID{ gameID }, m_gameState{ Status::Inactive }
 {
 	/*EMPTY*/
 }
@@ -27,7 +27,7 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 		if (std::find(pastWords.begin(), pastWords.end(), word) == pastWords.end())
 		{
 			pastWords.emplace_back(word); std::cout << "HERE\n";
-			if(!m_round.StartRound(word))
+			if (!m_round.StartRound(word))
 			{
 				std::cout << "HERE";
 				m_gameState = Status::Finished;
@@ -150,13 +150,23 @@ void Game::RemovePlayer(std::string_view username)
 
 void Game::ChangeDifficulty(int difficulty) noexcept
 {
-	try 
+	try
 	{
 		m_round.SetDifficulty(difficulty);
 	}
 	catch (...)
 	{
 		throw std::exception("INVALID DIFFICULTY");
+	}
+}
+
+void gartic::Game::IsTimeForHint()
+{
+	uint16_t seconds = GetTimer();
+	float multiple = (float)seconds / m_round.GetTimeForHint();
+	if (multiple == (int)multiple && !m_round.WasHintShown(multiple - 1))
+	{
+		m_round.GetNextHint();
 	}
 }
 
