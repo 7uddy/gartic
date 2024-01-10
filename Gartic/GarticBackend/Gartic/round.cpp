@@ -1,7 +1,7 @@
 module round;
 using namespace gartic;
 
-std::shared_ptr<Player> Round::m_painter{nullptr};
+std::shared_ptr<Player> Round::m_painter{ nullptr };
 
 bool Round::StartRound(const Word& word)
 {
@@ -27,13 +27,15 @@ bool Round::StartRound(const Word& word)
 	if (word.GetDifficulty() == DifficultyToInteger(m_difficulty))
 	{
 		m_hiddenWord = word.GetWord();
-		m_lettersToShow = m_hiddenWord.size() / 2;
-		m_timeForHint = (k_roundSeconds - 10)/m_lettersToShow;
-		m_shownWord.assign(m_hiddenWord.size(),'_');
+		std::fill(m_lettersToShow.begin(), m_lettersToShow.end(), false);
+		//m_lettersToShow.clear();
+		m_lettersToShow.resize(m_hiddenWord.size() / 2, false);
+		m_timeForHint = (k_roundSeconds - 10) / m_lettersToShow.size();
+		m_shownWord.assign(m_hiddenWord.size(), '_');
 	}
 	else
 		throw std::exception("Word difficulty doesn't match with round difficulty");
-	
+
 	m_startRoundTime = std::chrono::steady_clock::now();
 	return true;
 }
@@ -58,9 +60,9 @@ void Round::AddPlayerGuessTime(const std::string& username)
 	uint16_t seconds{ GetSecondsFromStart() };
 	auto result = std::find_if(m_players.begin(), m_players.end(), [username](const std::shared_ptr<Player>& player) {
 		return player.get()->GetUsername() == username; });
-	if (result == m_players.end()) 
+	if (result == m_players.end())
 		throw std::exception("PLAYER NOT FOUND");
-	m_guessTimes.insert({result->get()->GetUsername(), seconds});
+	m_guessTimes.insert({ result->get()->GetUsername(), seconds });
 }
 
 void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
@@ -71,7 +73,7 @@ void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
 			player->AddToScore(-100);
 		else
 		{
-			float average {0};
+			float average{ 0 };
 			for (const auto& pairOfUsernameAndGuessTime : m_guessTimes)
 			{
 				average += pairOfUsernameAndGuessTime.second;
@@ -131,6 +133,12 @@ void gartic::Round::GetNextHint() noexcept
 {
 	int index = GetRandomIndex();
 	m_shownWord[index] = m_hiddenWord[index];
+	auto position = std::find(m_lettersToShow.begin(), m_lettersToShow.end(), false);
+	if (position != m_lettersToShow.end())
+	{
+		auto pos = std::distance(m_lettersToShow.begin(), position);
+		m_lettersToShow[pos] = true;
+	}
 }
 
 int gartic::Round::GetRandomIndex() const noexcept
@@ -143,11 +151,11 @@ int gartic::Round::GetRandomIndex() const noexcept
 	{
 		std::uniform_int_distribution<> distrib(0, m_hiddenWord.size() - 1);
 		randomIndex = distrib(gen);
-		if (++counter = m_hiddenWord.size())
+		/*if (++counter == m_hiddenWord.size())
 		{
 			throw std::exception("Shown word has no empty space to add hint.");
-		}
-	} while (m_shownWord[randomIndex] == '_');
+		}*/
+	} while (m_shownWord[randomIndex] != '_');
 	return randomIndex;
 }
 
@@ -205,6 +213,26 @@ const std::string& gartic::Round::GetShownWord() const noexcept
 	return m_shownWord;
 }
 
+const int gartic::Round::GetTimeForHint() const noexcept
+{
+	return m_timeForHint;
+}
+
+const int gartic::Round::GetNumberOfHints() const noexcept
+{
+	return m_lettersToShow.size();
+}
+
+const bool gartic::Round::WasHintShown(const int& index) const noexcept
+{
+	if (index < m_lettersToShow.size())
+	{
+		return (m_lettersToShow[index] == true);
+	}
+	//Returns true if vector subscripts out of range for if statement from game.IsTimeForHint()
+	return true;
+}
+
 bool gartic::Round::IsHiddenWord(const std::string& receivedWord)
 {
 	return receivedWord == m_hiddenWord;
@@ -224,7 +252,7 @@ const std::vector<std::shared_ptr<Player>> Round::GetPlayers() const noexcept
 
 void Round::ShowAllPlayers() const noexcept
 {
-	for (const auto& player: m_players)
+	for (const auto& player : m_players)
 	{
 		std::cout << player.get()->GetUsername() << " ";
 	}

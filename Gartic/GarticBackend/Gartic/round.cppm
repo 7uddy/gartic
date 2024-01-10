@@ -38,6 +38,9 @@ namespace gartic
 		const std::string& GetPainterUsername() const noexcept;
 		const std::string& GetHiddenWord() const noexcept;
 		const std::string& GetShownWord() const noexcept;
+		const int GetTimeForHint() const noexcept;
+		const int GetNumberOfHints() const noexcept;
+		const bool WasHintShown(const int& index) const noexcept;
 		bool IsHiddenWord(const std::string& receivedWord);
 		const std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 
@@ -47,13 +50,13 @@ namespace gartic
 		void AddPlayer(std::shared_ptr<Player> player);
 
 		void AddPlayerGuessTime(const std::string&);
+		void GetNextHint() noexcept;
 	private:
 		void ChoosePainter() noexcept;
 		void CalculateScoreForPlayers() noexcept;
 		void UpdateScoreForPlayer(std::shared_ptr<Player>) noexcept;
 		uint16_t DifficultyToInteger(const Difficulty&) const;
 		Difficulty IntegerToDifficulty(int) const;
-		void GetNextHint() noexcept;
 		int GetRandomIndex() const noexcept;
 
 	private:
@@ -72,8 +75,9 @@ namespace gartic
 
 		//Variables related to word
 		std::string m_shownWord;
-		int m_lettersToShow;
+		std::vector<bool> m_lettersToShow;
 		std::string m_hiddenWord;
 		int m_timeForHint;
+
 	};
 }
