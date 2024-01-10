@@ -24,14 +24,17 @@ bool Round::StartRound(const Word& word)
 			}
 	}*/
 	////std::string word{ GetHiddenWord() };
-	m_startRoundTime = std::chrono::steady_clock::now();
 	if (word.GetDifficulty() == DifficultyToInteger(m_difficulty))
 	{
 		m_hiddenWord = word.GetWord();
 		m_lettersToShow = m_hiddenWord.size() / 2;
+		m_timeForHint = (k_roundSeconds - 10)/m_lettersToShow;
+		m_shownWord.assign(m_hiddenWord.size(),'_');
 	}
 	else
 		throw std::exception("Word difficulty doesn't match with round difficulty");
+	
+	m_startRoundTime = std::chrono::steady_clock::now();
 	return true;
 }
 
@@ -122,6 +125,30 @@ Round::Difficulty Round::IntegerToDifficulty(int difficulty) const
 		return Difficulty::Hard;
 	}
 	throw std::exception("UNABLE TO CONVERT INT TO DIFFICULTY");
+}
+
+void gartic::Round::GetNextHint() noexcept
+{
+	int index = GetRandomIndex();
+	m_shownWord[index] = m_hiddenWord[index];
+}
+
+int gartic::Round::GetRandomIndex() const noexcept
+{
+	std::random_device rd;
+	std::mt19937 gen(rd());
+	int randomIndex;
+	int counter = 0;
+	do
+	{
+		std::uniform_int_distribution<> distrib(0, m_hiddenWord.size() - 1);
+		randomIndex = distrib(gen);
+		if (++counter = m_hiddenWord.size())
+		{
+			throw std::exception("Shown word has no empty space to add hint.");
+		}
+	} while (m_shownWord[randomIndex] == '_');
+	return randomIndex;
 }
 
 void Round::EndRound() noexcept
