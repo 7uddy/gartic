@@ -4,29 +4,7 @@ import lobby;
 using namespace gartic;
 
 //SHOULD BE MOVED TO UTILS?
-auto GetLobbyWithPlayer(const std::vector<std::unique_ptr<Lobby>>& lobbies, std::string_view username)
-{
-	for (const auto& lobby : lobbies)
-		if (lobby->IsInLobby(std::string{ username }))
-			return &lobby;
-	const std::unique_ptr<Lobby> nullp;
-	return &nullp;
-	/*auto foundLobby = std::find(lobbies.begin(), lobbies.end(), [&username](std::unique_ptr<Lobby>& currentLobby)
-		{
-			return currentLobby->IsInLobby(std::string{ username });
-		});
-	return &(*foundLobby);*/
-}
 
-auto GetLobbyWithCode(const std::vector<std::unique_ptr<Lobby>>& lobbies, std::string_view lobbyCode)
-{
-	for (const auto& lobby : lobbies)
-		if (lobby->CheckLobbyCode(std::string{ lobbyCode }))
-			return &lobby;
-	const std::unique_ptr<Lobby> nullp;
-	return &nullp;
-
-}
 
 void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<std::unique_ptr<Lobby>>& lobbies)
 {
@@ -64,7 +42,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					if (db.AddPlayerToDatabase(receivedUsername, receivedEmail, receivedPassword))
 						return crow::response(201);
 				}
-				else return crow::response(406);
+				return crow::response(406);
 
 			});
 
@@ -360,7 +338,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				//ADD MESSAGES TO CHAT
 				//game->AddMessageToChat(std::string{}, std::string{ "Test de la server." });
 				//If message is hidden word, return that the player ha guessed the word
-				if(game->AddMessageToChat(receivedMessage, receivedUsername))
+				if (game->AddMessageToChat(std::move(receivedMessage), receivedUsername))
 					return crow::response(201);
 				//Return success
 				return crow::response(200);

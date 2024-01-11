@@ -37,17 +37,19 @@ namespace gartic
 		Game(int gameID);
 		~Game() = default;
 
+		//Methods related to game status
 		void AddRequestForEnd() noexcept;
 		bool TimeToEndGame() const noexcept;
 		bool AllPlayersGuessed() const noexcept;
 		void SetStatusOfGame(const Status& newStatus);
 		void StartAnotherRound(GarticDatabase& storage) noexcept;
+		//
 
 		void AddPlayerToGame(std::unique_ptr<Player>);
 		void UpdateBoard(const std::array<uint16_t, kSize>&);
 		void RemovePlayer(std::string_view);
 
-		bool AddMessageToChat(const std::string& message, const std::string& username = "") noexcept;
+		bool AddMessageToChat(std::string&& message, const std::string& username = "") noexcept;
 		void ChangeDifficulty(int) noexcept;
 
 		void IsTimeForHint();
