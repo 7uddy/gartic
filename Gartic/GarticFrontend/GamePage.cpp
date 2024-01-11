@@ -139,14 +139,26 @@ void GamePage::UpdateDataFromGame()
 	auto responseTimer = cpr::Get(
 		cpr::Url{ "http://localhost:18080/gettimer" });
 	time->setText("Time:" + QString::fromUtf8(responseTimer.text.c_str()));
-	/*auto responsePlayers = cpr::Get(
+
+	auto responsePlayers = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" });
 	auto players = nlohmann::json::parse(responsePlayers.text);
-	for (const auto& username: players)
+	listPlayers->clear();
+	std::string playerInfo,playerScore;
+	for(const auto& jsonEntry: players)
 	{
-		std::string playerInfo= username["username"].get<std::string>() + "    " + std::to_string(username["score"].get<float>());
-		listPlayers->append(QString::fromStdString(playerInfo));
-	}*/
+		if (jsonEntry.find("username") != jsonEntry.end())
+		{
+			playerInfo = jsonEntry["username"];
+			playerInfo = playerInfo + "     ";
+		}
+		if (jsonEntry.find("score") != jsonEntry.end())
+		{
+			playerScore = jsonEntry["score"];
+			playerInfo = playerInfo + playerScore.substr(0, playerScore.find('.') + 3);;
+			listPlayers->append(QString::fromUtf8(playerInfo));
+		}
+	}
 
 	auto responseChat = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getchat" },
@@ -154,13 +166,16 @@ void GamePage::UpdateDataFromGame()
 			{ "username", player.GetUsername()},
 		});
 	auto chat = nlohmann::json::parse(responseChat.text);
-	if (!chat.empty())
+	if(!chat.empty())
 	{
 		chatHistory->clear();
-		while (chat.find("message") != chat.end())
+		for (const auto& jsonEntry : chat)
 		{
-			std::string messageText = chat["message"];
-			chatHistory->append(QString::fromStdString(messageText));
+			if (jsonEntry.find("message") != jsonEntry.end())
+			{
+				std::string messageText = jsonEntry["message"];
+				chatHistory->append(QString::fromUtf8(messageText));
+			}
 		}
 	}
 	timer->start(500);

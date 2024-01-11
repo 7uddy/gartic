@@ -9,12 +9,12 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	profilesLayout = new QVBoxLayout;
 	difficultyButton = new QPushButton("Easy");
 	startButton = new QPushButton("Start");
-	playersNumber = new QLabel("0/4");
+	playersNumber = new QLabel("0/6");
 	code = new QPushButton("Press here");
 	currentDifficulty = Difficulty::Easy;
 	statusText = new QLabel();
 	timer = new QTimer(this);
-	player = controller->GetPlayer();
+	m_controller = controller;
 	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
 		if (ownerRoom)
 		{
@@ -23,14 +23,12 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 		}
 		});
 	connect(startButton, &QPushButton::clicked, controller, [=]() {
-		timer->stop();
 		if (ownerRoom)
 		{
+			timer->stop();
 			if(controller->StartGame(DifficultyToInt(currentDifficulty)))
 				controller->ShowPage("Game");
 		}
-		else 
-			controller->ShowPage("Game");
 		});
 	connect(returnButton, &QPushButton::clicked, controller, [=]() {
 		if (controller->LeaveRoom())
@@ -203,7 +201,11 @@ void WaitingRoomPage::UpdateDataFromRoom()
 	if (responseStatus.text == "0")
 		statusText->setText("WaitingForPlayers");
 	else
+	{
+		timer->stop();
 		statusText->setText("Launched");
+		m_controller->ShowPage("Game");
+	}
 
 	auto responsePlayers = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getusernamesfromlobby" },
@@ -239,6 +241,7 @@ void WaitingRoomPage::UpdateDataFromRoom()
 
 void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, const bool& owner)
 {
+	player = controller->GetPlayer();
 	ownerRoom = owner;
 	roomCode = codeLobby;
 	code->setText(QString::fromUtf8(codeLobby.c_str()));

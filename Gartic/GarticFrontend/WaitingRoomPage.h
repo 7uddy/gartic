@@ -54,5 +54,6 @@ private:
 	Player player;
 	bool ownerRoom;
 	std::vector<std::string> oldPlayers;
+	PageController* m_controller;
 };
 
