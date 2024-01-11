@@ -20,7 +20,7 @@ void Game::SetStatusOfGame(const Status& newStatus)
 
 void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 {
-	if (m_gameState == Status::Finished || m_gameState == Status::Inactive)
+	if (m_gameState == Status::Finished)
 		return;
 	do {
 		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
@@ -36,7 +36,9 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 					//void AddScoreToDatabase(int gameID, std::string username, float score);
 					storage.AddScoreToDatabase(m_gameID, player.first, player.second->GetScore());
 				}
+				return;
 			}
+			std::fill(m_board.begin(), m_board.end(), 0);
 			break;
 		}
 	} while (true);
@@ -99,7 +101,7 @@ void Game::AddMessageToChat(const std::string& message, const std::string& usern
 	//ADD MESSAGE ONLY FOR PLAYER
 	m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::move(messageToBeAdded)));
 	//ADD MESSAGE OF CONGRATULATIONS ONLY TO PLAYER
-	m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::string{ "[SYSTEM]: FELICITARI! AI GHICIT CUVANTUL" }));
+	m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::string{ "[SYSTEM]: " + username +" A GHICIT CUVANTUL" }));
 
 }
 
@@ -180,7 +182,7 @@ uint16_t Game::GetRoundNumber() const noexcept
 	return m_round.GetCurrentRound();
 }
 
-std::vector<std::shared_ptr<Player>> Game::GetPlayers() const noexcept
+const std::vector<std::shared_ptr<Player>>& Game::GetPlayers() noexcept
 {
 	/*std::vector<std::shared_ptr<Player>> players;
 	for (const auto& play : m_players)
@@ -220,4 +222,9 @@ int Game::ConvertStatusToInteger(const Game::Status& current) const noexcept
 const int& Game::GetGameStatus() const noexcept
 {
 	return ConvertStatusToInteger(m_gameState);
+}
+
+bool Game::AllPlayersGuessed() const noexcept
+{
+	return m_round.AllGuessersHaveAnswered();
 }

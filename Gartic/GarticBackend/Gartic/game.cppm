@@ -37,6 +37,7 @@ namespace gartic
 		Game(int gameID);
 		~Game() = default;
 
+		bool AllPlayersGuessed() const noexcept;
 		void SetStatusOfGame(const Status& newStatus);
 		void StartAnotherRound(GarticDatabase& storage) noexcept;
 
@@ -60,7 +61,7 @@ namespace gartic
 		uint16_t GetDifficulty() const noexcept;
 		uint16_t GetRoundNumber() const noexcept;
 		std::array<uint16_t, kSize> GetBoard() const noexcept;
-		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
+		const std::vector<std::shared_ptr<Player>>& GetPlayers() noexcept;
 		std::vector<std::string> GetChat(std::string_view) const noexcept;
 		const std::string& GetPainterUsername() const noexcept;
 		const std::string& GetHiddenWord() const noexcept;

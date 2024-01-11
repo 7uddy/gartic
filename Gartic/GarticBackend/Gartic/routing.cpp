@@ -386,7 +386,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 			{
 				game->IsTimeForHint();
 				auto seconds = game->GetTimer();
-				if (seconds > 60)
+				if (seconds > 60 || game->AllPlayersGuessed())
 					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
 			});

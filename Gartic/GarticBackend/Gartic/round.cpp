@@ -65,7 +65,7 @@ void Round::AddPlayerGuessTime(const std::string& username)
 		return player.get()->GetUsername() == username; });
 	if (result == m_players.end())
 		throw std::exception("PLAYER NOT FOUND");*/
-	m_guessTimes.insert({ result->get()->GetUsername(), seconds });
+	m_guessTimes.insert({ username, seconds });
 }
 
 void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
@@ -241,12 +241,22 @@ bool gartic::Round::IsHiddenWord(const std::string& receivedWord)
 	return receivedWord == m_hiddenWord;
 }
 
-const std::vector<std::shared_ptr<Player>> Round::GetPlayers() const noexcept
+const std::vector<std::shared_ptr<Player>>& Round::GetPlayers() noexcept
 {
 	if (m_players.at(0) != m_painter)
 	{
 		//to be done
 		std::cout << "FIRST PLAYER IS NOT PAINTER";
+		for(size_t index=1;index<m_players.size();index++)
+			if (m_players[index] == m_painter)
+			{
+				std::swap(m_players[index], m_players[0]);
+				/*std::shared_ptr<Player> copy = m_players[0];
+				m_players[0] = m_players[index];
+				m_players.at(index) = copy;
+				copy.reset();*/
+				break;
+			}
 		/*auto painter = std::find(m_players.begin(), m_players.end(), m_painter);
 		std::swap(painter, m_players[0]);*/
 	}
@@ -272,4 +282,9 @@ void Round::ShowAllPlayerGuessTimes() const noexcept
 void Round::AddPlayer(std::shared_ptr<Player> player)
 {
 	m_players.emplace_back(player);
+}
+
+bool Round::AllGuessersHaveAnswered() const noexcept
+{
+	return ((m_guessTimes.size() - 1) == m_players.size());
 }

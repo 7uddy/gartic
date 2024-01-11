@@ -31,6 +31,8 @@ namespace gartic
 		bool StartRound(const Word& word);
 		void EndRound() noexcept;
 
+		bool AllGuessersHaveAnswered() const noexcept;
+
 		uint16_t GetCurrentRound() const noexcept;
 		uint16_t GetSecondsFromStart() const noexcept;
 		void SetDifficulty(int);
@@ -42,7 +44,7 @@ namespace gartic
 		const int GetNumberOfHints() const noexcept;
 		const bool WasHintShown(const int& index) const noexcept;
 		bool IsHiddenWord(const std::string& receivedWord);
-		const std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
+		const std::vector<std::shared_ptr<Player>>& GetPlayers() noexcept;
 
 		//FOR TEST
 		void ShowAllPlayers() const noexcept;
