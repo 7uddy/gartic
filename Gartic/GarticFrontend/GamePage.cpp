@@ -102,13 +102,16 @@ void GamePage::SetSize()
 
 void GamePage::UpdateBoard(QMouseEvent* event)
 {
-	QPoint localPos = event->localPos().toPoint();
-	int col = localPos.x() / 10;
-	int row = localPos.y() / 10;
-	if ((col >= 0 && col < board->GetNumCols()) && (row >= 0 && row < board->GetNumRows()))
+	if (painter)
 	{
-		board->drawingMatrix.at(row * board->GetNumCols() + col) = currentMode;
-		board->update();
+		QPoint localPos = event->localPos().toPoint();
+		int col = localPos.x() / 10;
+		int row = localPos.y() / 10;
+		if ((col >= 0 && col < board->GetNumCols()) && (row >= 0 && row < board->GetNumRows()))
+		{
+			board->drawingMatrix.at(row * board->GetNumCols() + col) = currentMode;
+			board->update();
+		}
 	}
 }
 
@@ -138,6 +141,10 @@ void GamePage::UpdateDataFromGame()
 {
 	auto responseTimer = cpr::Get(
 		cpr::Url{ "http://localhost:18080/gettimer" });
+	if(responseTimer.text=="0")
+	{ 
+		messageInput->setEnabled(true);
+	}
 	time->setText("Time:" + QString::fromUtf8(responseTimer.text.c_str()));
 
 	auto responsePlayers = cpr::Get(
@@ -145,17 +152,25 @@ void GamePage::UpdateDataFromGame()
 	auto players = nlohmann::json::parse(responsePlayers.text);
 	listPlayers->clear();
 	std::string playerInfo,playerScore;
+	bool isFirst = true;
 	for(const auto& jsonEntry: players)
 	{
 		if (jsonEntry.find("username") != jsonEntry.end())
 		{
 			playerInfo = jsonEntry["username"];
-			playerInfo = playerInfo + "     ";
 		}
 		if (jsonEntry.find("score") != jsonEntry.end())
 		{
+			if (isFirst)
+			{
+				if (playerInfo == player.GetUsername())
+					painter = true;
+				else
+					painter = false;
+				isFirst = false;
+			}
 			playerScore = jsonEntry["score"];
-			playerInfo = playerInfo + playerScore.substr(0, playerScore.find('.') + 3);;
+			playerInfo = playerInfo +"     "+ playerScore.substr(0, playerScore.find('.') + 3);;
 			listPlayers->append(QString::fromUtf8(playerInfo));
 		}
 	}
@@ -178,6 +193,26 @@ void GamePage::UpdateDataFromGame()
 			}
 		}
 	}
+
+	if (painter)
+	{
+		std::string boardInput = board->GetDrawingMatrix();
+		auto responseBoard = cpr::Put(
+			cpr::Url{ "http://localhost:18080/sendboard" },
+			cpr::Parameters{
+					{ "board", boardInput},
+			}
+		);
+	}
+	else
+	{
+		auto responseBoard = cpr::Get(
+			cpr::Url{ "http://localhost:18080/getboard" }
+		);
+		auto boardOutput = nlohmann::json::parse(responseBoard.text);
+		std::string boardText = boardOutput["board"].get<std::string>();
+		board->SetBoard(boardText);
+	}
 	timer->start(500);
 }
 
@@ -196,6 +231,11 @@ void GamePage::SendMessage()
 		messageInput->clear();
 		if (responseChat.status_code == 200)
 			qDebug() << "The message was sent with success.";
+		else if (responseChat.status_code == 201)
+		{
+			messageInput->setEnabled(false);
+			qDebug() << "The player guessed the word.";
+		}
 		else
 			qDebug() << "The message was not sent with success.";
 	}

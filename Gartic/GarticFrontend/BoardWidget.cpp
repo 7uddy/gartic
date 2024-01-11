@@ -15,6 +15,26 @@ const int BoardWidget::GetNumCols()
 	return numCols;
 }
 
+std::string& BoardWidget::GetDrawingMatrix()
+{
+	std::string result;
+	for (uint16_t value : drawingMatrix) 
+	{
+		result += std::to_string(value);
+	}
+	return result;
+}
+
+void BoardWidget::SetBoard(const std::string& boardText)
+{
+	for (size_t i = 0; i < kSize; ++i)
+	{
+		uint16_t value = static_cast<uint16_t>(boardText[i] - '0');
+		drawingMatrix[i] = value;
+	}
+	update();
+}
+
 BoardWidget::~BoardWidget()
 {
 	/*empty*/

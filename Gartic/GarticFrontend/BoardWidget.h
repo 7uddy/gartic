@@ -5,11 +5,12 @@
 class BoardWidget : public QWidget
 {
     Q_OBJECT
-
 public:
     BoardWidget(QWidget* parent = nullptr);
     const int GetNumRows();
     const int GetNumCols();
+    std::string& GetDrawingMatrix();
+    void SetBoard(const std::string& boardText);
     ~BoardWidget();
 signals:
     void MouseDraw(QMouseEvent* event);
@@ -20,7 +21,7 @@ protected:
 private:
     static const size_t numRows{ 50 };
     static const size_t numCols{ 90 };
-    static const size_t kSize{ numRows*numCols};
+    static const size_t kSize{ numRows * numCols };
 public:
     std::array<uint16_t, kSize> drawingMatrix;
 };

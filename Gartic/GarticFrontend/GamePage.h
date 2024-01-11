@@ -34,4 +34,5 @@ private:
 	QTimer* timer;
 	Player player;
 	PageController* m_controller;
+	bool painter;
 };
