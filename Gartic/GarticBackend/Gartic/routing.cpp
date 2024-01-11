@@ -359,7 +359,10 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					return crow::response(404);
 				//ADD MESSAGES TO CHAT
 				//game->AddMessageToChat(std::string{}, std::string{ "Test de la server." });
-				game->AddMessageToChat(receivedMessage, receivedUsername);
+				//If message is hidden word, return that the player ha guessed the word
+				if(game->AddMessageToChat(receivedMessage, receivedUsername))
+					return crow::response(201);
+				//Return success
 				return crow::response(200);
 			});
 

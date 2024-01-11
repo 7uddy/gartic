@@ -66,7 +66,7 @@ uint16_t Game::GetTimer() const noexcept
 	return m_round.GetSecondsFromStart();
 }
 
-void Game::AddMessageToChat(const std::string& message, const std::string& username) noexcept
+bool Game::AddMessageToChat(const std::string& message, const std::string& username) noexcept
 {
 	//IN CASE THE MESSAGE IS FROM SYSTEM
 	/*if (username.empty())
@@ -84,7 +84,7 @@ void Game::AddMessageToChat(const std::string& message, const std::string& usern
 	{
 		//ADD MESSAGE FOR EVERYONE SINCE IT IS NOT A GUESS
 		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::move(messageToBeAdded)));
-		return;
+		return false;
 	}
 
 	//MESSAGE DOES NOT HAVE A SPACE => IT IS A GUESS
@@ -94,7 +94,7 @@ void Game::AddMessageToChat(const std::string& message, const std::string& usern
 	{
 		//ADD MESSAGE FOR EVERYONE SINCE IT WAS NOT CORRECT
 		m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::move(messageToBeAdded)));
-		return;
+		return false;
 	}
 	//IF HERE => MESSAGE IS HIDDEN WORD => ADD GUESS TIME FOR PLAYER
 	m_round.AddPlayerGuessTime(username);
@@ -102,7 +102,7 @@ void Game::AddMessageToChat(const std::string& message, const std::string& usern
 	m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::move(messageToBeAdded)));
 	//ADD MESSAGE OF CONGRATULATIONS ONLY TO PLAYER
 	m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::string{ "[SYSTEM]: " + username +" A GHICIT CUVANTUL" }));
-
+	return true;
 }
 
 void Game::ClearChat() noexcept
