@@ -5,24 +5,27 @@ std::shared_ptr<Player> Round::m_painter{ nullptr };
 
 bool Round::StartRound(const Word& word)
 {
+	if(m_miniRoundNumber !=0)
+		CalculateScoreForPlayers();
 	static const int numberOfDifficulties = 2;
 	if (m_miniRoundNumber + 1 > m_players.size() * k_numberOfRounds)
 		return false;
 	ChoosePainter();
 	++m_miniRoundNumber;
 	//Template to changing difficulty between rounds
-	/*if (m_miniRoundNumber - 1 != 0)
+	if(m_difficultyIsAscending)
 	{
-		if (!m_difficultyIsAscending)
-			;
-		else
-			if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
-			{
-				auto difficultyAsInt = GetDifficulty();
-				if (difficultyAsInt + 1 <= numberOfDifficulties)
-					SetDifficulty(difficultyAsInt + 1);
-			}
-	}*/
+		//if in first mini_round
+		/*if (m_miniRoundNumber - 1 == 0)
+			continue;*/
+		//If another bigRound has started
+		if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
+		{
+			auto difficultyAsInt = GetDifficulty();
+			if (difficultyAsInt + 1 <= numberOfDifficulties)
+				SetDifficulty(difficultyAsInt + 1);
+		}
+	}
 	////std::string word{ GetHiddenWord() };
 	if (word.GetDifficulty() == DifficultyToInteger(m_difficulty))
 	{
@@ -58,10 +61,10 @@ void Round::CalculateScoreForPlayers() noexcept
 void Round::AddPlayerGuessTime(const std::string& username)
 {
 	uint16_t seconds{ GetSecondsFromStart() };
-	auto result = std::find_if(m_players.begin(), m_players.end(), [username](const std::shared_ptr<Player>& player) {
+	/*auto result = std::find_if(m_players.begin(), m_players.end(), [username](const std::shared_ptr<Player>& player) {
 		return player.get()->GetUsername() == username; });
 	if (result == m_players.end())
-		throw std::exception("PLAYER NOT FOUND");
+		throw std::exception("PLAYER NOT FOUND");*/
 	m_guessTimes.insert({ result->get()->GetUsername(), seconds });
 }
 
