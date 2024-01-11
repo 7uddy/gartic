@@ -197,7 +197,7 @@ void GamePage::SendMessage()
 		if (responseChat.status_code == 200)
 			qDebug() << "The message was sent with success.";
 		else
-			qDebug() << "The message was not sent with success. Status code: " << responseChat.status_code;
+			qDebug() << "The message was not sent with success.";
 	}
 }
 

@@ -2,8 +2,7 @@ QMessageBox {
     background-color: #F2D300;
     font-size: 10px;
     color: black;
-} 
-
+}
 
 QPushButton, QTextEdit {
     font-family: 'Helvetica', sans-serif;

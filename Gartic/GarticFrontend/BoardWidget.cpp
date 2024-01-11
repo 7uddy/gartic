@@ -24,6 +24,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 {
 	Q_UNUSED(event);
 	QPainter paint(this);
+	paint.fillRect(rect(), Qt::white);
 	paint.setRenderHint(QPainter::Antialiasing, true);
 	const int pixelSize = 10;
 	const int matrixWidth = numCols * 10;
@@ -34,13 +35,7 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 		for (int jndex = 0; jndex < numCols; jndex++)
 		{
 			QRect rectangle(startX + jndex * pixelSize, startY + index * pixelSize, pixelSize, pixelSize);
-			if (drawingMatrix[index*numCols+jndex] == 0)
-			{
-				paint.setPen(QPen(Qt::white, 0));
-				paint.setBrush(Qt::white);
-				paint.drawRect(rectangle);
-			}
-			else if (drawingMatrix[index * numCols + jndex] == 1)
+			if (drawingMatrix[index * numCols + jndex] == 1)
 			{
 				paint.setPen(QPen(Qt::black, 0));
 				paint.setBrush(Qt::black);

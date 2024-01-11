@@ -241,7 +241,7 @@ void WaitingRoomPage::UpdateDataFromRoom()
 
 void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, const bool& owner)
 {
-	player = controller->GetPlayer();
+	player = m_controller->GetPlayer();
 	ownerRoom = owner;
 	roomCode = codeLobby;
 	code->setText(QString::fromUtf8(codeLobby.c_str()));
