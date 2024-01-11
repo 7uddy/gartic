@@ -4,6 +4,7 @@
 #include "garticDatabase.h"
 
 import lobby;
+import utils;
 
 namespace gartic
 {

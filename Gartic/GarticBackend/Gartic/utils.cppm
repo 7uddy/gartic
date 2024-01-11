@@ -1,9 +1,24 @@
 export module utils;
-import <unordered_map>;
-import <string>;
 import <vector>;
+import lobby;
 
-export std::vector<std::string> split(const std::string& str, const std::string& delim);
+export auto GetLobbyWithPlayer(const std::vector<std::unique_ptr<gartic::Lobby>>& lobbies, std::string_view username)
+{
+	std::string searchUsername(username);
+	for (const auto& lobby : lobbies)
+		if (lobby->IsInLobby(searchUsername))
+			return &lobby;
+	const std::unique_ptr<gartic::Lobby> nullp;
+	return &nullp;
+}
 
+export auto GetLobbyWithCode(const std::vector<std::unique_ptr<gartic::Lobby>>& lobbies, std::string_view lobbyCode)
+{
+	std::string searchCode(lobbyCode);
+	for (const auto& lobby : lobbies)
+		if (lobby->CheckLobbyCode(searchCode))
+			return &lobby;
+	const std::unique_ptr<gartic::Lobby> nullp;
+	return &nullp;
 
-export std::unordered_map<std::string, std::string> parseUrlArgs(const std::string& urlArgs);
+}
