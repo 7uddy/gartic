@@ -8,7 +8,7 @@ const int& Game::GetGameID() const noexcept
 	return m_gameID;
 }
 
-Game::Game(int gameID) : m_gameID{ gameID }, m_gameState{ Status::Inactive }
+Game::Game(int gameID) : m_gameID{ gameID }, m_gameState{ Status::Inactive }, m_requestsToEndGame{0}
 {
 	/*EMPTY*/
 }
@@ -227,4 +227,14 @@ const int& Game::GetGameStatus() const noexcept
 bool Game::AllPlayersGuessed() const noexcept
 {
 	return m_round.AllGuessersHaveAnswered();
+}
+
+void Game::AddRequestForEnd() noexcept
+{
+	++m_requestsToEndGame;
+}
+
+bool Game::TimeToEndGame() const noexcept
+{
+	return (m_requestsToEndGame == m_players.size());
 }

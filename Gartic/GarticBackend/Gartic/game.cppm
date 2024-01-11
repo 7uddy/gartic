@@ -37,6 +37,8 @@ namespace gartic
 		Game(int gameID);
 		~Game() = default;
 
+		void AddRequestForEnd() noexcept;
+		bool TimeToEndGame() const noexcept;
 		bool AllPlayersGuessed() const noexcept;
 		void SetStatusOfGame(const Status& newStatus);
 		void StartAnotherRound(GarticDatabase& storage) noexcept;
@@ -69,8 +71,8 @@ namespace gartic
 		//
 
 		void ClearChat() noexcept;
-	private:
 		int ConvertStatusToInteger(const Status&) const noexcept;
+	private:
 
 	private:
 		std::unordered_map<std::string, std::shared_ptr<Player>> m_players;
@@ -80,5 +82,6 @@ namespace gartic
 		std::vector<std::pair<std::optional<std::string>, std::string>> m_chat;
 		std::array<uint16_t, kSize> m_board;
 		std::vector<Word> pastWords;
+		uint16_t m_requestsToEndGame;
 	};
 }

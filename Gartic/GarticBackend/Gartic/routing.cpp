@@ -320,6 +320,15 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				//CHECK IF THERE EXISTS A GAME
 				if(!game)
 					return crow::json::wvalue{ "ERROR: NO LOBBY WITH LOBBYCODE" };
+				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Finished))
+				{
+					game->AddRequestForEnd();
+					if (game->TimeToEndGame())
+					{
+						game.reset();
+						return crow::json::wvalue{ "ERROR: GAME HAS FINISHED"};
+					}
+				}
 				return crow::json::wvalue{ game->GetGameStatus()};
 			});
 
