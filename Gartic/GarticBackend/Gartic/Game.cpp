@@ -20,8 +20,11 @@ void Game::SetStatusOfGame(const Status& newStatus)
 
 void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 {
-	if (m_gameState == Status::Finished)
+	if (m_gameState == Status::Finished || m_gameState == Status::Transitioning)
 		return;
+	if (GetTimer() <= 60)
+		return;
+	m_gameState = Status::Transitioning;
 	do {
 		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
 		if (std::find(pastWords.begin(), pastWords.end(), word) == pastWords.end())
@@ -42,6 +45,7 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 			break;
 		}
 	} while (true);
+	m_gameState = Status::Active;
 }
 
 void Game::AddPlayerToGame(std::unique_ptr<Player> player)
@@ -157,8 +161,8 @@ void Game::ChangeDifficulty(int difficulty) noexcept
 void gartic::Game::IsTimeForHint()
 {
 	uint16_t seconds = GetTimer();
-	float multiple = (float)seconds / m_round.GetTimeForHint();
-	if (multiple == (int)multiple && !m_round.WasHintShown(multiple - 1))
+	int multiple = (int)seconds / m_round.GetTimeForHint();
+	if (!m_round.WasHintShown(multiple - 1))
 	{
 		m_round.GetNextHint();
 	}
@@ -206,6 +210,8 @@ int Game::ConvertStatusToInteger(const Game::Status& current) const noexcept
 		return 1;
 	case (Status::Finished):
 		return 2;
+	case(Status::Transitioning):
+		return 3;
 	default:
 		return -1;
 	}

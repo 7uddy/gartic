@@ -373,10 +373,12 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 	CROW_ROUTE(m_app, "/gettimer")
 		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
 			{
-				//game->IsTimeForHint();
+				game->IsTimeForHint();
 				auto seconds = game->GetTimer();
-				std::cout << "\nAM AJUNS AICI\n";
-				if (seconds == 60 || game->AllPlayersGuessed())
+				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Transitioning))
+					return crow::json::wvalue{ 60 };
+				//std::cout << "\nAM AJUNS AICI\n";
+				if ((seconds > 60 || game->AllPlayersGuessed()) && (game->GetGameStatus() != game->ConvertStatusToInteger(Game::Status::Transitioning)))
 					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
 			});

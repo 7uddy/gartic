@@ -5,7 +5,7 @@ std::shared_ptr<Player> Round::m_painter{ nullptr };
 
 bool Round::StartRound(const Word& word)
 {
-	if(m_miniRoundNumber !=0)
+	if(m_miniRoundNumber != 0)
 		CalculateScoreForPlayers();
 	static const int numberOfDifficulties = 2;
 	if (m_miniRoundNumber + 1 > m_players.size() * k_numberOfRounds)
@@ -45,7 +45,8 @@ bool Round::StartRound(const Word& word)
 
 void Round::ChoosePainter() noexcept
 {
-	int index_of_new_painter = (m_miniRoundNumber + m_miniRoundNumber / k_numberOfRounds * static_cast<int>(m_players.size())) % static_cast<int>(m_players.size());
+	//int index_of_new_painter = (m_miniRoundNumber + m_miniRoundNumber / k_numberOfRounds * static_cast<int>(m_players.size())) % static_cast<int>(m_players.size());
+	int index_of_new_painter = m_miniRoundNumber % static_cast<int>(m_players.size());
 	m_painter = m_players[index_of_new_painter];
 }
 
@@ -87,7 +88,11 @@ void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
 		}
 		return;
 	}
-	float seconds = m_guessTimes.at(player.get()->GetUsername());
+	float seconds{};
+	if (m_guessTimes.contains(player.get()->GetUsername()))
+		seconds = m_guessTimes.at(player.get()->GetUsername());
+	else
+		seconds = 60;
 	if (seconds == 60)
 	{
 		player->AddToScore(-50);
@@ -169,7 +174,7 @@ void Round::EndRound() noexcept
 
 uint16_t Round::GetCurrentRound() const noexcept
 {
-	return m_miniRoundNumber / k_numberOfRounds + 1;
+	return (m_miniRoundNumber / m_players.size()) + 1;
 }
 
 uint16_t Round::GetSecondsFromStart() const noexcept

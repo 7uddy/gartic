@@ -25,7 +25,8 @@ namespace gartic
 		{
 			Inactive,
 			Active,
-			Finished
+			Finished,
+			Transitioning
 		};
 
 		static const size_t kNumberOfLines{ 80 };

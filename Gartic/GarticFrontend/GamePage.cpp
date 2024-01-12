@@ -231,7 +231,7 @@ void GamePage::UpdateDataFromGame()
 	std::string wordText = wordJson["Word"].get<std::string>();
 	word->setText(QString::fromUtf8(wordText));
 
-	timer->start(100);
+	timer->start(500);
 }
 
 void GamePage::SendMessage()
