@@ -6,9 +6,9 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	layout = new QVBoxLayout(this);
 	topLayout = new QHBoxLayout();
 	listPlayers = new QTextEdit("Players:", this);
-	round = new QTextEdit("Round: ?/4", this);
+	round = new QTextEdit(this);
 	time = new QTextEdit(this);
-	word = new QTextEdit("????", this);
+	word = new QTextEdit(this);
 	chatLayout = new QVBoxLayout();
 	messageInput = new QLineEdit(this);
 	sendButton = new QPushButton("Send", this);
@@ -147,6 +147,10 @@ void GamePage::UpdateDataFromGame()
 	}
 	time->setText("Time:" + QString::fromUtf8(responseTimer.text.c_str()));
 
+	auto responseRound = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getroundnumber" });
+	round->setText("Round: " + QString::fromUtf8(responseRound.text.c_str()) + "/4");
+
 	auto responsePlayers = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" });
 	auto players = nlohmann::json::parse(responsePlayers.text);
@@ -213,6 +217,17 @@ void GamePage::UpdateDataFromGame()
 		std::string boardText = boardOutput["board"].get<std::string>();
 		board->SetBoard(boardText);
 	}
+
+	auto responseWord = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getword" },
+		cpr::Parameters{
+					{ "username", player.GetUsername()},
+		}
+	);
+	auto wordJson= nlohmann::json::parse(responseWord.text);
+	std::string wordText = wordJson["Word"].get<std::string>();
+	word->setText(QString::fromUtf8(wordText));
+
 	timer->start(100);
 }
 
