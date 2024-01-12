@@ -9,7 +9,7 @@ public:
     BoardWidget(QWidget* parent = nullptr);
     const int GetNumRows();
     const int GetNumCols();
-    std::string& GetDrawingMatrix();
+    std::string GetDrawingMatrix();
     void SetBoard(const std::string& boardText);
     ~BoardWidget();
 signals:

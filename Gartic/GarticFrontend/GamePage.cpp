@@ -147,7 +147,8 @@ void GamePage::UpdateDataFromGame()
 	{ 
 		messageInput->setEnabled(true);
 	}
-	time->setText("Time:" + QString::fromUtf8(responseTimer.text.c_str()));
+	int difference = 60 - std::stoul(responseTimer.text);
+	time->setText("Time:" + QString::number(difference));
 
 	auto responseRound = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getroundnumber" });
@@ -204,6 +205,7 @@ void GamePage::UpdateDataFromGame()
 	{
 		messageInput->setEnabled(false);
 		std::string boardInput = board->GetDrawingMatrix();
+		qDebug() << boardInput.size() << "\n";
 		auto responseBoard = cpr::Get(
 			cpr::Url{ "http://localhost:18080/sendboard" },
 			cpr::Parameters{
@@ -229,7 +231,13 @@ void GamePage::UpdateDataFromGame()
 	);
 	auto wordJson= nlohmann::json::parse(responseWord.text);
 	std::string wordText = wordJson["Word"].get<std::string>();
-	word->setText(QString::fromUtf8(wordText));
+	std::string spacedWordText;
+	for (char character : wordText) 
+	{
+		spacedWordText += character;
+		spacedWordText += ' ';
+	}
+	word->setText(QString::fromUtf8(spacedWordText));
 
 	timer->start(500);
 }

@@ -29,8 +29,8 @@ namespace gartic
 			Transitioning
 		};
 
-		static const size_t kNumberOfLines{ 80 };
-		static const size_t kNumberOfColumns{ 80 };
+		static const size_t kNumberOfLines{ 50 };
+		static const size_t kNumberOfColumns{ 90 };
 		static const size_t kSize{ kNumberOfColumns * kNumberOfLines };
 
 		/*-------Game variables related functions-------*/

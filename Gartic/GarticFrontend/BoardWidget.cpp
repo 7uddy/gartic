@@ -15,23 +15,22 @@ const int BoardWidget::GetNumCols()
 	return numCols;
 }
 
-std::string& BoardWidget::GetDrawingMatrix()
+std::string BoardWidget::GetDrawingMatrix()
 {
 	std::string result;
-	for (uint16_t value : drawingMatrix) 
-	{
-		result += std::to_string(value);
-	}
+	for (int index = 0; index < numRows; index++)
+		for (int jndex = 0; jndex < numCols; jndex++)
+		     result += std::to_string(drawingMatrix[index * numCols + jndex]);
 	return result;
 }
 
 void BoardWidget::SetBoard(const std::string& boardText)
 {
-	for (size_t i = 0; i < kSize; ++i)
-	{
-		uint16_t value = static_cast<uint16_t>(boardText[i] - '0');
-		drawingMatrix[i] = value;
-	}
+	for (int index = 0; index < numRows; index++)
+		for (int jndex = 0; jndex < numCols; jndex++)
+		{
+			drawingMatrix[index * numCols + jndex] = boardText[index * numCols + jndex] - '0';
+		}
 	update();
 }
 
