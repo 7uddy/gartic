@@ -71,6 +71,7 @@ void RegisterPage::SetSize()
 	password->setFixedSize(400, 50);
 	loginButton->setFixedSize(400, 50);
 	registerButton->setFixedSize(400, 50);
+
 	username->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	email->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	password->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -78,13 +79,7 @@ void RegisterPage::SetSize()
 	registerButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
-void RegisterPage::RegisterButtonClicked()
-{
-	/*empty*/
-}
-
 RegisterPage::~RegisterPage()
 {
-	delete loginButton, registerButton, username, email, password,
-		layout, innerLayout, imageLabel;
+	/*empty*/
 }

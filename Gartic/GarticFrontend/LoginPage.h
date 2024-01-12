@@ -10,7 +10,6 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
-	void LoginButtonClicked();
 	~LoginPage();
 private:
 	QPushButton* loginButton,* registerButton;

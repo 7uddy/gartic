@@ -65,21 +65,16 @@ void LoginPage::SetSize()
 	password->setFixedSize(400, 50);
 	loginButton->setFixedSize(400, 50);
 	registerButton->setFixedSize(400, 50);
+
 	username->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	password->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	loginButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	registerButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
-void LoginPage::LoginButtonClicked()
-{
-	/*empty*/
-}
-
 LoginPage::~LoginPage()
 {
-	delete loginButton, registerButton, username, password, layout,
-		imageLabel, innerLayout;
+	/*empty*/
 }
 
 
