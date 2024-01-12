@@ -21,9 +21,8 @@ protected:
 private:
     static const size_t numRows{ 50 };
     static const size_t numCols{ 90 };
-    static const size_t kSize{ numRows * numCols };
 public:
-    std::array<uint16_t, kSize> drawingMatrix;
+    std::vector<std::pair<int,int>> pointsCoordinates;
 };
 
 

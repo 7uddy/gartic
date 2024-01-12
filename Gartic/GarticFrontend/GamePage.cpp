@@ -111,7 +111,16 @@ void GamePage::UpdateBoard(QMouseEvent* event)
 		int row = localPos.y() / 10;
 		if ((col >= 0 && col < board->GetNumCols()) && (row >= 0 && row < board->GetNumRows()))
 		{
-			board->drawingMatrix.at(row * board->GetNumCols() + col) = currentMode;
+			if(currentMode)
+			    board->pointsCoordinates.push_back({ row, col });
+			else
+			{
+				auto it = std::find(board->pointsCoordinates.begin(), board->pointsCoordinates.end(), std::make_pair(row, col));
+				if (it != board->pointsCoordinates.end())
+				{
+					board->pointsCoordinates.erase(it);
+				}
+			}
 			board->update();
 		}
 	}

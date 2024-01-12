@@ -1,6 +1,6 @@
 #include "BoardWidget.h"
 
-BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent), drawingMatrix{}
+BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent)
 {
 	setFixedSize(numCols * 10, numRows * 10);
 }
@@ -19,18 +19,16 @@ std::string BoardWidget::GetDrawingMatrix()
 {
 	std::string result;
 	for (int index = 0; index < numRows; index++)
-		for (int jndex = 0; jndex < numCols; jndex++)
-		     result += std::to_string(drawingMatrix[index * numCols + jndex]);
+	     /*result += std::to_string(drawingMatrix[index * numCols + jndex]);*/
 	return result;
 }
 
 void BoardWidget::SetBoard(const std::string& boardText)
 {
 	for (int index = 0; index < numRows; index++)
-		for (int jndex = 0; jndex < numCols; jndex++)
-		{
-			drawingMatrix[index * numCols + jndex] = boardText[index * numCols + jndex] - '0';
-		}
+	{
+		/*drawingMatrix[index * numCols + jndex] = boardText[index * numCols + jndex] - '0';*/
+	}
 	update();
 }
 
@@ -50,17 +48,13 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	const int matrixHeight = numRows * 10;
 	int startX = (width() - matrixWidth) / 2;
 	int startY = (height() - matrixHeight) / 2;
-	for (int index = 0; index < numRows; index++)
-		for (int jndex = 0; jndex < numCols; jndex++)
-		{
-			QRect rectangle(startX + jndex * pixelSize, startY + index * pixelSize, pixelSize, pixelSize);
-			if (drawingMatrix[index * numCols + jndex] == 1)
-			{
-				paint.setPen(QPen(Qt::black, 0));
-				paint.setBrush(Qt::black);
-				paint.drawRect(rectangle);
-			}
-		}
+	paint.setPen(QPen(Qt::black, 0));
+	paint.setBrush(Qt::black);
+	for (int index = 0; index < pointsCoordinates.size(); index++)
+	{
+		QRect rectangle(startX + pointsCoordinates[index].second * pixelSize, startY + pointsCoordinates[index].first * pixelSize, pixelSize, pixelSize);
+		paint.drawRect(rectangle);
+	}
 }
 
 void BoardWidget::mousePressEvent(QMouseEvent* event)
