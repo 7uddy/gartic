@@ -21,43 +21,12 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	mainPaddingLayout = new QGridLayout;
 	roomCode = new QLabel("Room Code");
     difficulty = new QLabel("Difficulty");
-	newProfileName = new QLabel;
 	roomSettingLayout = new QVBoxLayout(mainPadding);
 	m_controller = controller;
-	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
-		if (ownerRoom)
-		{
-			currentDifficulty = static_cast<Difficulty>((DifficultyToInt(currentDifficulty) + 1) % 4);
-			difficultyButton->setText(DifficultyToQString(currentDifficulty));
-		}
-		});
-	connect(startButton, &QPushButton::clicked, controller, [=]() {
-		if (ownerRoom)
-		{
-			timer->stop();
-			if(controller->StartGame(DifficultyToInt(currentDifficulty)))
-				controller->ShowPage("Game");
-		}
-		});
-	connect(returnButton, &QPushButton::clicked, controller, [=]() {
-		if (controller->LeaveRoom())
-		{
-			timer->stop();
-			code->setEnabled(true);
-			code->setText("Press here");
-			controller->ShowPage("MainMenu");
-		}
-		else
-			QMessageBox::warning(controller, "Exit Room Error", "Something went wrong.");
-		});
-	connect(code, &QPushButton::clicked, this, [=]()
-		{
-			UpdateRoomCode(controller->GetLobbyCode(), controller->GetOwner());
-		});
-	connect(timer, &QTimer::timeout, this, &WaitingRoomPage::UpdateDataFromRoom);
 	SetSize();
 	StyleElements();
 	PlaceElements();
+	SetConnections();
 }
 
 void WaitingRoomPage::PlaceElements()
@@ -126,6 +95,41 @@ void WaitingRoomPage::SetSize()
 	startButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
+void WaitingRoomPage::SetConnections()
+{
+	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
+		if (ownerRoom)
+		{
+			currentDifficulty = static_cast<Difficulty>((DifficultyToInt(currentDifficulty) + 1) % 4);
+			difficultyButton->setText(DifficultyToQString(currentDifficulty));
+		}
+		});
+	connect(startButton, &QPushButton::clicked, m_controller, [=]() {
+		if (ownerRoom)
+		{
+			timer->stop();
+			if (m_controller->StartGame(DifficultyToInt(currentDifficulty)))
+				m_controller->ShowPage("Game");
+		}
+		});
+	connect(returnButton, &QPushButton::clicked, m_controller, [=]() {
+		if (m_controller->LeaveRoom())
+		{
+			timer->stop();
+			code->setEnabled(true);
+			code->setText("Press here");
+			m_controller->ShowPage("MainMenu");
+		}
+		else
+			QMessageBox::warning(m_controller, "Exit Room Error", "Something went wrong.");
+		});
+	connect(code, &QPushButton::clicked, this, [=]()
+		{
+			UpdateRoomCode(m_controller->GetLobbyCode(), m_controller->GetOwner());
+		});
+	connect(timer, &QTimer::timeout, this, &WaitingRoomPage::UpdateDataFromRoom);
+}
+
 void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 {
 	QWidget* newProfilePadding = new QWidget;
@@ -141,6 +145,7 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 	newProfileImage->setFixedSize(40, 40);
 	newProfileImage->setScaledContents(true);
 
+	QLabel* newProfileName = new QLabel;
 	newProfileName->setText(playerName);
 
 	newProfileLayout->addWidget(newProfileImage, Qt::AlignLeft);

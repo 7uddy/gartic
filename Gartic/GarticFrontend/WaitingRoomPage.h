@@ -19,6 +19,7 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
+	void SetConnections();
 
 	void OnPlayerJoin(const QString& playerName);
 	/*void OnPlayerLeave(const int& index);*/
@@ -35,7 +36,7 @@ private slots:
 private:
 	QVBoxLayout* layout, * profilesLayout, * bottomLeftLayout, * roomSettingLayout;
 	QHBoxLayout* topLeftLayout,* statusLayout;
-	QLabel* imageLabel, * playersNumber, * statusText, *difficulty,* roomCode,* newProfileName;
+	QLabel* imageLabel, * playersNumber, * statusText, *difficulty,* roomCode;
 	QPushButton* returnButton,* startButton,* code, * difficultyButton;
 	QWidget* mainPadding;
 	QGridLayout* middleLayout,*mainPaddingLayout;
