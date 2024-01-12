@@ -16,14 +16,11 @@ public:
     void showEvent(QShowEvent* event) override;
 	~ProfilePage();
 private:
-    QVBoxLayout* layout;
-    QLabel* imageLabel;
+    QVBoxLayout* layout, * bottomLeftLayout, * middleLayout, * leftSideLayout;
     QPushButton* returnButton;
-
+    QHBoxLayout* topLeftLayout, * mainPaddingLayout;
     QWidget* mainPadding;
-    QLabel* username;
-    QLabel* userImage;
-    QLabel* averageScore;
+    QLabel* username, * userImage, * averageScore,* imageLabel;;
     QTextEdit* matchHistory;
     Player player;
     PageController* m_controller;

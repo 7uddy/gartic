@@ -11,6 +11,11 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 	averageScore = new QLabel();
 	matchHistory = new QTextEdit("Match History: ");
 	m_controller = controller;
+    topLeftLayout = new QHBoxLayout;
+	bottomLeftLayout = new QVBoxLayout;
+	middleLayout = new QVBoxLayout;
+	mainPaddingLayout = new QHBoxLayout(mainPadding);
+	leftSideLayout = new QVBoxLayout;
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -23,29 +28,22 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 void ProfilePage::PlaceElements()
 {
 	setLayout(layout);
-	QHBoxLayout* topLeftLayout = new QHBoxLayout;
 	QPixmap image("Images/Game_Name.png");
 	imageLabel->setPixmap(image);
 	topLeftLayout->addWidget(imageLabel);
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-	QVBoxLayout* bottomLeftLayout = new QVBoxLayout;
 	returnButton->setIconSize(QSize(50, 50));
 	returnButton->setFixedSize(40, 40);
 	bottomLeftLayout->addWidget(returnButton);
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
-	QVBoxLayout* middleLayout = new QVBoxLayout;
 	middleLayout->addWidget(mainPadding);
 	middleLayout->setAlignment(Qt::AlignCenter);
 
-	QHBoxLayout* mainPaddingLayout = new QHBoxLayout(mainPadding);
-
-	QVBoxLayout* leftSideLayout = new QVBoxLayout;
 	leftSideLayout->addWidget(userImage);
 	leftSideLayout->addWidget(username);
 	leftSideLayout->addWidget(averageScore);
-
 
 	mainPaddingLayout->addLayout(leftSideLayout);
 	mainPaddingLayout->addWidget(matchHistory);
@@ -57,6 +55,7 @@ void ProfilePage::PlaceElements()
 
 void ProfilePage::StyleElements()
 {
+	matchHistory->setEnabled(false);
 	returnButton->setAccessibleName("returnButton");
 	mainPadding->setAccessibleName("mainPadding");
 	matchHistory->setAccessibleName("matchHistory");
@@ -103,11 +102,22 @@ void ProfilePage::UpdateData()
 	}
 	else
 	{
+		matchHistory->clear();
+		std::string match,score;
 		for (const auto& gameScore : gameScores)
 		{
-			std::string gameInfo = gameScore["gameid"].get<std::string>() + "    " + std::to_string(gameScore["score"].get<float>());
-			matchHistory->append(QString::fromStdString(gameInfo));
-			scores.push_back(gameScore["score"].get<float>());
+			
+			if (gameScore.find("gameid") != gameScore.end())
+			{
+				match = gameScore["gameid"];
+			}
+			if (gameScore.find("score") != gameScore.end())
+			{
+				score = gameScore["score"];
+				match = match + "     " + score.substr(0, score.find('.') + 3);;
+				matchHistory->append(QString::fromUtf8(match));
+				scores.push_back(gameScore["score"].get<float>());
+			}
 		}
 	}
 	if (!scores.empty())
@@ -131,6 +141,5 @@ void ProfilePage::showEvent(QShowEvent* event)
 
 ProfilePage::~ProfilePage()
 {
-	delete  layout, imageLabel, username, userImage, mainPadding,
-		averageScore, matchHistory, returnButton;
+	/*empty*/
 }

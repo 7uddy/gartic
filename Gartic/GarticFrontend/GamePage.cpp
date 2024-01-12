@@ -80,6 +80,7 @@ void GamePage::SetSize()
 	word->setReadOnly(true);
 	chatHistory->setReadOnly(true);
 	listPlayers->setReadOnly(true);
+
 	messageInput->setFixedSize(300, 50);
 	sendButton->setFixedSize(300, 50);
 	listPlayers->setFixedSize(200, 450);
@@ -89,6 +90,7 @@ void GamePage::SetSize()
 	drawButton->setFixedSize(300, 50);
 	eraseButton->setFixedSize(300, 50);
 	chatHistory->setFixedSize(300, 350);
+
 	messageInput->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	sendButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	listPlayers->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -200,6 +202,7 @@ void GamePage::UpdateDataFromGame()
 
 	if (painter)
 	{
+		messageInput->setEnabled(false);
 		std::string boardInput = board->GetDrawingMatrix();
 		auto responseBoard = cpr::Get(
 			cpr::Url{ "http://localhost:18080/sendboard" },
