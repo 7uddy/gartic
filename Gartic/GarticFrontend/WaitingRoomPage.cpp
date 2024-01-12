@@ -14,6 +14,15 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	currentDifficulty = Difficulty::Easy;
 	statusText = new QLabel();
 	timer = new QTimer(this);
+	topLeftLayout = new QHBoxLayout;
+	bottomLeftLayout = new QVBoxLayout;
+	middleLayout = new QGridLayout;
+	statusLayout = new QHBoxLayout;
+	mainPaddingLayout = new QGridLayout;
+	roomCode = new QLabel("Room Code");
+    difficulty = new QLabel("Difficulty");
+	newProfileName = new QLabel;
+	roomSettingLayout = new QVBoxLayout(mainPadding);
 	m_controller = controller;
 	connect(difficultyButton, &QPushButton::clicked, this, [=]() {
 		if (ownerRoom)
@@ -54,29 +63,19 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 void WaitingRoomPage::PlaceElements()
 {
 	setLayout(layout);
-	QHBoxLayout* topLeftLayout = new QHBoxLayout;
 	QPixmap image("Images/Game_Name.png");
 	imageLabel->setPixmap(image);
 	topLeftLayout->addWidget(imageLabel);
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-	QVBoxLayout* bottomLeftLayout = new QVBoxLayout;
 	returnButton->setIconSize(QSize(50, 50));
 	returnButton->setFixedSize(40, 40);
 	bottomLeftLayout->addWidget(returnButton);
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
-	QGridLayout* middleLayout = new QGridLayout;
-
-	QHBoxLayout* statusLayout = new QHBoxLayout;
 	statusText->setAccessibleName("statusLabel");
 	statusLayout->addWidget(statusText);
 	statusLayout->addWidget(playersNumber, 0, Qt::AlignRight);
-
-
-	QGridLayout* mainPaddingLayout = new QGridLayout;
-	QLabel* roomCode = new QLabel("Room Code");
-	QLabel* difficulty = new QLabel("Difficulty");
 
 	mainPaddingLayout->addWidget(roomCode, 0, 0, Qt::AlignCenter);
 	mainPaddingLayout->addWidget(code, 0, 1, Qt::AlignCenter);
@@ -87,8 +86,6 @@ void WaitingRoomPage::PlaceElements()
 	mainPaddingLayout->addWidget(difficultyButton, 1, 1, Qt::AlignCenter);
 	mainPaddingLayout->setRowStretch(1, 0);
 
-
-	QVBoxLayout* roomSettingLayout = new QVBoxLayout(mainPadding);
 	roomSettingLayout->addLayout(mainPaddingLayout);
 	roomSettingLayout->addWidget(startButton, 0, Qt::AlignCenter | Qt::AlignBottom);
 
@@ -144,7 +141,6 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 	newProfileImage->setFixedSize(40, 40);
 	newProfileImage->setScaledContents(true);
 
-	QLabel* newProfileName = new QLabel;
 	newProfileName->setText(playerName);
 
 	newProfileLayout->addWidget(newProfileImage, Qt::AlignLeft);
@@ -193,7 +189,7 @@ void WaitingRoomPage::UpdateDataFromRoom()
 	auto responseStatus = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getlobbystatus" },
 		cpr::Parameters{
-				{ "lobbycode", roomCode},
+				{ "lobbycode", codeRoom},
 		}
 	);
 	if (responseStatus.status_code != 200)
@@ -210,7 +206,7 @@ void WaitingRoomPage::UpdateDataFromRoom()
 	auto responsePlayers = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getusernamesfromlobby" },
 		cpr::Parameters{
-				{ "lobbycode", roomCode},
+				{ "lobbycode", codeRoom},
 		}
 	);
 	if (responseStatus.status_code != 200)
@@ -243,7 +239,7 @@ void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, const bool& o
 {
 	player = m_controller->GetPlayer();
 	ownerRoom = owner;
-	roomCode = codeLobby;
+	codeRoom = codeLobby;
 	code->setText(QString::fromUtf8(codeLobby.c_str()));
 	code->setEnabled(false);
 	UpdateDataFromRoom();
@@ -277,8 +273,6 @@ int WaitingRoomPage::DifficultyToInt(Difficulty difficulty) {
 
 WaitingRoomPage::~WaitingRoomPage()
 {
-	delete layout, profilesLayout, imageLabel, returnButton, startButton,
-		mainPadding, difficultyButton, playersNumber,
-		profilePaddings, profileLayouts;
+	/*empty*/
 }
 

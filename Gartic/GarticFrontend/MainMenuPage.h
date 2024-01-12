@@ -11,7 +11,6 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
-	void CreateButtonClicked();
 	~MainMenuPage();
 private:
 	QVBoxLayout* layout, *buttonsLayout;

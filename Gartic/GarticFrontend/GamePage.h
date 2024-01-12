@@ -30,6 +30,7 @@ private:
 	QPushButton* sendButton, *drawButton, *eraseButton;
 	BoardWidget* board;
 	QGridLayout* gameGridLayout;
+
 	bool currentMode = true;
 	QTimer* timer;
 	Player player;

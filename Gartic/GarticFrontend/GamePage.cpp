@@ -261,6 +261,5 @@ void GamePage::SendMessage()
 
 GamePage::~GamePage()
 {
-	delete imageLabel, listPlayers, round, time, word, topLayout, layout, chatLayout, messageInput,
-		sendButton, chatHistory, board, gameGridLayout, buttonsLayout;
+	/*empty*/
 }

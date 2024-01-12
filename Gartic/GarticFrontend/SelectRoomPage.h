@@ -12,13 +12,12 @@ public:
     void PlaceElements();
     void StyleElements();
     void SetSize();
-    void JoinButtonClicked();
     ~SelectRoomPage();
 
 private:
     QLineEdit* roomCode;
-    QPushButton* joinButton;
+    QPushButton* joinButton, * returnButton;
     QLabel* imageLabel;
-    QVBoxLayout* layout;
-    QPushButton* returnButton;
+    QVBoxLayout* layout,* bottomLeftLayout,* middleLayout;
+    QHBoxLayout* topLeftLayout;
 };

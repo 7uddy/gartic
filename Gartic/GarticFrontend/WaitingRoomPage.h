@@ -33,23 +33,19 @@ private slots:
 	void UpdateDataFromRoom();
 
 private:
-	QVBoxLayout* layout;
-	QVBoxLayout* profilesLayout;
-	QLabel* imageLabel;
-	QPushButton* returnButton;
-	QPushButton* startButton;
-	QPushButton* code;
+	QVBoxLayout* layout, * profilesLayout, * bottomLeftLayout, * roomSettingLayout;
+	QHBoxLayout* topLeftLayout,* statusLayout;
+	QLabel* imageLabel, * playersNumber, * statusText, *difficulty,* roomCode,* newProfileName;
+	QPushButton* returnButton,* startButton,* code, * difficultyButton;
 	QWidget* mainPadding;
-	QPushButton* difficultyButton;
-	QLabel* playersNumber;
-	QLabel* statusText;
+	QGridLayout* middleLayout,*mainPaddingLayout;
 	QVector<QWidget*> profilePaddings;
 	QVector<QHBoxLayout*> profileLayouts;
 	QVector<QLabel*> profileNames;
-	QTimer* timer;
 
+	QTimer* timer;
 	Difficulty currentDifficulty;
-	std::string roomCode;
+	std::string codeRoom;
 	int statusRoom;
 	Player player;
 	bool ownerRoom;

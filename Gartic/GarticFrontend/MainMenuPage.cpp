@@ -66,14 +66,8 @@ void MainMenuPage::SetSize()
 	joinButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
-void MainMenuPage::CreateButtonClicked()
-{
-	/*empty*/
-}
-
 MainMenuPage::~MainMenuPage()
 {
-	delete myProfile, createButton, joinButton, imageLabel, layout,
-		buttonsLayout, topLayout;
+	/*empty*/
 }
 
