@@ -197,7 +197,7 @@ void GamePage::UpdateDataFromGame()
 	if (painter)
 	{
 		std::string boardInput = board->GetDrawingMatrix();
-		auto responseBoard = cpr::Put(
+		auto responseBoard = cpr::Get(
 			cpr::Url{ "http://localhost:18080/sendboard" },
 			cpr::Parameters{
 					{ "board", boardInput},
@@ -213,7 +213,7 @@ void GamePage::UpdateDataFromGame()
 		std::string boardText = boardOutput["board"].get<std::string>();
 		board->SetBoard(boardText);
 	}
-	timer->start(500);
+	timer->start(100);
 }
 
 void GamePage::SendMessage()

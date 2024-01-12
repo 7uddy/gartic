@@ -1,5 +1,4 @@
 #include "routing.h"
-
 import lobby;
 using namespace gartic;
 
@@ -374,9 +373,10 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 	CROW_ROUTE(m_app, "/gettimer")
 		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
 			{
-				game->IsTimeForHint();
+				//game->IsTimeForHint();
 				auto seconds = game->GetTimer();
-				if (seconds > 60 || game->AllPlayersGuessed())
+				std::cout << "\nAM AJUNS AICI\n";
+				if (seconds == 60 || game->AllPlayersGuessed())
 					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
 			});
@@ -394,11 +394,13 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 			});
 
 	CROW_ROUTE(m_app, "/sendboard")
-		.methods(crow::HTTPMethod::PUT)([&game](const crow::request& req)
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
 				std::string stringBoard = req.url_params.get("board");
 				if (stringBoard.size() != Game::kSize)
+				{
 					return crow::response(400);
+				}
 				std::array<uint16_t, Game::kSize> newBoard;
 				for (size_t i = 0; i < stringBoard.size(); ++i)
 				{
