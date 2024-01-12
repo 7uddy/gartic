@@ -13,19 +13,6 @@ bool Round::StartRound(const Word& word)
 	ChoosePainter();
 	++m_miniRoundNumber;
 	//Template to changing difficulty between rounds
-	if(m_difficultyIsAscending)
-	{
-		//if in first mini_round
-		/*if (m_miniRoundNumber - 1 == 0)
-			continue;*/
-		//If another bigRound has started
-		if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
-		{
-			auto difficultyAsInt = GetDifficulty();
-			if (difficultyAsInt + 1 <= numberOfDifficulties)
-				SetDifficulty(difficultyAsInt + 1);
-		}
-	}
 	////std::string word{ GetHiddenWord() };
 	if (word.GetDifficulty() == DifficultyToInteger(m_difficulty))
 	{
@@ -39,6 +26,19 @@ bool Round::StartRound(const Word& word)
 	else
 		throw std::exception("Word difficulty doesn't match with round difficulty");
 
+	if(m_difficultyIsAscending)
+	{
+		//if in first mini_round
+		/*if (m_miniRoundNumber - 1 == 0)
+			continue;*/
+		//If another bigRound has started
+		if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
+		{
+			auto difficultyAsInt = GetDifficulty();
+			if (difficultyAsInt + 1 <= numberOfDifficulties)
+				SetDifficulty(difficultyAsInt + 1);
+		}
+	}
 	m_startRoundTime = std::chrono::steady_clock::now();
 	return true;
 }
@@ -174,7 +174,7 @@ void Round::EndRound() noexcept
 
 uint16_t Round::GetCurrentRound() const noexcept
 {
-	return (m_miniRoundNumber / m_players.size()) + 1;
+	return ((m_miniRoundNumber - 1) / m_players.size()) + 1;
 }
 
 uint16_t Round::GetSecondsFromStart() const noexcept
@@ -246,26 +246,32 @@ bool gartic::Round::IsHiddenWord(const std::string& receivedWord)
 	return receivedWord == m_hiddenWord;
 }
 
-const std::vector<std::shared_ptr<Player>>& Round::GetPlayers() noexcept
+std::vector<std::shared_ptr<Player>> Round::GetPlayers() noexcept
 {
-	if (m_players.at(0) != m_painter)
-	{
-		//to be done
-		std::cout << "FIRST PLAYER IS NOT PAINTER";
-		for(size_t index=1;index<m_players.size();index++)
-			if (m_players[index] == m_painter)
-			{
-				std::swap(m_players[index], m_players[0]);
-				/*std::shared_ptr<Player> copy = m_players[0];
-				m_players[0] = m_players[index];
-				m_players.at(index) = copy;
-				copy.reset();*/
-				break;
-			}
-		/*auto painter = std::find(m_players.begin(), m_players.end(), m_painter);
-		std::swap(painter, m_players[0]);*/
-	}
-	return m_players;
+	std::vector<std::shared_ptr<Player>> result;
+	result.emplace_back(m_painter);
+	for (const auto& player : m_players)
+		if (player != m_painter)
+			result.emplace_back(player);
+	//std::vector<std::shared_ptr<Player>> result{ m_players };
+	//if (result.at(0) != m_painter)
+	//{
+	//	//to be done
+	//	std::cout << "FIRST PLAYER IS NOT PAINTER";
+	//	for(size_t index=1;index< result.size();index++)
+	//		if (result[index] == m_painter)
+	//		{
+	//			std::swap(result[index], result[0]);
+	//			/*std::shared_ptr<Player> copy = m_players[0];
+	//			m_players[0] = m_players[index];
+	//			m_players.at(index) = copy;
+	//			copy.reset();*/
+	//			break;
+	//		}
+	//	/*auto painter = std::find(m_players.begin(), m_players.end(), m_painter);
+	//	std::swap(painter, m_players[0]);*/
+	//}
+	return result;
 }
 
 void Round::ShowAllPlayers() const noexcept

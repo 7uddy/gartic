@@ -44,7 +44,7 @@ namespace gartic
 		const int GetNumberOfHints() const noexcept;
 		const bool WasHintShown(const int& index) const noexcept;
 		bool IsHiddenWord(const std::string& receivedWord);
-		const std::vector<std::shared_ptr<Player>>& GetPlayers() noexcept;
+		std::vector<std::shared_ptr<Player>> GetPlayers() noexcept;
 
 		//FOR TEST
 		void ShowAllPlayers() const noexcept;

@@ -178,7 +178,7 @@ uint16_t Game::GetRoundNumber() const noexcept
 	return m_round.GetCurrentRound();
 }
 
-const std::vector<std::shared_ptr<Player>>& Game::GetPlayers() noexcept
+std::vector<std::shared_ptr<Player>> Game::GetPlayers() noexcept
 {
 	/*std::vector<std::shared_ptr<Player>> players;
 	for (const auto& play : m_players)

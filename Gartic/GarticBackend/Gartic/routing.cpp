@@ -296,16 +296,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 			{
 				//CHECK IF THERE EXISTS A GAME
 				if(!game)
-					return crow::json::wvalue{ "ERROR: NO LOBBY WITH LOBBYCODE" };
-				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Finished))
-				{
-					game->AddRequestForEnd();
-					if (game->TimeToEndGame())
-					{
-						game.reset();
-						return crow::json::wvalue{ "ERROR: GAME HAS FINISHED"};
-					}
-				}
+					return crow::json::wvalue{ "ERROR: NO GAME IN PROGRESS" };
 				return crow::json::wvalue{ game->GetGameStatus()};
 			});
 
@@ -429,6 +420,33 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				{
 					return crow::json::wvalue{ {"Word", game->GetShownWord()} };
 				}
+			});
+
+	CROW_ROUTE(m_app, "/getplayersandrequestend")
+		.methods(crow::HTTPMethod::GET)([&game]() 
+			{
+				if (game->GetGameStatus() != game->ConvertStatusToInteger(Game::Status::Finished))
+				{
+					return crow::json::wvalue{ "ERROR: GAME HAS NOT FINISHED" };
+				}
+
+				std::vector<crow::json::wvalue> gameData_json;
+				auto players = game->GetPlayers();
+				for (const auto& player : players)
+				{
+					gameData_json.push_back(crow::json::wvalue{
+						{"username", player->GetUsername()},
+						{"score", std::to_string(player->GetScore())}
+						});
+				}
+
+				game->AddRequestForEnd();
+				if (game->TimeToEndGame())
+				{
+					game.reset();
+				}
+
+				return crow::json::wvalue{ gameData_json };
 			});
 
 	//Profile Page
