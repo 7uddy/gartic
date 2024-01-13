@@ -157,6 +157,15 @@ void GamePage::UpdateDataFromGame()
 	int difference = 60 - std::stoul(responseTimer.text);
 	time->setText("Time:" + QString::number(difference));
 
+	auto responseStatus = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getgamestatus" }
+	);
+	if (responseStatus.text == "2")
+	{
+		timer->stop();
+		m_controller->ShowPage("Leaderboard");
+	}
+
 	auto responseRound = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getroundnumber" });
 	round->setText("Round: " + QString::fromUtf8(responseRound.text.c_str()) + "/4");
