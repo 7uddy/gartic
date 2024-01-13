@@ -206,6 +206,7 @@ void WaitingRoomPage::UpdateDataFromRoom()
 		timer->stop();
 		statusText->setText("Launched");
 		m_controller->ShowPage("Game");
+		return;
 	}
 
 	auto responsePlayers = cpr::Get(
