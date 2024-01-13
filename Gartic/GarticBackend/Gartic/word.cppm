@@ -22,6 +22,7 @@ namespace gartic
 		const std::string& GetWord() const noexcept;
 		int GetDifficulty() const noexcept;
 		bool operator==(const Word& other)const noexcept;
+		void operator=(const Word& other);
 	private:
 		std::string m_word;
 		int m_difficulty;

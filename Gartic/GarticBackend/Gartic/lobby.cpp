@@ -69,14 +69,6 @@ bool Lobby::CheckLobbyCode(const std::string& code) const
 	return m_lobbyCode == code;
 }
 
-void Lobby::PrintPlayers() const noexcept
-{
-	for (const auto& element : m_players)
-	{
-		std::cout << element.first << '\n';
-	}
-}
-
 void Lobby::MovePlayersToGame(Game& game)
 {
 	for (auto& player : m_players)

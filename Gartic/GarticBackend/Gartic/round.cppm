@@ -24,35 +24,41 @@ namespace gartic
 			Hard
 		};
 
+		static const uint16_t kNumberOfRounds{ 4 };
+		static const uint8_t kRoundSeconds{ 60 };
+
 	public:
 		Round() = default;
 
 		//FUNCTIONS FOR ROUND AND SCORE 
 		bool StartRound(const Word& word);
-		void EndRound() noexcept;
 
 		bool AllGuessersHaveAnswered() const noexcept;
 
+		//GETTERS
 		uint16_t GetCurrentRound() const noexcept;
 		uint16_t GetSecondsFromStart() const noexcept;
-		void SetDifficulty(int);
 		uint16_t GetDifficulty() const noexcept;
 		const std::string& GetPainterUsername() const noexcept;
 		const std::string& GetHiddenWord() const noexcept;
 		const std::string& GetShownWord() const noexcept;
-		const int GetTimeForHint() const noexcept;
-		const int GetNumberOfHints() const noexcept;
-		const bool WasHintShown(const int& index) const noexcept;
-		bool IsHiddenWord(const std::string& receivedWord);
-		std::vector<std::shared_ptr<Player>> GetPlayers() noexcept;
 
-		//FOR TEST
-		void ShowAllPlayers() const noexcept;
-		void ShowAllPlayerGuessTimes() const noexcept;
+		//SETTERA
+		void SetDifficulty(int);
+
+		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
+
+
 		void AddPlayer(std::shared_ptr<Player> player);
-
 		void AddPlayerGuessTime(const std::string&);
+
+		//METHODS RELATED TO HIDDENWORD
+		bool WasHintShown(const int& index) const noexcept;
+		bool IsHiddenWord(const std::string& receivedWord);
+		int GetTimeForHint() const noexcept;
+		int GetNumberOfHints() const noexcept;
 		void GetNextHint() noexcept;
+
 	private:
 		void ChoosePainter() noexcept;
 		void CalculateScoreForPlayers() noexcept;
@@ -63,8 +69,6 @@ namespace gartic
 
 	private:
 		static std::shared_ptr<Player> m_painter;
-		static const uint16_t k_numberOfRounds = 4;
-		static const uint8_t k_roundSeconds = 60;
 
 	private:
 		std::vector<std::shared_ptr<Player>> m_players;

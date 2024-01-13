@@ -49,17 +49,17 @@ namespace gartic
 	public:
 		bool Initialize();
 
-		bool AddPlayerToDatabase(std::string username, std::string email, std::string password);
-		bool DeletePlayerFromDatabase(std::string username);
-		bool PlayerIsInDatabase(std::string username, std::string password, std::string email = "");
+		bool AddPlayerToDatabase(const std::string& username, const std::string& email, const std::string& password);
+		bool DeletePlayerFromDatabase(const std::string& username);
+		bool PlayerIsInDatabase(const std::string& username, const std::string& password, const std::string& email = "");
 		std::vector<Player> GetPlayers();
 
 		std::vector<Word> GetWords();
 		Word GetRandomWordWithDifficulty(int difficulty);
-		void AddWordToDatabase(std::string word, int difficulty);
+		void AddWordToDatabase(const std::string& word, int difficulty);
 
-		void AddScoreToDatabase(int gameID, std::string username, float score);
-		std::vector<GameScore> GetScoresOfPlayer(std::string username);
+		void AddScoreToDatabase(int gameID, const std::string& username, float score);
+		std::vector<GameScore> GetScoresOfPlayer(const std::string& username);
 
 		int GetNextGameID();
 
@@ -71,7 +71,7 @@ namespace gartic
 	private:
 		const std::string kDbFile{ "database.sqlite" };
 		const std::string kWordFile{ "words.txt" };
-		const int kNumberOfWordsOfADifficulty = 200;
+		const int kNumberOfWordsOfADifficulty{ 200 };
 
 	private:
 		Storage m_db = CreateStorage(kDbFile);

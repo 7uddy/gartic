@@ -19,7 +19,7 @@ bool GarticDatabase::Initialize()
 	return ((PlayersCount != 0) && (WordsCount != 0));
 }
 
-bool GarticDatabase::AddPlayerToDatabase(std::string username, std::string email, std::string password)
+bool GarticDatabase::AddPlayerToDatabase(const std::string& username, const std::string& email, const std::string& password)
 {
 	try {
 		m_db.insert(Player{ username, email, password });
@@ -30,7 +30,7 @@ bool GarticDatabase::AddPlayerToDatabase(std::string username, std::string email
 	}
 	return true;
 }
-bool GarticDatabase::DeletePlayerFromDatabase(std::string username)
+bool GarticDatabase::DeletePlayerFromDatabase(const std::string& username)
 {
 	try {
 		m_db.remove_all<Player>(sql::where(sql::c(&Player::GetUsername) == username));
@@ -42,7 +42,7 @@ bool GarticDatabase::DeletePlayerFromDatabase(std::string username)
 	return true;
 }
 
-bool GarticDatabase::PlayerIsInDatabase(std::string username, std::string password, std::string email)
+bool GarticDatabase::PlayerIsInDatabase(const std::string& username, const std::string& password, const std::string& email)
 {
 	auto is = m_db.get_all<Player>(sql::where(sql::c(&Player::GetUsername) == username));
 	if (is.empty()) return false;
@@ -63,29 +63,28 @@ std::vector<Word> GarticDatabase::GetWords()
 
 Word GarticDatabase::GetRandomWordWithDifficulty(int difficulty)
 {
-	auto generatedNumber = GenerateRandomNumber(kNumberOfWordsOfADifficulty); //should be GenerateRandomNumber(kNumberOfWordsOfADifficulty), but not
-	//enough words in database for it yet
+	auto generatedNumber = GenerateRandomNumber(kNumberOfWordsOfADifficulty);
 	int currentWordNumber{ 0 };
-	for (auto word : m_db.iterate<Word>())
+	for (const auto& word : m_db.iterate<Word>())
 	{
 		if (word.GetDifficulty() != difficulty)
 			continue;
 		if (++currentWordNumber == generatedNumber)
-			return word;
+			return Word{ word };
 	}
 }
 
-void GarticDatabase::AddWordToDatabase(std::string word, int difficulty)
+void GarticDatabase::AddWordToDatabase(const std::string& word, int difficulty)
 {
 	m_db.insert(Word{ word, difficulty });
 }
 
-void GarticDatabase::AddScoreToDatabase(int gameID, std::string username, float score)
+void GarticDatabase::AddScoreToDatabase(int gameID, const std::string& username, float score)
 {
 	m_db.insert(GameScore{ gameID,username,score });
 }
 
-std::vector<GameScore> GarticDatabase::GetScoresOfPlayer(std::string username)
+std::vector<GameScore> GarticDatabase::GetScoresOfPlayer(const std::string& username)
 {
 	return m_db.get_all<GameScore>(sql::where(sql::c(&GameScore::GetUsername) == username));
 }
@@ -95,7 +94,7 @@ int GarticDatabase::GetNextGameID()
 	auto selectStatement = m_db.max(&GameScore::GetGameId);
 	if (!selectStatement)
 		return 0;
-	return *selectStatement;
+	return (*selectStatement)+1;
 }
 
 void GarticDatabase::PopulatePlayerStorage()

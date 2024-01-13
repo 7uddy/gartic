@@ -64,8 +64,6 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 	CROW_ROUTE(m_app, "/login")
 		.methods(crow::HTTPMethod::GET)([&db, &lobbies, &game](const crow::request& req)
 			{
-				//IF USER ALREADY LOGGED IN, BUT NOT JOINED OR CREATED LOBBY, THEN IT WILL STILL LET IT PASS
-				//CAN BE FIXED BY HAVING A VECTOR OF LOGGED IN PLAYER USERNAMES?
 				std::string receivedUsername = req.url_params.get("username");
 				std::string receivedPassword = req.url_params.get("password");
 
@@ -234,12 +232,6 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				return crow::json::wvalue{ status };
 			});
 
-	//CROW_ROUTE(m_app, "/getlobbycode")
-	//	.methods(crow::HTTPMethod::GET)([&lobby](const crow::request& req)
-	//		{
-	//			return crow::json::wvalue{ lobby->GetLobbyCode()};
-	//		});
-
 	CROW_ROUTE(m_app, "/getusernamesfromlobby")
 		.methods(crow::HTTPMethod::GET)([&lobbies](const crow::request& req)
 			{
@@ -379,8 +371,8 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				game->IsTimeForHint();
 				auto seconds = game->GetTimer();
 				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Transitioning))
-					return crow::json::wvalue{ 60 };
-				if ((seconds > 60 || game->AllPlayersGuessed()))
+					return crow::json::wvalue{ Round::kRoundSeconds };
+				if ((seconds > Round::kRoundSeconds || game->AllPlayersGuessed()))
 					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
 			});
@@ -452,6 +444,11 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 				std::vector<crow::json::wvalue> gameData_json;
 				auto players = game->GetPlayers();
+
+				std::ranges::sort(players, [](const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) {
+					return p1->GetScore() < p2->GetScore();
+					});
+
 				for (const auto& player : players)
 				{
 					gameData_json.push_back(crow::json::wvalue{

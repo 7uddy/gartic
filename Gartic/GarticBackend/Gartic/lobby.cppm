@@ -23,10 +23,11 @@ namespace gartic
 	public:
 		Lobby();
 
-		//Functions related to end game
+		//Functions related to end lobby
+		void MovePlayersToGame(Game& game);
 		void AddRequestForEnd() noexcept;
 		bool TimeToDeleteLobby() const noexcept;
-
+		//
 
 		void AddPlayer(std::unique_ptr<Player>&);
 		void RemovePlayer(const std::string& username);
@@ -40,18 +41,16 @@ namespace gartic
 		const std::string& GetLobbyCode() const noexcept;
 		bool CheckLobbyCode(const std::string&) const;
 
-		//FOR TEST
-		void PrintPlayers() const noexcept;
-		void MovePlayersToGame(Game& game);
 
 		int ConvertStatusToInteger(const Status&) const noexcept;
+
 	private:
 		void GenerateLobbyCode() noexcept;
 		int GetRandomDigit(const std::pair<int, int>&) const;
 		void ClearLobby() noexcept;
 
 	private:
-		static const char k_lengthOfLobbyCode = 5;
+		static const char k_lengthOfLobbyCode{ 5 };
 	private:
 		std::unordered_map<std::string, std::unique_ptr<Player>> m_players;
 		std::string m_lobbyCode;

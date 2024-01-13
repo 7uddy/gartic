@@ -5,33 +5,34 @@ std::shared_ptr<Player> Round::m_painter{ nullptr };
 
 bool Round::StartRound(const Word& word)
 {
+	static const int numberOfDifficulties = 2;
+	//IF DIFFERENT FROM FIRST MINIROUND
 	if(m_miniRoundNumber != 0)
 		CalculateScoreForPlayers();
-	static const int numberOfDifficulties = 2;
-	if (m_miniRoundNumber + 1 > m_players.size() * k_numberOfRounds)
+	//CHECK IF I CAN START NEXT ROUND
+	if (m_miniRoundNumber + 1 > m_players.size() * kNumberOfRounds)
 		return false;
 	ChoosePainter();
 	++m_miniRoundNumber;
-	//Template to changing difficulty between rounds
-	////std::string word{ GetHiddenWord() };
 	if (word.GetDifficulty() == DifficultyToInteger(m_difficulty))
 	{
 		m_hiddenWord = word.GetWord();
 		std::fill(m_lettersToShow.begin(), m_lettersToShow.end(), false);
 		//m_lettersToShow.clear();
 		m_lettersToShow.resize(m_hiddenWord.size() / 2, false);
-		m_timeForHint = (k_roundSeconds - 10) / m_lettersToShow.size();
+		m_timeForHint = (kRoundSeconds - 10) / m_lettersToShow.size();
 		m_shownWord.assign(m_hiddenWord.size(), '_');
 	}
 	else
 		throw std::exception("Word difficulty doesn't match with round difficulty");
 
+	//Template to changing difficulty between rounds
 	if(m_difficultyIsAscending)
 	{
 		//CHECK IF NEXT_BIG_ROUND STARTS NEXT ROUND
 		if (((m_miniRoundNumber - 1) / m_players.size()) != (m_miniRoundNumber / m_players.size()))
 		{
-			auto difficultyAsInt = GetDifficulty();
+			auto difficultyAsInt{ GetDifficulty() };
 			SetDifficulty((difficultyAsInt + 1) % numberOfDifficulties);
 		}
 	}
@@ -41,7 +42,6 @@ bool Round::StartRound(const Word& word)
 
 void Round::ChoosePainter() noexcept
 {
-	//int index_of_new_painter = (m_miniRoundNumber + m_miniRoundNumber / k_numberOfRounds * static_cast<int>(m_players.size())) % static_cast<int>(m_players.size());
 	int index_of_new_painter = m_miniRoundNumber % static_cast<int>(m_players.size());
 	m_painter = m_players[index_of_new_painter];
 }
@@ -58,15 +58,12 @@ void Round::CalculateScoreForPlayers() noexcept
 void Round::AddPlayerGuessTime(const std::string& username)
 {
 	uint16_t seconds{ GetSecondsFromStart() };
-	/*auto result = std::find_if(m_players.begin(), m_players.end(), [username](const std::shared_ptr<Player>& player) {
-		return player.get()->GetUsername() == username; });
-	if (result == m_players.end())
-		throw std::exception("PLAYER NOT FOUND");*/
 	m_guessTimes.insert({ username, seconds });
 }
 
 void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
 {
+	//CALCULATE SCORE FOR PAINTER
 	if (player == m_painter)
 	{
 		if (m_guessTimes.empty())
@@ -84,12 +81,15 @@ void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
 		}
 		return;
 	}
+	//CALCULATE SCORE FOR GUESSERS
 	float seconds{};
+	//IF PLAYER HAS GUESSED
 	if (m_guessTimes.contains(player.get()->GetUsername()))
 		seconds = m_guessTimes.at(player.get()->GetUsername());
+	//ELSE HE HAS NOT GUESSED
 	else
-		seconds = 60;
-	if (seconds == 60)
+		seconds = kRoundSeconds;
+	if (seconds == kRoundSeconds)
 	{
 		player->AddToScore(-50);
 		return;
@@ -99,7 +99,7 @@ void Round::UpdateScoreForPlayer(std::shared_ptr<Player> player) noexcept
 		player->AddToScore(100);
 		return;
 	}
-	auto score = (60 - seconds) * 100 / 30;
+	auto score = (kRoundSeconds - seconds) * 100 / 30;
 	player->AddToScore(score);
 }
 
@@ -135,12 +135,11 @@ Round::Difficulty Round::IntegerToDifficulty(int difficulty) const
 
 void gartic::Round::GetNextHint() noexcept
 {
-	int index = GetRandomIndex();
+	int index{ GetRandomIndex() };
 	m_shownWord[index] = m_hiddenWord[index];
-	auto position = std::find(m_lettersToShow.begin(), m_lettersToShow.end(), false);
-	if (position != m_lettersToShow.end())
+	if (auto position = std::ranges::find(m_lettersToShow, false); position != m_lettersToShow.end())
 	{
-		auto pos = std::distance(m_lettersToShow.begin(), position);
+		auto pos{ std::distance(m_lettersToShow.begin(), position) };
 		m_lettersToShow[pos] = true;
 	}
 }
@@ -149,23 +148,14 @@ int gartic::Round::GetRandomIndex() const noexcept
 {
 	std::random_device rd;
 	std::mt19937 gen(rd());
-	int randomIndex;
-	int counter = 0;
+	int randomIndex{};
 	do
 	{
 		std::uniform_int_distribution<> distrib(0, m_hiddenWord.size() - 1);
 		randomIndex = distrib(gen);
-		/*if (++counter == m_hiddenWord.size())
-		{
-			throw std::exception("Shown word has no empty space to add hint.");
-		}*/
 	} while (m_shownWord[randomIndex] != '_');
-	return randomIndex;
-}
 
-void Round::EndRound() noexcept
-{
-	CalculateScoreForPlayers();
+	return randomIndex;
 }
 
 uint16_t Round::GetCurrentRound() const noexcept
@@ -207,27 +197,27 @@ const std::string& Round::GetPainterUsername() const noexcept
 	return m_painter->GetUsername();
 }
 
-const std::string& gartic::Round::GetHiddenWord() const noexcept
+const std::string& Round::GetHiddenWord() const noexcept
 {
 	return m_hiddenWord;
 }
 
-const std::string& gartic::Round::GetShownWord() const noexcept
+const std::string& Round::GetShownWord() const noexcept
 {
 	return m_shownWord;
 }
 
-const int gartic::Round::GetTimeForHint() const noexcept
+int Round::GetTimeForHint() const noexcept
 {
 	return m_timeForHint;
 }
 
-const int gartic::Round::GetNumberOfHints() const noexcept
+int Round::GetNumberOfHints() const noexcept
 {
 	return m_lettersToShow.size();
 }
 
-const bool gartic::Round::WasHintShown(const int& index) const noexcept
+bool Round::WasHintShown(const int& index) const noexcept
 {
 	if (index < m_lettersToShow.size())
 	{
@@ -237,53 +227,20 @@ const bool gartic::Round::WasHintShown(const int& index) const noexcept
 	return true;
 }
 
-bool gartic::Round::IsHiddenWord(const std::string& receivedWord)
+bool Round::IsHiddenWord(const std::string& receivedWord)
 {
 	return receivedWord == m_hiddenWord;
 }
 
-std::vector<std::shared_ptr<Player>> Round::GetPlayers() noexcept
+std::vector<std::shared_ptr<Player>> Round::GetPlayers() const noexcept
 {
+	//RETURNS A VECTOR OF ALL PLAYERS, THE PAINTER BEING AT INDEX 0
 	std::vector<std::shared_ptr<Player>> result;
 	result.emplace_back(m_painter);
 	for (const auto& player : m_players)
 		if (player != m_painter)
 			result.emplace_back(player);
-	//std::vector<std::shared_ptr<Player>> result{ m_players };
-	//if (result.at(0) != m_painter)
-	//{
-	//	//to be done
-	//	std::cout << "FIRST PLAYER IS NOT PAINTER";
-	//	for(size_t index=1;index< result.size();index++)
-	//		if (result[index] == m_painter)
-	//		{
-	//			std::swap(result[index], result[0]);
-	//			/*std::shared_ptr<Player> copy = m_players[0];
-	//			m_players[0] = m_players[index];
-	//			m_players.at(index) = copy;
-	//			copy.reset();*/
-	//			break;
-	//		}
-	//	/*auto painter = std::find(m_players.begin(), m_players.end(), m_painter);
-	//	std::swap(painter, m_players[0]);*/
-	//}
 	return result;
-}
-
-void Round::ShowAllPlayers() const noexcept
-{
-	for (const auto& player : m_players)
-	{
-		std::cout << player.get()->GetUsername() << " ";
-	}
-}
-
-void Round::ShowAllPlayerGuessTimes() const noexcept
-{
-	for (const auto& pair : m_guessTimes)
-	{
-		std::cout << pair.first << " " << pair.second << "\n";
-	}
 }
 
 void Round::AddPlayer(std::shared_ptr<Player> player)

@@ -28,9 +28,17 @@ int Word::GetDifficulty() const noexcept
 	return m_difficulty;
 }
 
-bool gartic::Word::operator==(const Word& other) const noexcept
+bool Word::operator==(const Word& other) const noexcept
 {
 	return  m_word == other.GetWord() && m_difficulty == other.GetDifficulty();
+}
+
+void Word::operator=(const Word& other)
+{
+	if (*this == other)
+		return;
+	m_difficulty = other.m_difficulty;
+	m_word = other.m_word;
 }
 
 std::ostream& gartic::operator<<(std::ostream& os, const Word& word)
