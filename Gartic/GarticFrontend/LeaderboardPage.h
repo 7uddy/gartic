@@ -22,8 +22,8 @@ private:
 	QVBoxLayout* layout, *bottomLeftLayout, * middleLayout;
 	QPushButton* returnButton;
 	QHBoxLayout* topLeftLayout;
-	bool isGameFinished = false;
-	int index = 0;
+	bool isGameFinished;
+	int index;
 
 	QVector<QString>* playerNames; 
 	QVector<QString>* playerScores;

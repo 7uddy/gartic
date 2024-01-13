@@ -25,8 +25,8 @@ public:
 	void UpdateMainPaddingSize();
 	void UpdateRoomCode(const std::string& codeLobby, const bool& owner);
 
-	int DifficultyToInt(Difficulty difficulty);
-	QString DifficultyToQString(Difficulty difficulty);
+	int DifficultyToInt(const Difficulty& difficulty);
+	QString DifficultyToQString(const Difficulty& difficulty);
 	~WaitingRoomPage();
 
 private slots:

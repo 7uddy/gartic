@@ -9,7 +9,9 @@ LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 	topLeftLayout = new QHBoxLayout;
 	bottomLeftLayout = new QVBoxLayout;
 	middleLayout = new QVBoxLayout;
+	isGameFinished = false;
 	title = new QLabel("Leaderboard",this);
+	index = 0;
 	SetSize();
 	StyleElements();
 	PlaceElements();

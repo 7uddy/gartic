@@ -22,9 +22,9 @@ public:
 	bool CreateRoom();
 	bool VerifyCode(const QString& enteredCode);
 	bool LeaveRoom();
-	bool StartGame(int difficulty);
+	bool StartGame(const int& difficulty);
 	// GETTERS 
-	std::string GetLobbyCode();
+	const std::string& GetLobbyCode();
 	Player GetPlayer();
 	bool GetOwner();
 private:

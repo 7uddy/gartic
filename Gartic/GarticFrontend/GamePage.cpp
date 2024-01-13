@@ -112,7 +112,7 @@ void GamePage::UpdateBoardDraw(QMouseEvent* event)
 		QPoint localPos = event->localPos().toPoint();
 		int col = localPos.x() / 10;
 		int row = localPos.y() / 10;
-		if ((col >= 0 && col < board->GetNumCols()) && (row >= 0 && row < board->GetNumRows()))
+		if ((col >= 0 && col < board->GetWidth()) && (row >= 0 && row < board->GetHeight()))
 		{
 			if (currentMode)
 			{

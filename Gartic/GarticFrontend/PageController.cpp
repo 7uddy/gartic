@@ -125,7 +125,7 @@ bool PageController::LeaveRoom()
 	return false;
 }
 
-bool PageController::StartGame(int difficulty)
+bool PageController::StartGame(const int& difficulty)
 {
 	auto responseStart = cpr::Get(
 		cpr::Url{ "http://localhost:18080/startgame" },
@@ -139,7 +139,7 @@ bool PageController::StartGame(int difficulty)
 	return false;
 }
 
-std::string PageController::GetLobbyCode()
+const std::string& PageController::GetLobbyCode()
 {
 	return roomCode;
 }

@@ -229,7 +229,7 @@ void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, const bool& o
 	UpdateDataFromRoom();
 }
 
-QString WaitingRoomPage::DifficultyToQString(Difficulty difficulty) {
+QString WaitingRoomPage::DifficultyToQString(const Difficulty& difficulty) {
 	if (difficulty == Difficulty::Easy)
 		return "Easy";
 	if (difficulty == Difficulty::Medium)
@@ -242,7 +242,7 @@ QString WaitingRoomPage::DifficultyToQString(Difficulty difficulty) {
 	throw std::exception("Unable to convert difficulty to QString");
 }
 
-int WaitingRoomPage::DifficultyToInt(Difficulty difficulty) {
+int WaitingRoomPage::DifficultyToInt(const Difficulty& difficulty) {
 	if (difficulty == Difficulty::Easy)
 		return 0;
 	if (difficulty == Difficulty::Medium)
