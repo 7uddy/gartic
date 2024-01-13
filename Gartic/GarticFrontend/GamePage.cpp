@@ -19,13 +19,16 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	gameGridLayout = new QGridLayout();
 	drawButton = new QPushButton("Draw", this);
 	eraseButton = new QPushButton("Erase", this);
-	timer = new QTimer(this);
+	timer= new QTimer(this);
+	currentMode = true;
+	isGameStarted = false;
 	m_controller = controller;
+	previousTime = 0;
 	SetSize();
 	StyleElements();
 	PlaceElements();
 	connect(sendButton, &QPushButton::clicked, this, &GamePage::SendMessage);
-	connect(board, &BoardWidget::MouseDraw, this, &GamePage::UpdateBoard);
+	connect(board, &BoardWidget::MouseDraw, this, &GamePage::UpdateBoardDraw);
 	connect(drawButton, &QPushButton::clicked, this, &GamePage::SetDrawMode);
 	connect(eraseButton, &QPushButton::clicked, this, &GamePage::SetEraseMode);
 	connect(timer, &QTimer::timeout, this, &GamePage::UpdateDataFromGame);
@@ -102,7 +105,7 @@ void GamePage::SetSize()
 	eraseButton->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 }
 
-void GamePage::UpdateBoard(QMouseEvent* event)
+void GamePage::UpdateBoardDraw(QMouseEvent* event)
 {
 	if (painter)
 	{
@@ -150,78 +153,8 @@ void GamePage::showEvent(QShowEvent* event)
 	QWidget::showEvent(event);
 }
 
-void GamePage::UpdateDataFromGame()
+void GamePage::UpdateBoard()
 {
-	auto responseTimer = cpr::Get(
-		cpr::Url{ "http://localhost:18080/gettimer" });
-	if(responseTimer.text=="0")
-	{ 
-		messageInput->setEnabled(true);
-	}
-	int difference = 60 - std::stoul(responseTimer.text);
-	time->setText("Time:" + QString::number(difference));
-
-	auto responseStatus = cpr::Get(
-		cpr::Url{ "http://localhost:18080/getgamestatus" }
-	);
-	if (responseStatus.text == "2")
-	{
-		timer->stop();
-		m_controller->ShowPage("Leaderboard");
-		return;
-	}
-
-	auto responseRound = cpr::Get(
-		cpr::Url{ "http://localhost:18080/getroundnumber" });
-	round->setText("Round: " + QString::fromUtf8(responseRound.text.c_str()) + "/4");
-
-	auto responsePlayers = cpr::Get(
-		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" });
-	auto players = nlohmann::json::parse(responsePlayers.text);
-	listPlayers->clear();
-	std::string playerInfo,playerScore;
-	bool isFirst = true;
-	for(const auto& jsonEntry: players)
-	{
-		if (jsonEntry.find("username") != jsonEntry.end())
-		{
-			playerInfo = jsonEntry["username"];
-		}
-		if (jsonEntry.find("score") != jsonEntry.end())
-		{
-			if (isFirst)
-			{
-				if (playerInfo == player.GetUsername())
-					painter = true;
-				else
-					painter = false;
-				isFirst = false;
-			}
-			playerScore = jsonEntry["score"];
-			playerInfo = playerInfo +"     "+ playerScore.substr(0, playerScore.find('.') + 3);
-			listPlayers->append(QString::fromUtf8(playerInfo));
-		}
-	}
-
-	auto responseChat = cpr::Get(
-		cpr::Url{ "http://localhost:18080/getchat" },
-		cpr::Parameters{
-			{ "username", player.GetUsername()},
-		});
-	auto chat = nlohmann::json::parse(responseChat.text);
-	if(!chat.empty())
-	{
-		chatHistory->clear();
-		for (const auto& jsonEntry : chat)
-		{
-			if (jsonEntry.find("message") != jsonEntry.end())
-			{
-				std::string messageText = jsonEntry["message"];
-				chatHistory->append(QString::fromUtf8(messageText));
-			}
-		}
-	}
-
 	if (painter)
 	{
 		messageInput->setEnabled(false);
@@ -257,23 +190,122 @@ void GamePage::UpdateDataFromGame()
 			board->SetBoard(newCoordinates);
 		}
 	}
+}
 
+void GamePage::UpdateTimer()
+{
+	auto responseTimer = cpr::Get(
+		cpr::Url{ "http://localhost:18080/gettimer" });
+	int difference = 60 - std::stoul(responseTimer.text);
+	if (previousTime<difference)
+	{
+		messageInput->setEnabled(true);
+	}
+	previousTime = difference;
+	time->setText("Time:" + QString::number(difference));
+}
+
+void GamePage::UpdateRound()
+{
+	auto responseRound = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getroundnumber" });
+	round->setText("Round: " + QString::fromUtf8(responseRound.text.c_str()) + "/4");
+}
+
+void GamePage::UpdateStatus()
+{
+	auto responseStatus = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getgamestatus" }
+	);
+	if (responseStatus.text == "2")
+	{
+		timer->stop();
+		m_controller->ShowPage("Leaderboard");
+		return;
+	}
+}
+
+void GamePage::UpdatePlayers()
+{
+	auto responsePlayers = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" });
+	auto players = nlohmann::json::parse(responsePlayers.text);
+	listPlayers->clear();
+	std::string playerInfo, playerScore;
+	bool isFirst = true;
+	for (const auto& jsonEntry : players)
+	{
+		if (jsonEntry.find("username") != jsonEntry.end())
+		{
+			playerInfo = jsonEntry["username"];
+		}
+		if (jsonEntry.find("score") != jsonEntry.end())
+		{
+			if (isFirst)
+			{
+				if (playerInfo == player.GetUsername())
+					painter = true;
+				else
+					painter = false;
+				isFirst = false;
+			}
+			playerScore = jsonEntry["score"];
+			playerInfo = playerInfo + "     " + playerScore.substr(0, playerScore.find('.') + 3);
+			listPlayers->append(QString::fromUtf8(playerInfo));
+		}
+	}
+}
+
+void GamePage::UpdateChat()
+{
+	auto responseChat = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getchat" },
+		cpr::Parameters{
+			{ "username", player.GetUsername()},
+		});
+	auto chat = nlohmann::json::parse(responseChat.text);
+	if (!chat.empty())
+	{
+		chatHistory->clear();
+		for (const auto& jsonEntry : chat)
+		{
+			if (jsonEntry.find("message") != jsonEntry.end())
+			{
+				std::string messageText = jsonEntry["message"];
+				chatHistory->append(QString::fromUtf8(messageText));
+			}
+		}
+	}
+}
+
+void GamePage::UpdateWord()
+{
 	auto responseWord = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getword" },
 		cpr::Parameters{
 					{ "username", player.GetUsername()},
 		}
 	);
-	auto wordJson= nlohmann::json::parse(responseWord.text);
+	auto wordJson = nlohmann::json::parse(responseWord.text);
 	std::string wordText = wordJson["Word"].get<std::string>();
 	std::string spacedWordText;
-	for (char character : wordText) 
+	for (char character : wordText)
 	{
 		spacedWordText += character;
 		spacedWordText += ' ';
 	}
 	word->setText(QString::fromUtf8(spacedWordText));
+}
 
+void GamePage::UpdateDataFromGame()
+{
+	UpdateBoard();
+	UpdateTimer();
+	UpdateRound();
+	UpdateStatus();
+	UpdatePlayers();
+	UpdateChat();
+	UpdateWord();
 	timer->start(500);
 }
 
@@ -295,7 +327,6 @@ void GamePage::SendMessage()
 		else if (responseChat.status_code == 201)
 		{
 			messageInput->setEnabled(false);
-			qDebug() << "The player guessed the word.";
 		}
 		else
 			qDebug() << "The message was not sent with success.";

@@ -18,7 +18,7 @@ public:
 	~LeaderboardPage();
 
 private:
-	QLabel* imageLabel;
+	QLabel* imageLabel, *title;
 	QVBoxLayout* layout, *bottomLeftLayout, * middleLayout;
 	QPushButton* returnButton;
 	QHBoxLayout* topLeftLayout;

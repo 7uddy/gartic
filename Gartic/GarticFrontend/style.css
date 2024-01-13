@@ -69,6 +69,12 @@ QLabel[accessibleName="statusLabel"] {
     color: white;
 }
 
+QLabel[accessibleName="title"] {
+    font-family: 'Helvetica', sans-serif;
+    font-size: 20pt;
+    color: white;
+}
+
 QPushButton[accessibleName="difficultyButton"] {
     font-family: 'Helvetica', sans-serif;
     font-size: 14pt;

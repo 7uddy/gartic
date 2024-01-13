@@ -164,15 +164,6 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 	playersNumber->setText(QString::number(profilePaddings.size()) + "/4");
 }
 
-//void WaitingRoomPage::OnPlayerLeave(const int& index)
-//{
-//	profileNames.erase(profileNames.begin() + index);
-//	profilePaddings.erase(profilePaddings.begin() + index);
-//	profileLayouts.erase(profileLayouts.begin() + index);
-//	UpdateMainPaddingSize();
-//	playersNumber->setText(QString::number(profilePaddings.size()) + "/6");
-//}
-
 void WaitingRoomPage::UpdateMainPaddingSize()
 {
 	int totalProfilesHeight = 0;
@@ -225,18 +216,6 @@ void WaitingRoomPage::UpdateDataFromRoom()
 			oldPlayers.push_back(player["username"].get<std::string>());
 		}
 	}
-	/*for (int index = 0; index < profileNames.size(); index++)
-	{
-		const QString playerName = profileNames[index]->text(); 
-		auto it = std::find_if(players.begin(), players.end(), [&](const auto& player) {
-			return player["username"].get<std::string>() == playerName.toStdString();
-			});
-
-		if (it == players.end())
-		{
-			OnPlayerLeave(index);
-		}
-	}*/
 	timer->start(2000);
 }
 

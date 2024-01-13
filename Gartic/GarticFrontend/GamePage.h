@@ -13,13 +13,20 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
-	void UpdateBoard(QMouseEvent* event);
+	void UpdateBoardDraw(QMouseEvent* event);
 	void SetDrawMode();
 	void SetEraseMode();
 	void showEvent(QShowEvent* event) override;
 	~GamePage();
 private slots:
 	void SendMessage();
+	void UpdateBoard();
+	void UpdateTimer();
+	void UpdateRound();
+	void UpdateStatus();
+	void UpdatePlayers();
+	void UpdateChat();
+	void UpdateWord();
 	void UpdateDataFromGame();
 private:
 	QLabel* imageLabel;
@@ -31,10 +38,11 @@ private:
 	BoardWidget* board;
 	QGridLayout* gameGridLayout;
 
-	bool currentMode = true;
+	bool currentMode;
 	QTimer* timer;
 	Player player;
 	PageController* m_controller;
 	bool painter;
-	bool isGameStarted = false;
+	bool isGameStarted;
+	int previousTime;
 };

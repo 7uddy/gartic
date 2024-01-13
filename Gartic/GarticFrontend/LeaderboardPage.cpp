@@ -9,6 +9,7 @@ LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 	topLeftLayout = new QHBoxLayout;
 	bottomLeftLayout = new QVBoxLayout;
 	middleLayout = new QVBoxLayout;
+	title = new QLabel("Leaderboard",this);
 	SetSize();
 	StyleElements();
 	PlaceElements();
@@ -32,7 +33,7 @@ void LeaderboardPage::PlaceElements()
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	boardPadding->setFixedSize(400, 350);
-
+	middleLayout->addWidget(title);
 	middleLayout->addWidget(boardPadding);
 	middleLayout->setAlignment(Qt::AlignCenter);
 
@@ -45,7 +46,7 @@ void LeaderboardPage::StyleElements()
 {
 	returnButton->setAccessibleName("returnButton");
 	boardPadding->setAccessibleName("mainPadding");
-
+	title->setAccessibleName("title");
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();

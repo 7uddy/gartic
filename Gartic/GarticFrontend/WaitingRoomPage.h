@@ -22,7 +22,6 @@ public:
 	void SetConnections();
 
 	void OnPlayerJoin(const QString& playerName);
-	/*void OnPlayerLeave(const int& index);*/
 	void UpdateMainPaddingSize();
 	void UpdateRoomCode(const std::string& codeLobby, const bool& owner);
 
