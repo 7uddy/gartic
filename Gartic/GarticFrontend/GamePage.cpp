@@ -168,6 +168,7 @@ void GamePage::UpdateDataFromGame()
 	{
 		timer->stop();
 		m_controller->ShowPage("Leaderboard");
+		return;
 	}
 
 	auto responseRound = cpr::Get(
