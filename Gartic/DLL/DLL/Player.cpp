@@ -52,20 +52,55 @@ Player& Player::operator=(Player&& player) noexcept
 	return *this;
 }
 
-bool Player::VerifyLogin(const std::string& username, const std::string& password) const
+bool Player::HasLowerCase(const std::string& word)
 {
-	std::regex usernamePattern("^[a-zA-Z0-9_]+$");
-	std::regex passwordPattern("^(?=.*[a-z])(?=.*[A-Z]).+$");
-	return std::regex_match(username, usernamePattern) && std::regex_match(password, passwordPattern);
+	std::regex lowercasePattern("[a-z]");
+	return std::regex_search(word, lowercasePattern);
 }
 
-bool Player::VerifyRegister(const std::string& username, const std::string& email, const std::string& password) const
+bool Player::HasUpperCase(const std::string& word)
+{
+	std::regex uppercasePattern("[A-Z]");
+	return std::regex_search(word, uppercasePattern);
+}
+
+bool Player::HasMinimumLength(const std::string& word)
+{
+	const int minimumlength = 4;
+	if (word.size() < minimumlength)
+		return false;
+	return true;
+}
+
+bool Player::IsValidUsername(const std::string& username)
 {
 	std::regex usernamePattern("^[a-zA-Z0-9_]+$");
+	return std::regex_match(username, usernamePattern);
+}
+
+bool Player::IsValidPassword(const std::string& password)
+{
 	std::regex passwordPattern("^(?=.*[a-z])(?=.*[A-Z]).+$");
+	return std::regex_match(password, passwordPattern);
+}
+
+bool Player::IsValidEmail(const std::string& email)
+{
 	std::regex emailPattern(R"(\b[A-Za-z0-9.]+@[A-Za-z0-9]+\.[A-Z|a-z]{2,}\b)");
-	return std::regex_match(username, usernamePattern) && std::regex_match(email, emailPattern)
-		&& std::regex_match(password, passwordPattern);
+	return std::regex_match(email, emailPattern);
+}
+
+bool Player::VerifyLogin(const std::string& username, const std::string& password)
+{
+	return Player::HasLowerCase(username) && Player::HasUpperCase(username) && Player::HasMinimumLength(username) && Player::IsValidUsername(username);
+		Player::HasLowerCase(password) && Player::HasUpperCase(password)&&Player::HasMinimumLength(password),Player::IsValidPassword(password);
+}
+
+bool Player::VerifyRegister(const std::string& username, const std::string& email, const std::string& password)
+{
+	return Player::HasLowerCase(username) && Player::HasUpperCase(username) && Player::HasMinimumLength(username) && Player::IsValidUsername(username);
+	    Player::HasLowerCase(password) && Player::HasUpperCase(password) && Player::HasMinimumLength(password), Player::IsValidPassword(password) &&
+		Player::IsValidEmail(email);
 }
 
 Player::~Player()

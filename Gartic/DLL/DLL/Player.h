@@ -24,8 +24,15 @@ public:
 	float GetScore();
 	Player& operator=(const Player& player) = default;
 	Player& operator=(Player&& player) noexcept;
-	bool VerifyLogin(const std::string& username, const std::string& password) const;
-	bool VerifyRegister(const std::string& username, const std::string& email, const std::string& password) const;
+
+	static bool HasLowerCase(const std::string& word);
+	static bool HasUpperCase(const std::string& word);
+	static bool HasMinimumLength(const std::string& word);
+	static bool IsValidUsername(const std::string& username);
+	static bool IsValidPassword(const std::string& password);
+	static bool IsValidEmail(const std::string& email);
+	static bool VerifyLogin(const std::string& username, const std::string& password);
+	static bool VerifyRegister(const std::string& username, const std::string& email, const std::string& password);
 	~Player();
 private:
 	std::string m_username;

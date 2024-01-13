@@ -32,7 +32,7 @@ bool PageController::VerifyLogin(const QString& enteredUsername, const QString& 
 {
 	std::string username = enteredUsername.toUtf8().constData();
 	std::string password = enteredPassword.toUtf8().constData();
-	if (player.VerifyLogin(username, password))
+	if (Player::VerifyLogin(username, password))
 	{
 		auto responseVerify = cpr::Get(
 			cpr::Url{ "http://localhost:18080/login" },
@@ -56,7 +56,7 @@ bool PageController::VerifyRegister(const QString& enteredUsername, const QStrin
 	std::string username = enteredUsername.toUtf8().constData();
 	std::string email = enteredEmail.toUtf8().constData();
 	std::string password = enteredPassword.toUtf8().constData();
-	if (player.VerifyRegister(username, email, password))
+	if (Player::VerifyRegister(username, email, password))
 	{
 		auto responseVerify = cpr::Put(
 			cpr::Url{ "http://localhost:18080/register" },
