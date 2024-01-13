@@ -18,11 +18,15 @@ namespace gartic
 		enum class Status : uint8_t
 		{
 			WaitingForPlayers,
-			Launched,
-			Terminated
+			Launched
 		};
 	public:
 		Lobby();
+
+		//Functions related to end game
+		void AddRequestForEnd() noexcept;
+		bool TimeToDeleteLobby() const noexcept;
+
 
 		void AddPlayer(std::unique_ptr<Player>&);
 		void RemovePlayer(const std::string& username);
@@ -40,10 +44,10 @@ namespace gartic
 		void PrintPlayers() const noexcept;
 		void MovePlayersToGame(Game& game);
 
+		int ConvertStatusToInteger(const Status&) const noexcept;
 	private:
 		void GenerateLobbyCode() noexcept;
 		int GetRandomDigit(const std::pair<int, int>&) const;
-		int ConvertStatusToInteger(const Status&) const noexcept;
 		void ClearLobby() noexcept;
 
 	private:
@@ -52,5 +56,7 @@ namespace gartic
 		std::unordered_map<std::string, std::unique_ptr<Player>> m_players;
 		std::string m_lobbyCode;
 		Status m_lobbyStatus;
+		uint16_t m_requestsToDeleteLobby;
+		uint16_t m_numberOfPlayers;
 	};
 }

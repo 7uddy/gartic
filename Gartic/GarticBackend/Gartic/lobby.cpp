@@ -2,9 +2,19 @@ module lobby;
 
 using namespace gartic;
 
-Lobby::Lobby() : m_lobbyStatus{ Status::WaitingForPlayers }
+Lobby::Lobby() : m_lobbyStatus{ Status::WaitingForPlayers }, m_requestsToDeleteLobby{ 0 }, m_numberOfPlayers{ 0 }
 {
 	GenerateLobbyCode();
+}
+
+void Lobby::AddRequestForEnd() noexcept
+{
+	++m_requestsToDeleteLobby;
+}
+
+bool Lobby::TimeToDeleteLobby() const noexcept
+{
+	return (m_requestsToDeleteLobby == m_numberOfPlayers);
 }
 
 void Lobby::AddPlayer(std::unique_ptr<Player>& player)
@@ -12,6 +22,7 @@ void Lobby::AddPlayer(std::unique_ptr<Player>& player)
 	if(IsInLobby(player.get()->GetUsername()))
 		throw std::exception("ADD ERROR: PLAYER ALREADY IN LOBBY");
 	m_players.emplace(std::make_pair(player.get()->GetUsername(), std::move(player)));
+	++m_numberOfPlayers;
 }
 
 void Lobby::RemovePlayer(const std::string& username)
@@ -19,6 +30,7 @@ void Lobby::RemovePlayer(const std::string& username)
 	if (!IsInLobby(username))
 		throw std::exception("REMOVE ERROR: PLAYER NOT FOUND IN LOBBY");
 	m_players.erase(username);
+	--m_numberOfPlayers;
 }
 
 void Lobby::ClearLobby() noexcept
@@ -71,8 +83,7 @@ void Lobby::MovePlayersToGame(Game& game)
 	{
 		game.AddPlayerToGame(std::move(player.second));
 	}
-	m_lobbyStatus = Lobby::Status::Launched;
-	m_players.clear();
+	ClearLobby();
 }
 
 void Lobby::GenerateLobbyCode() noexcept
@@ -126,8 +137,6 @@ int Lobby::ConvertStatusToInteger(const Status& current) const noexcept
 			return 0;
 		case (Status::Launched):
 			return 1;
-		case (Status::Terminated):
-			return 2;
 		default:
 			return -1;
 	}

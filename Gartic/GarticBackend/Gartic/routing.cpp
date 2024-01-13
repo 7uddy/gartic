@@ -220,7 +220,18 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				if (!foundLobby->get())
 					return crow::json::wvalue{ "ERROR: NO LOBBY WITH LOBBYCODE" };
 
-				return crow::json::wvalue{ foundLobby->get()->GetStatusOfLobby() };
+				auto status = foundLobby->get()->GetStatusOfLobby();
+				if (status == foundLobby->get()->ConvertStatusToInteger(Lobby::Status::Launched))
+					foundLobby->get()->AddRequestForEnd();
+				if (foundLobby->get()->TimeToDeleteLobby())
+				{
+					//DELETE LOBBY
+					lobbies.erase(std::remove_if(lobbies.begin(), lobbies.end(),
+					[&](const std::unique_ptr<Lobby>& ptr) {
+						return ptr.get() == foundLobby->get();
+					}));
+				}
+				return crow::json::wvalue{ status };
 			});
 
 	//CROW_ROUTE(m_app, "/getlobbycode")
@@ -286,11 +297,6 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				game->SetStatusOfGame(Game::Status::Active);
 				//MOVE PLAYERS FROM LOBBY TO GAME
 				foundLobby->get()->MovePlayersToGame(*(game.get()));
-				//DELETE LOBBY
-				/*lobbies.erase(std::remove_if(lobbies.begin(), lobbies.end(),
-					[&](const std::unique_ptr<Lobby>& ptr) {
-						return ptr.get() == foundLobby->get();
-					}));*/
 				//START FIRST ROUND
 				game->StartAnotherRound(db);
 				return crow::response(200);
@@ -333,8 +339,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				if (!game)
 					return crow::response(404);
 				//ADD MESSAGES TO CHAT
-				//game->AddMessageToChat(std::string{}, std::string{ "Test de la server." });
-				//If message is hidden word, return that the player ha guessed the word
+				//If message is hidden word, return that the player has guessed the word
 				if (game->AddMessageToChat(std::move(receivedMessage), std::move(receivedUsername)))
 					return crow::response(201);
 				//Return success
@@ -375,7 +380,6 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				auto seconds = game->GetTimer();
 				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Transitioning))
 					return crow::json::wvalue{ 60 };
-				//std::cout << "\nAM AJUNS AICI\n";
 				if ((seconds > 60 || game->AllPlayersGuessed()))
 					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
@@ -410,6 +414,9 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					y = coordinateJson["y"].i();
 					receivedCoordinates.emplace_back(x, y);
 				}
+
+				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Transitioning))
+					return crow::response(200);
 
 				game->UpdateBoard(std::move(receivedCoordinates));
 				return crow::response(200);
