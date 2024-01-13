@@ -28,15 +28,11 @@ bool Round::StartRound(const Word& word)
 
 	if(m_difficultyIsAscending)
 	{
-		//if in first mini_round
-		/*if (m_miniRoundNumber - 1 == 0)
-			continue;*/
-		//If another bigRound has started
-		if (m_miniRoundNumber / k_numberOfRounds != (m_miniRoundNumber - 1) / k_numberOfRounds)
+		//CHECK IF NEXT_BIG_ROUND STARTS NEXT ROUND
+		if (((m_miniRoundNumber - 1) / m_players.size()) != (m_miniRoundNumber / m_players.size()))
 		{
 			auto difficultyAsInt = GetDifficulty();
-			if (difficultyAsInt + 1 <= numberOfDifficulties)
-				SetDifficulty(difficultyAsInt + 1);
+			SetDifficulty((difficultyAsInt + 1) % numberOfDifficulties);
 		}
 	}
 	m_startRoundTime = std::chrono::steady_clock::now();
@@ -196,7 +192,7 @@ void Round::SetDifficulty(int difficultyAsInt)
 		m_difficulty = Difficulty::Easy;
 		break;
 	default:
-		m_difficultyIsAscending = false;
+		//m_difficultyIsAscending = false;
 		m_difficulty = IntegerToDifficulty(difficultyAsInt);
 	}
 }
@@ -297,5 +293,5 @@ void Round::AddPlayer(std::shared_ptr<Player> player)
 
 bool Round::AllGuessersHaveAnswered() const noexcept
 {
-	return ((m_guessTimes.size() - 1) == m_players.size());
+	return (m_guessTimes.size() == (m_players.size()-1));
 }

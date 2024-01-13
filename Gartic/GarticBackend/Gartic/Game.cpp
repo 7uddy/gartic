@@ -22,8 +22,6 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 {
 	if (m_gameState == Status::Finished || m_gameState == Status::Transitioning)
 		return;
-	if (GetTimer() <= 60)
-		return;
 	m_gameState = Status::Transitioning;
 	do {
 		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
