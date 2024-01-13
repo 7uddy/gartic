@@ -12,20 +12,21 @@ public:
 	void PlaceElements();
 	void StyleElements();
 	void SetSize();
-	void OnPlayerJoin(const QString& playerName, const QString& playerScore); //to be renamed
+	void UpdateData();
+	void showEvent(QShowEvent* event) override;
+	void AddPlayer(const QString& playerName, const QString& playerScore);
 	~LeaderboardPage();
 
 private:
 	QLabel* imageLabel;
-	QVBoxLayout* layout;
+	QVBoxLayout* layout, *bottomLeftLayout, * middleLayout;
 	QPushButton* returnButton;
+	QHBoxLayout* topLeftLayout;
+	bool isGameFinished = false;
+	int index = 0;
 
-	//FOR TESTING
 	QVector<QString>* playerNames; 
 	QVector<QString>* playerScores;
-	QPushButton* testButton;
-	uint16_t index;
-	//FOR TESTING
 
 	QWidget* boardPadding;
 	QVector<QWidget*> profilePaddings;

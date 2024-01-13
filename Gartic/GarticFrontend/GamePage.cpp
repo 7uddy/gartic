@@ -136,12 +136,16 @@ void GamePage::SetEraseMode()
 
 void GamePage::showEvent(QShowEvent* event)
 {
-	player = m_controller->GetPlayer();
-	QMessageBox::StandardButton reply;
-	reply = QMessageBox::information(this, "Game", "The game has begun.", QMessageBox::Ok);
-	if (reply == QMessageBox::Ok)
+	if (!isGameStarted)
 	{
-		UpdateDataFromGame();
+		player = m_controller->GetPlayer();
+		QMessageBox::StandardButton reply;
+		reply = QMessageBox::information(this, "Game", "The game has begun.", QMessageBox::Ok);
+		if (reply == QMessageBox::Ok)
+		{
+			UpdateDataFromGame();
+		}
+		isGameStarted = true;
 	}
 	QWidget::showEvent(event);
 }
@@ -193,7 +197,7 @@ void GamePage::UpdateDataFromGame()
 				isFirst = false;
 			}
 			playerScore = jsonEntry["score"];
-			playerInfo = playerInfo +"     "+ playerScore.substr(0, playerScore.find('.') + 3);;
+			playerInfo = playerInfo +"     "+ playerScore.substr(0, playerScore.find('.') + 3);
 			listPlayers->append(QString::fromUtf8(playerInfo));
 		}
 	}

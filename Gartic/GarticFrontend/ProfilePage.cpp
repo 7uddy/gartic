@@ -103,25 +103,28 @@ void ProfilePage::UpdateData()
 	else
 	{
 		matchHistory->clear();
-		std::string match,score;
+		std::string match,scoreText, matchText;
+		float score;
 		for (const auto& gameScore : gameScores)
 		{
 			
 			if (gameScore.find("gameid") != gameScore.end())
 			{
-				match = gameScore["gameid"];
+				matchText = gameScore["gameid"];
+				match = "GameID: " + matchText;
 			}
 			if (gameScore.find("score") != gameScore.end())
 			{
-				score = gameScore["score"];
-				match = match + "     " + score.substr(0, score.find('.') + 3);;
+				scoreText = gameScore["score"];	
+				score = std::stof(scoreText);
+				match = match + "      " + "Score: " + std::to_string(score);
 				matchHistory->append(QString::fromUtf8(match));
-				scores.push_back(gameScore["score"].get<float>());
+				scores.push_back(score);
 			}
 		}
 	}
 	if (!scores.empty())
-		mediumScore = static_cast<float>(std::accumulate(scores.begin(), scores.end(), 0)) / scores.size();
+		mediumScore = std::accumulate(scores.begin(), scores.end(), 0) / scores.size();
 	else
 		mediumScore = 0;
 	QString score = QString::number(mediumScore, 'f', 2);

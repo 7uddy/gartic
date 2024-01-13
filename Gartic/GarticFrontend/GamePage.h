@@ -36,4 +36,5 @@ private:
 	Player player;
 	PageController* m_controller;
 	bool painter;
+	bool isGameStarted = false;
 };

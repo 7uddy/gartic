@@ -476,8 +476,8 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				for (const auto& score : scores)
 				{
 					gameData_json.push_back(crow::json::wvalue{
-						{"gameid", score.GetGameId()},
-						{"score", score.GetScore()}
+						{"gameid", std::to_string(score.GetGameId())},
+						{"score", std::to_string(score.GetScore())}
 						});
 				}
 				return crow::json::wvalue{ gameData_json };

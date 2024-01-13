@@ -9,7 +9,7 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 	profilesLayout = new QVBoxLayout;
 	difficultyButton = new QPushButton("Easy");
 	startButton = new QPushButton("Start");
-	playersNumber = new QLabel("0/6");
+	playersNumber = new QLabel("0/4");
 	code = new QPushButton("Press here");
 	currentDifficulty = Difficulty::Easy;
 	statusText = new QLabel();
@@ -66,7 +66,6 @@ void WaitingRoomPage::PlaceElements()
 	layout->addLayout(topLeftLayout);
 	layout->addLayout(middleLayout);
 	layout->addLayout(bottomLeftLayout);
-
 }
 
 void WaitingRoomPage::StyleElements()
@@ -162,7 +161,7 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 
 	UpdateMainPaddingSize();
 
-	playersNumber->setText(QString::number(profilePaddings.size()) + "/6");
+	playersNumber->setText(QString::number(profilePaddings.size()) + "/4");
 }
 
 //void WaitingRoomPage::OnPlayerLeave(const int& index)
