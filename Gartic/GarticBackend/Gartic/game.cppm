@@ -41,6 +41,7 @@ namespace gartic
 		bool AllPlayersGuessed() const noexcept;
 		void SetStatusOfGame(const Status& newStatus);
 		void StartAnotherRound(GarticDatabase& storage) noexcept;
+		void SaveScoresInDatabase(GarticDatabase& storage) const noexcept;
 		//
 
 		void AddPlayerToGame(std::unique_ptr<Player>);

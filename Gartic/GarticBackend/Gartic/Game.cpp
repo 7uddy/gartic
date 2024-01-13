@@ -27,19 +27,12 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
 		if (std::find(pastWords.begin(), pastWords.end(), word) == pastWords.end())
 		{
-			pastWords.emplace_back(word); std::cout << "HERE\n";
+			pastWords.emplace_back(word);
 			if (!m_round.StartRound(word))
 			{
-				std::cout << "HERE";
 				m_gameState = Status::Finished;
-				for (const auto& player : m_players)
-				{
-					//void AddScoreToDatabase(int gameID, std::string username, float score);
-					storage.AddScoreToDatabase(m_gameID, player.first, player.second->GetScore());
-				}
 				return;
 			}
-			//std::fill(m_board.begin(), m_board.end(), 0);
 			m_board.clear();
 			break;
 		}
@@ -234,4 +227,12 @@ void Game::AddRequestForEnd() noexcept
 bool Game::TimeToEndGame() const noexcept
 {
 	return (m_requestsToEndGame == m_players.size());
+}
+
+void Game::SaveScoresInDatabase(GarticDatabase& storage) const noexcept
+{
+	for (const auto& player : m_players)
+	{
+		storage.AddScoreToDatabase(m_gameID, player.first, player.second->GetScore());
+	}
 }
