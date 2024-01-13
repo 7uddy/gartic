@@ -15,12 +15,22 @@ const int BoardWidget::GetNumCols()
 	return numCols;
 }
 
-std::string BoardWidget::GetDrawingMatrix()
+std::string BoardWidget::GetBoard()
 {
-	std::string result;
-	for (int index = 0; index < numRows; index++)
-	     /*result += std::to_string(drawingMatrix[index * numCols + jndex]);*/
-	return result;
+	std::vector<nlohmann::json> coordinatesToBeSent;
+	for (const auto& coordinate : pointsCoordinates)
+	{
+		nlohmann::json point;
+		point["x"] = coordinate.first;
+		point["y"] = coordinate.second;
+		coordinatesToBeSent.emplace_back(point);
+	}
+	std::string combinedJson;
+	for (const auto& json : coordinatesToBeSent)
+	{
+		combinedJson += json.dump();
+	}
+	return combinedJson;
 }
 
 void BoardWidget::SetBoard(const std::string& boardText)

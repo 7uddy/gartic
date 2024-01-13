@@ -1,6 +1,7 @@
 #pragma once
 #include <QWidget>
 #include <QPainter>
+#include <nlohmann/json.hpp>
 
 class BoardWidget : public QWidget
 {
@@ -9,7 +10,7 @@ public:
     BoardWidget(QWidget* parent = nullptr);
     const int GetNumRows();
     const int GetNumCols();
-    std::string GetDrawingMatrix();
+    std::string GetBoard();
     void SetBoard(const std::string& boardText);
     ~BoardWidget();
 signals:

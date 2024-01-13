@@ -213,12 +213,12 @@ void GamePage::UpdateDataFromGame()
 	if (painter)
 	{
 		messageInput->setEnabled(false);
-		std::string boardInput = board->GetDrawingMatrix();
+		std::string boardInput = board->GetBoard();
 		qDebug() << boardInput.size() << "\n";
 		auto responseBoard = cpr::Get(
 			cpr::Url{ "http://localhost:18080/sendboard" },
 			cpr::Parameters{
-					{ "board", boardInput},
+					{ "board",  boardInput},
 			}
 		);
 	}
