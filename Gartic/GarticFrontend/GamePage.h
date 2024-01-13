@@ -23,7 +23,7 @@ private slots:
 	void UpdateBoard();
 	void UpdateTimer();
 	void UpdateRound();
-	void UpdateStatus();
+	bool UpdateStatus();
 	void UpdatePlayers();
 	void UpdateChat();
 	void UpdateWord();

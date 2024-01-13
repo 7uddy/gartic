@@ -446,7 +446,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				auto players = game->GetPlayers();
 
 				std::ranges::sort(players, [](const std::shared_ptr<Player>& p1, const std::shared_ptr<Player>& p2) {
-					return p1->GetScore() < p2->GetScore();
+					return p1->GetScore() > p2->GetScore();
 					});
 
 				for (const auto& player : players)

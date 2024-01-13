@@ -200,6 +200,7 @@ void GamePage::UpdateTimer()
 	if (previousTime<difference)
 	{
 		messageInput->setEnabled(true);
+		board->pointsCoordinates.clear();
 	}
 	previousTime = difference;
 	time->setText("Time:" + QString::number(difference));
@@ -212,7 +213,7 @@ void GamePage::UpdateRound()
 	round->setText("Round: " + QString::fromUtf8(responseRound.text.c_str()) + "/4");
 }
 
-void GamePage::UpdateStatus()
+bool GamePage::UpdateStatus()
 {
 	auto responseStatus = cpr::Get(
 		cpr::Url{ "http://localhost:18080/getgamestatus" }
@@ -220,9 +221,9 @@ void GamePage::UpdateStatus()
 	if (responseStatus.text == "2")
 	{
 		timer->stop();
-		m_controller->ShowPage("Leaderboard");
-		return;
+		return false;
 	}
+	return true;
 }
 
 void GamePage::UpdatePlayers()
@@ -302,10 +303,14 @@ void GamePage::UpdateDataFromGame()
 	UpdateBoard();
 	UpdateTimer();
 	UpdateRound();
-	UpdateStatus();
 	UpdatePlayers();
 	UpdateChat();
 	UpdateWord();
+	if (!UpdateStatus())
+	{
+		m_controller->ShowPage("Leaderboard");
+		return;
+	}
 	timer->start(500);
 }
 
