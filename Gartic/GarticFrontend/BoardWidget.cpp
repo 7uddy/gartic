@@ -25,7 +25,7 @@ nlohmann::json BoardWidget::GetBoard()
 	return coordinatesToBeSent;
 }
 
-void BoardWidget::SetBoard(std::vector<std::pair<int, int>> newCoordinates)
+void BoardWidget::SetBoard(std::unordered_set<std::pair<int, int>, HashFunction> newCoordinates)
 {
 	pointsCoordinates = newCoordinates;
 	update();
@@ -49,9 +49,9 @@ void BoardWidget::paintEvent(QPaintEvent* event)
 	int startY = (height() - matrixHeight) / 2;
 	paint.setPen(QPen(Qt::black, 0));
 	paint.setBrush(Qt::black);
-	for (int index = 0; index < pointsCoordinates.size(); index++)
+	for (const auto& point:pointsCoordinates)
 	{
-		QRect rectangle(startX + pointsCoordinates[index].second * pixelSize, startY + pointsCoordinates[index].first * pixelSize, pixelSize, pixelSize);
+		QRect rectangle(startX + point.second * pixelSize, startY + point.first * pixelSize, pixelSize, pixelSize);
 		paint.drawRect(rectangle);
 	}
 }

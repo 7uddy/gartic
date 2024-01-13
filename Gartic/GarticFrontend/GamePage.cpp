@@ -111,15 +111,13 @@ void GamePage::UpdateBoard(QMouseEvent* event)
 		int row = localPos.y() / 10;
 		if ((col >= 0 && col < board->GetNumCols()) && (row >= 0 && row < board->GetNumRows()))
 		{
-			if(currentMode)
-			    board->pointsCoordinates.push_back({ row, col });
+			if (currentMode)
+			{
+				board->pointsCoordinates.insert({ row, col });
+			}
 			else
 			{
-				auto it = std::find(board->pointsCoordinates.begin(), board->pointsCoordinates.end(), std::make_pair(row, col));
-				if (it != board->pointsCoordinates.end())
-				{
-					board->pointsCoordinates.erase(it);
-				}
+				board->pointsCoordinates.erase({row,col});
 			}
 			board->update();
 		}
@@ -214,7 +212,6 @@ void GamePage::UpdateDataFromGame()
 	{
 		messageInput->setEnabled(false);
 		nlohmann::json boardInput = board->GetBoard();
-		//qDebug() << boardInput.size() << "\n";
 		if (!boardInput.empty())
 		{
 			auto responseBoard = cpr::Get(
@@ -231,7 +228,7 @@ void GamePage::UpdateDataFromGame()
 		if (!responseBoard.text.empty())
 		{
 			auto boardOutput = nlohmann::json::parse(responseBoard.text);
-			std::vector<std::pair<int, int>> newCoordinates;
+			std::unordered_set<std::pair<int, int>, HashFunction> newCoordinates;
 			int x{}, y{};
 			for (const auto& jsonEntry : boardOutput)
 			{
@@ -241,7 +238,7 @@ void GamePage::UpdateDataFromGame()
 				if (jsonEntry.find("y") == jsonEntry.end())
 					break;
 				y = jsonEntry["y"];
-				newCoordinates.emplace_back(x, y);
+				newCoordinates.insert(x, y);
 			}
 			board->SetBoard(newCoordinates);
 		}

@@ -2,6 +2,16 @@
 #include <QWidget>
 #include <QPainter>
 #include <nlohmann/json.hpp>
+#include <unordered_set>
+
+struct HashFunction
+{
+    size_t operator()(const std::pair<int,
+        int>& x) const
+    {
+        return x.first ^ x.second;
+    }
+};
 
 class BoardWidget : public QWidget
 {
@@ -11,7 +21,7 @@ public:
     const int GetNumRows();
     const int GetNumCols();
     nlohmann::json GetBoard();
-    void SetBoard(std::vector<std::pair<int, int>>);
+    void SetBoard(std::unordered_set<std::pair<int, int>, HashFunction>);
     ~BoardWidget();
 signals:
     void MouseDraw(QMouseEvent* event);
@@ -23,7 +33,7 @@ private:
     static const size_t numRows{ 50 };
     static const size_t numCols{ 90 };
 public:
-    std::vector<std::pair<int,int>> pointsCoordinates;
+    std::unordered_set<std::pair<int,int>, HashFunction> pointsCoordinates;
 };
 
 
