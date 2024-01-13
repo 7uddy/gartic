@@ -41,7 +41,8 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 				}
 				return;
 			}
-			std::fill(m_board.begin(), m_board.end(), 0);
+			//std::fill(m_board.begin(), m_board.end(), 0);
+			m_board.clear();
 			break;
 		}
 	} while (true);
@@ -53,11 +54,6 @@ void Game::AddPlayerToGame(std::unique_ptr<Player> player)
 	std::shared_ptr<Player> newPlayer{ std::move(player) };
 	m_players.emplace(std::make_pair(newPlayer->GetUsername(), newPlayer));
 	m_round.AddPlayer(newPlayer);
-}
-
-void Game::UpdateBoard(const std::array<uint16_t, kSize>& newBoard)
-{
-	m_board = newBoard;
 }
 
 bool Game::IsPlayerInGame(std::string_view username) const noexcept
@@ -195,9 +191,14 @@ void Game::ShowAllPlayers() const noexcept
 	}
 }
 
-std::array<uint16_t, Game::kSize> Game::GetBoard() const noexcept
+const std::vector<Game::Coordinate>& Game::GetBoard() const noexcept
 {
 	return m_board;
+}
+
+void Game::UpdateBoard(std::vector<Game::Coordinate>&& newBoard)
+{
+	m_board = std::move(newBoard);
 }
 
 int Game::ConvertStatusToInteger(const Game::Status& current) const noexcept

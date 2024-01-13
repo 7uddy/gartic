@@ -213,23 +213,38 @@ void GamePage::UpdateDataFromGame()
 	if (painter)
 	{
 		messageInput->setEnabled(false);
-		std::string boardInput = board->GetBoard();
-		qDebug() << boardInput.size() << "\n";
-		auto responseBoard = cpr::Get(
-			cpr::Url{ "http://localhost:18080/sendboard" },
-			cpr::Parameters{
-					{ "board",  boardInput},
-			}
-		);
+		nlohmann::json boardInput = board->GetBoard();
+		//qDebug() << boardInput.size() << "\n";
+		if (!boardInput.empty())
+		{
+			auto responseBoard = cpr::Get(
+				cpr::Url{ "http://localhost:18080/sendboard" },
+				cpr::Body{ boardInput.dump() }
+			);
+		}
 	}
 	else
 	{
 		auto responseBoard = cpr::Get(
 			cpr::Url{ "http://localhost:18080/getboard" }
 		);
-		auto boardOutput = nlohmann::json::parse(responseBoard.text);
-		std::string boardText = boardOutput["board"].get<std::string>();
-		board->SetBoard(boardText);
+		if (!responseBoard.text.empty())
+		{
+			auto boardOutput = nlohmann::json::parse(responseBoard.text);
+			std::vector<std::pair<int, int>> newCoordinates;
+			int x{}, y{};
+			for (const auto& jsonEntry : boardOutput)
+			{
+				if (jsonEntry.find("x") == jsonEntry.end())
+					break;
+				x = jsonEntry["x"];
+				if (jsonEntry.find("y") == jsonEntry.end())
+					break;
+				y = jsonEntry["y"];
+				newCoordinates.emplace_back(x, y);
+			}
+			board->SetBoard(newCoordinates);
+		}
 	}
 
 	auto responseWord = cpr::Get(

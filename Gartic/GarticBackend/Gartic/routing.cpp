@@ -377,29 +377,34 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 	CROW_ROUTE(m_app, "/getboard")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
-				auto board = game->GetBoard();
-				std::string boardToSend;
-				for (size_t i = 0; i < board.size(); ++i)
+				std::vector<crow::json::wvalue> gameData_json;
+				auto coordinates = game->GetBoard();
+				for (const auto& coordinate : coordinates)
 				{
-					boardToSend.push_back(char(board[i] + '0'));
+					gameData_json.push_back(crow::json::wvalue{
+						{"x", std::to_string(coordinate.first)},
+						{"y", std::to_string(coordinate.second)}
+						});
 				}
-				return crow::json::wvalue{ {"board", boardToSend} };
+				return crow::json::wvalue{ gameData_json };
 			});
 
 	CROW_ROUTE(m_app, "/sendboard")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
-				std::string stringBoard = req.url_params.get("board");
-				if (stringBoard.size() != Game::kSize)
-				{
+				if (req.body.empty()) 
 					return crow::response(400);
+
+				auto jsonBody = crow::json::load(req.body);
+				int x{}, y{};
+				std::vector<Game::Coordinate> receivedCoordinates;
+				for (const auto& coordinateJson : jsonBody) {
+					x = coordinateJson["x"].i();
+					y = coordinateJson["y"].i();
+					receivedCoordinates.emplace_back(x, y);
 				}
-				std::array<uint16_t, Game::kSize> newBoard;
-				for (size_t i = 0; i < stringBoard.size(); ++i)
-				{
-					newBoard[i] = static_cast<uint16_t>(stringBoard[i] - '0');
-				}
-				game->UpdateBoard(newBoard);
+
+				game->UpdateBoard(std::move(receivedCoordinates));
 				return crow::response(200);
 			});
 

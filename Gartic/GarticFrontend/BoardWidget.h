@@ -10,8 +10,8 @@ public:
     BoardWidget(QWidget* parent = nullptr);
     const int GetNumRows();
     const int GetNumCols();
-    std::string GetBoard();
-    void SetBoard(const std::string& boardText);
+    nlohmann::json GetBoard();
+    void SetBoard(std::vector<std::pair<int, int>>);
     ~BoardWidget();
 signals:
     void MouseDraw(QMouseEvent* event);

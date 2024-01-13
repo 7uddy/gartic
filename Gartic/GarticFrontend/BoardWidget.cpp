@@ -15,30 +15,19 @@ const int BoardWidget::GetNumCols()
 	return numCols;
 }
 
-std::string BoardWidget::GetBoard()
+nlohmann::json BoardWidget::GetBoard()
 {
-	std::vector<nlohmann::json> coordinatesToBeSent;
+	nlohmann::json coordinatesToBeSent;
 	for (const auto& coordinate : pointsCoordinates)
 	{
-		nlohmann::json point;
-		point["x"] = coordinate.first;
-		point["y"] = coordinate.second;
-		coordinatesToBeSent.emplace_back(point);
+		coordinatesToBeSent.push_back({ {"x", coordinate.first}, {"y", coordinate.second} });
 	}
-	std::string combinedJson;
-	for (const auto& json : coordinatesToBeSent)
-	{
-		combinedJson += json.dump();
-	}
-	return combinedJson;
+	return coordinatesToBeSent;
 }
 
-void BoardWidget::SetBoard(const std::string& boardText)
+void BoardWidget::SetBoard(std::vector<std::pair<int, int>> newCoordinates)
 {
-	for (int index = 0; index < numRows; index++)
-	{
-		/*drawingMatrix[index * numCols + jndex] = boardText[index * numCols + jndex] - '0';*/
-	}
+	pointsCoordinates = newCoordinates;
 	update();
 }
 

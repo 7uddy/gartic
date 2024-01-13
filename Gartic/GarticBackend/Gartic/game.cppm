@@ -2,7 +2,7 @@ module;
 
 #include "garticDatabase.h"
 export module game;
-import <array>;
+import <vector>;
 
 export import word;
 export import round;
@@ -29,10 +29,7 @@ namespace gartic
 			Transitioning
 		};
 
-		static const size_t kNumberOfLines{ 50 };
-		static const size_t kNumberOfColumns{ 90 };
-		static const size_t kSize{ kNumberOfColumns * kNumberOfLines };
-
+		using Coordinate = std::pair<int, int>;
 		/*-------Game variables related functions-------*/
 		Game() = default;
 		Game(int gameID);
@@ -47,7 +44,6 @@ namespace gartic
 		//
 
 		void AddPlayerToGame(std::unique_ptr<Player>);
-		void UpdateBoard(const std::array<uint16_t, kSize>&);
 		void RemovePlayer(std::string_view);
 
 		bool AddMessageToChat(std::string&& message, const std::string& username = "") noexcept;
@@ -65,7 +61,8 @@ namespace gartic
 		uint16_t GetTimer() const noexcept;
 		uint16_t GetDifficulty() const noexcept;
 		uint16_t GetRoundNumber() const noexcept;
-		std::array<uint16_t, kSize> GetBoard() const noexcept;
+		const std::vector<Coordinate>& GetBoard() const noexcept;
+		void UpdateBoard(std::vector<Coordinate>&&);
 		std::vector<std::shared_ptr<Player>> GetPlayers() noexcept;
 		std::vector<std::string> GetChat(std::string_view) const noexcept;
 		const std::string& GetPainterUsername() const noexcept;
@@ -83,7 +80,7 @@ namespace gartic
 		Status m_gameState;
 		Round m_round;
 		std::vector<std::pair<std::optional<std::string>, std::string>> m_chat;
-		std::array<uint16_t, kSize> m_board;
+		std::vector<Coordinate> m_board;
 		std::vector<Word> pastWords;
 		uint16_t m_requestsToEndGame;
 	};
