@@ -229,7 +229,7 @@ void GamePage::UpdateDataFromGame()
 		{
 			auto boardOutput = nlohmann::json::parse(responseBoard.text);
 			std::unordered_set<std::pair<int, int>, HashFunction> newCoordinates;
-			int x{}, y{};
+			std::string x{}, y{};
 			for (const auto& jsonEntry : boardOutput)
 			{
 				if (jsonEntry.find("x") == jsonEntry.end())
@@ -238,7 +238,7 @@ void GamePage::UpdateDataFromGame()
 				if (jsonEntry.find("y") == jsonEntry.end())
 					break;
 				y = jsonEntry["y"];
-				newCoordinates.insert(x, y);
+				newCoordinates.insert({ std::stoi(x), std::stoi(y) });
 			}
 			board->SetBoard(newCoordinates);
 		}
