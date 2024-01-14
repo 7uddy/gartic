@@ -21,6 +21,10 @@ void SharedUIElements::StyleElements()
 
 }
 
+void SharedUIElements::SetImagePhoto()
+{
+}
+
 QPushButton* SharedUIElements::GetReturnButton()
 {
 	return returnButton;

@@ -6,9 +6,9 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	layout = new QVBoxLayout(this);
 	topLayout = new QHBoxLayout();
 	listPlayers = new QTextEdit("Players:", this);
-	round = new QTextEdit(this);
-	time = new QTextEdit(this);
-	word = new QTextEdit(this);
+	round = new QLabel(this);
+	time = new QLabel(this);
+	word = new QLabel(this);
 	chatLayout = new QVBoxLayout();
 	messageInput = new QLineEdit(this);
 	sendButton = new QPushButton("Send", this);
@@ -70,6 +70,10 @@ void GamePage::PlaceElements()
 
 void GamePage::StyleElements()
 {
+	round->setAccessibleName("statusLabel");
+	time->setAccessibleName("statusLabel");
+	word->setAccessibleName("statusLabel");
+
 	QFile styleFile("style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
@@ -78,9 +82,6 @@ void GamePage::StyleElements()
 
 void GamePage::SetSize()
 {
-	round->setReadOnly(true);
-	time->setReadOnly(true);
-	word->setReadOnly(true);
 	chatHistory->setReadOnly(true);
 	listPlayers->setReadOnly(true);
 
@@ -295,7 +296,7 @@ void GamePage::UpdateWord()
 		spacedWordText += character;
 		spacedWordText += ' ';
 	}
-	word->setText(QString::fromUtf8(spacedWordText));
+	word->setText("Word: " + QString::fromUtf8(spacedWordText));
 }
 
 void GamePage::UpdateDataFromGame()

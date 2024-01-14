@@ -12,8 +12,11 @@ public:
 
 	SharedUIElements();
 	void StyleElements();
+
+	void SetImagePhoto();
 	QPushButton* GetReturnButton();
 	QLabel* GetImageLabel();
+
 	~SharedUIElements();
 
 private:

@@ -29,8 +29,8 @@ private slots:
 	void UpdateWord();
 	void UpdateDataFromGame();
 private:
-	QLabel* imageLabel;
-	QTextEdit* listPlayers, * round, * time, * word, * chatHistory;
+	QLabel* imageLabel, * round, * time, * word;
+	QTextEdit* listPlayers, * chatHistory;
 	QHBoxLayout* topLayout, * gameLayout,* buttonsLayout;
 	QVBoxLayout* layout, * chatLayout;
 	QLineEdit* messageInput;
