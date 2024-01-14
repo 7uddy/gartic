@@ -18,10 +18,8 @@ public:
 	Player(Player&& player) noexcept;
 	void SetUsername(const std::string& username);
 	void SetPassword(const std::string& password);
-	void SetScore(float score);
 	std::string& GetUsername();
 	std::string& GetPassword();
-	float GetScore();
 	Player& operator=(const Player& player) = default;
 	Player& operator=(Player&& player) noexcept;
 
@@ -37,6 +35,5 @@ public:
 private:
 	std::string m_username;
 	std::string m_password;
-	float m_score;
 };
 
