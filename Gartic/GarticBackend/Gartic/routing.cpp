@@ -74,7 +74,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				if (!lobbies.empty())
 				{
 					auto foundLobby = GetLobbyWithPlayer(lobbies, receivedUsername);
-					if (foundLobby->get())
+					if (foundLobby)
 					{
 						return crow::response(409);
 					}
@@ -116,7 +116,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 				{
 					//IF PLAYER IS ALREADY IN A LOBBY
 					auto foundLobby = GetLobbyWithPlayer(lobbies, receivedUsername);
-					if (foundLobby->get())
+					if (foundLobby)
 						return crow::json::wvalue{ {"text","ERROR: USER ALREADY IN A LOBBY"} };
 				}
 				//CREATE NEW LOBBY AND ADD PLAYER TO LOBBY
@@ -147,7 +147,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 				//CHECK IF THERE IS A LOBBY WITH LOBBYCODE
 				auto foundLobby = GetLobbyWithCode(lobbies, receivedLobbyCode);
-				if (!foundLobby->get())
+				if (!foundLobby)
 					return crow::response(400);
 				if (foundLobby->get()->GetNumberOfPlayers() == 4)
 					return crow::response(405);
@@ -180,7 +180,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 				//CHECK IF THERE IS A LOBBY WITH USERNAME IN IT
 				auto foundLobby = GetLobbyWithPlayer(lobbies, receivedUsername);
-				if (!foundLobby->get())
+				if (!foundLobby)
 					return crow::response(400);
 				try
 				{
@@ -217,7 +217,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 
 				//CHECK IF THERE IS A LOBBY WITH LOBBYCODE
 				auto foundLobby = GetLobbyWithCode(lobbies, receivedLobbyCode);
-				if (!foundLobby->get())
+				if (!foundLobby)
 					return crow::json::wvalue{ "ERROR: NO LOBBY WITH LOBBYCODE" };
 
 				auto status = foundLobby->get()->GetStatusOfLobby();
@@ -246,7 +246,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					return crow::json::wvalue{ "ERROR: NO LOBBY" };
 				//FIND LOBBY WITH LOBBYCODE 
 				auto foundLobby = GetLobbyWithCode(lobbies, receivedLobbyCode);
-				if (!foundLobby->get())
+				if (!foundLobby)
 					return crow::json::wvalue{ "ERROR: NO LOBBY WITH CODE" };
 				//GET DATA OF PLAYERS
 				std::vector<crow::json::wvalue> gameData_json;
@@ -279,7 +279,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<s
 					return crow::response(404);
 				//FIND LOBBY WITH LOBBYCODE 
 				auto foundLobby = GetLobbyWithCode(lobbies, receivedLobbyCode);
-				if (!foundLobby->get())
+				if (!foundLobby)
 					return crow::response(404);
 				//IF THERE IS ONLY ONE PLAYER IN LOBBY
 				if (foundLobby->get()->GetNumberOfPlayers() < 2)
