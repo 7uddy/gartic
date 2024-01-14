@@ -4,6 +4,7 @@ export module player;
 export import <string>;
 export import <iostream>;
 import <fstream>;
+import <type_traits>;
 
 namespace gartic
 {
@@ -23,7 +24,12 @@ namespace gartic
 		void SetUsername(const std::string& username) noexcept;
 		void SetPassword(const std::string& password) noexcept;
 		void SetScoreTo(const float& score) noexcept;
-		void AddToScore(const float& score) noexcept;
+
+		template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+		void AddToScore(const T& score) noexcept
+		{
+			m_score += score;
+		}
 		void SetEmail(const std::string& email) noexcept;
 
 		//Getters

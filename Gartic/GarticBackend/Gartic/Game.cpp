@@ -62,7 +62,7 @@ bool Game::AddMessageToChat(std::string&& message, const std::string& username) 
 	//FORMAT NEW MESSAGE
 	std::string messageToBeAdded{ "[" + username + "]: " + message };
 
-	//CHECK IF MESSAGE HAS A SPACE IN IT => IT IS NOT A GUESS
+	//CHECK IF RECEIVED MESSAGE HAS A SPACE IN IT => IT IS NOT A GUESS
 	if (message.find(' ') != message.npos)
 	{
 		//ADD MESSAGE FOR EVERYONE SINCE IT IS NOT A GUESS
@@ -83,7 +83,7 @@ bool Game::AddMessageToChat(std::string&& message, const std::string& username) 
 	m_round.AddPlayerGuessTime(username);
 	//ADD THIS MESSAGE ONLY FOR PLAYER
 	m_chat.emplace_back(std::make_pair(std::optional<std::string>(username), std::move(messageToBeAdded)));
-	//ADD MESSAGE OF ACKNOWLEDGEMENT OF PLAYER'S GUESSING
+	//ADD MESSAGE OF ACKNOWLEDGEMENT OF PLAYER'S GUESSING FOR EVERYONE
 	m_chat.emplace_back(std::make_pair(std::optional<std::string>(), std::string{ "[SYSTEM]: " + username +" A GHICIT CUVANTUL" }));
 	return true;
 }
@@ -133,7 +133,7 @@ void Game::RemovePlayer(std::string_view username)
 		m_players.erase(usernameString);
 }
 
-void Game::ChangeDifficulty(int difficulty) noexcept
+void Game::ChangeDifficulty(int difficulty)
 {
 	try
 	{
@@ -167,19 +167,7 @@ uint16_t Game::GetRoundNumber() const noexcept
 
 std::vector<std::shared_ptr<Player>> Game::GetPlayers() noexcept
 {
-	/*std::vector<std::shared_ptr<Player>> players;
-	for (const auto& play : m_players)
-		players.push_back(play.second);
-	return players;*/
 	return m_round.GetPlayers();
-}
-
-void Game::ShowAllPlayers() const noexcept
-{
-	for (const auto& player : m_players)
-	{
-		std::cout << player.first << "\n";
-	}
 }
 
 const std::vector<Game::Coordinate>& Game::GetBoard() const noexcept

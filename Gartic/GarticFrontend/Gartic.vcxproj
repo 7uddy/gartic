@@ -40,12 +40,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
-    <QtInstall>6.5.3_msvc2019_64</QtInstall>
+    <QtPlugin>true</QtPlugin>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>6.5.1_msvc2019_64</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
+    <QtPlugin>true</QtPlugin>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -68,6 +68,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="QtDeploy" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtDeploy>true</QtDeploy>
+  </PropertyGroup>
+  <PropertyGroup Label="QtDeploy" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtDeploy>true</QtDeploy>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link />
@@ -152,16 +158,22 @@
     <ClInclude Include="PageController.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Images\Background_game.jpg" />
-    <Image Include="Images\Title.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="style.css" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DLL\DLL\DLL.vcxproj">
       <Project>{b48efe23-0466-4a8c-8627-d0002bbd39b9}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="App_icon.ico" />
+    <CopyFileToFolders Include="arrow.png" />
+    <CopyFileToFolders Include="arrow_hovered.png" />
+    <CopyFileToFolders Include="arrow_pressed.png" />
+    <CopyFileToFolders Include="Background_game.jpg" />
+    <CopyFileToFolders Include="Game_Name.png" />
+    <CopyFileToFolders Include="Title.png" />
+    <CopyFileToFolders Include="[PNG] App_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="style.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

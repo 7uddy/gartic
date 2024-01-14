@@ -7,14 +7,6 @@ import <vector>;
 export import word;
 export import round;
 
-//import <iostream>;
-//import <string>;
-//import <string_view>;
-//import <optional>;
-//export import <memory>;
-//import <cstdint>;
-//import <unordered_map>;
-
 namespace gartic
 {
 	export class Game
@@ -48,12 +40,10 @@ namespace gartic
 		void RemovePlayer(std::string_view);
 
 		bool AddMessageToChat(std::string&& message, const std::string& username = "") noexcept;
-		void ChangeDifficulty(int) noexcept;
+		void ChangeDifficulty(int);
 
 		void IsTimeForHint();
 
-		//For Test
-		void ShowAllPlayers() const noexcept; //for test
 		bool IsPlayerInGame(std::string_view) const noexcept;
 
 		//FOR GUI

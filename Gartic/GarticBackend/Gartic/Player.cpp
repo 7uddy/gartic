@@ -74,10 +74,11 @@ void Player::SetScoreTo(const float& score) noexcept
 	m_score = score;
 }
 
-void Player::AddToScore(const float& score) noexcept
-{
-	m_score += score;
-}
+//template <typename T, typename>
+//void Player::AddToScore(const T& score) noexcept
+//{
+//	m_score += score;
+//}
 
 void Player::ResetScore() noexcept
 {

@@ -23,8 +23,6 @@ bool Round::StartRound(const Word& word)
 		m_timeForHint = (kRoundSeconds - 10) / m_lettersToShow.size();
 		m_shownWord.assign(m_hiddenWord.size(), '_');
 	}
-	else
-		throw std::exception("Word difficulty doesn't match with round difficulty");
 
 	//Template to changing difficulty between rounds
 	if(m_difficultyIsAscending)

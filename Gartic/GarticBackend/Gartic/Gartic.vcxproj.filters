@@ -82,11 +82,11 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="words.txt">
+    <CopyFileToFolders Include="credentials.txt">
       <Filter>Resource Files</Filter>
-    </Text>
-    <Text Include="credentials.txt">
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="words.txt">
       <Filter>Resource Files</Filter>
-    </Text>
+    </CopyFileToFolders>
   </ItemGroup>
 </Project>

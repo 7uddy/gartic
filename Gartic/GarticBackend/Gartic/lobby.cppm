@@ -3,11 +3,6 @@ export module lobby;
 
 export import game;
 
-//import <iostream>;
-//import <string>;
-//import <cstdint>;
-//import <unordered_map>;
-//import <memory>;
 import <random>;
 
 namespace gartic

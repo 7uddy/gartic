@@ -72,6 +72,7 @@ Word GarticDatabase::GetRandomWordWithDifficulty(int difficulty)
 		if (++currentWordNumber == generatedNumber)
 			return Word{ word };
 	}
+	return Word{};
 }
 
 void GarticDatabase::AddWordToDatabase(const std::string& word, int difficulty)
