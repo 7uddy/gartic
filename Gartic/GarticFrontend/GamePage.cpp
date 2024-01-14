@@ -350,3 +350,33 @@ GamePage::~GamePage()
 {
 	/*empty*/
 }
+
+void GamePage::UpdatePlayersList(const QString& playerName, const QString& playerScore)
+{
+	QWidget* newProfilePadding = new QWidget;
+	playersList->addWidget(newProfilePadding);
+	newProfilePadding->setAccessibleName("profilePadding");
+	newProfilePadding->setFixedSize(380, 70);
+	newProfilePadding->setGeometry(10, 20 + 80 * profilePaddings.size(), 0, 0);
+
+	QHBoxLayout* newProfileLayout = new QHBoxLayout(newProfilePadding);
+
+	QLabel* newProfileName = new QLabel;
+	newProfileName->setText(playerName);
+
+	QLabel* newProfileScore = new QLabel;
+	newProfileScore->setText(playerScore);
+
+	newProfileLayout->addWidget(newProfileName);
+	newProfileLayout->addWidget(newProfileScore, 0, Qt::AlignRight);
+	newProfileLayout->setAlignment(Qt::AlignCenter);
+
+	newProfilePadding->setVisible(true);
+	newProfileName->setVisible(true);
+	newProfileScore->setVisible(true);
+
+	profilePaddings.append(newProfilePadding);
+	profileLayouts.append(newProfileLayout);
+	profileNames.append(newProfileName);
+	profileScores.append(newProfileScore);
+}
