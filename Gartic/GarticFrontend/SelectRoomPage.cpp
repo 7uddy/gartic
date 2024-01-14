@@ -34,7 +34,7 @@ void SelectRoomPage::PlaceElements()
 {
     setLayout(layout);
 
-    QPixmap image("Images/Game_Name.png");
+    QPixmap image("Game_Name.png");
     imageLabel->setPixmap(image);
     topLeftLayout->addWidget(imageLabel);
     topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);

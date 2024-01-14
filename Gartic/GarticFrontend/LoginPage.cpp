@@ -30,7 +30,7 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 void LoginPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Images/Title.png");
+	QPixmap image("Title.png");
 	imageLabel->setPixmap(image);
 	innerLayout->addWidget(imageLabel);
 	innerLayout->setAlignment(Qt::AlignCenter);

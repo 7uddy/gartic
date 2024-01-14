@@ -32,7 +32,7 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 void WaitingRoomPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Images/Game_Name.png");
+	QPixmap image("Game_Name.png");
 	imageLabel->setPixmap(image);
 	topLeftLayout->addWidget(imageLabel);
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -146,7 +146,7 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 	QHBoxLayout* newProfileLayout = new QHBoxLayout(newProfilePadding);
 
 	QLabel* newProfileImage = new QLabel;
-	newProfileImage->setPixmap(QPixmap("Images/[PNG] App_icon.png"));
+	newProfileImage->setPixmap(QPixmap("[PNG] App_icon.png"));
 	newProfileImage->setFixedSize(40, 40);
 	newProfileImage->setScaledContents(true);
 

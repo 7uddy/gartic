@@ -29,7 +29,7 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 void MainMenuPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Images/Title.png");
+	QPixmap image("Title.png");
 	imageLabel->setPixmap(image);
 	imageLabel->setFixedSize(image.width(), image.height());
 

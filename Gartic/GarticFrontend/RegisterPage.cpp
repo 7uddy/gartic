@@ -32,7 +32,7 @@ RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 void RegisterPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Images/Title.png");
+	QPixmap image("Title.png");
 	imageLabel->setPixmap(image);
 	innerLayout->addWidget(imageLabel);
 	innerLayout->setAlignment(Qt::AlignCenter);

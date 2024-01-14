@@ -28,7 +28,7 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 void ProfilePage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Images/Game_Name.png");
+	QPixmap image("Game_Name.png");
 	imageLabel->setPixmap(image);
 	topLeftLayout->addWidget(imageLabel);
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -60,7 +60,7 @@ void ProfilePage::StyleElements()
 	mainPadding->setAccessibleName("mainPadding");
 	matchHistory->setAccessibleName("matchHistory");
 
-	userImage->setPixmap(QPixmap("Images/[PNG] App_icon.png"));
+	userImage->setPixmap(QPixmap("[PNG] App_icon.png"));
 	userImage->setFixedSize(150, 150);
 	userImage->setScaledContents(true);
 	QRegion* region = new QRegion(0, 0, userImage->width(), userImage->height(), QRegion::Ellipse);
