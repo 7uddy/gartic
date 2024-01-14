@@ -19,8 +19,6 @@ public:
 	void showEvent(QShowEvent* event) override;
 	~GamePage();
 
-	void UpdatePlayersList(const QString& playerName, const QString& playerScore); //for test
-
 private slots:
 	void SendMessage();
 	void UpdateBoard();
@@ -40,13 +38,6 @@ private:
 	QPushButton* sendButton, *drawButton, *eraseButton;
 	BoardWidget* board;
 	QGridLayout* gameGridLayout;
-
-	//for test
-	QVBoxLayout* playersList;
-	QVector<QWidget*> profilePaddings;
-	QVector<QHBoxLayout*> profileLayouts;
-	QVector<QLabel*> profileScores;
-	QVector<QLabel*> profileNames;
 
 	bool currentMode;
 	QTimer* timer;
