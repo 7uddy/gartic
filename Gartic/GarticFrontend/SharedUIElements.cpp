@@ -21,8 +21,9 @@ void SharedUIElements::StyleElements()
 
 }
 
-void SharedUIElements::SetImagePhoto()
+void SharedUIElements::SetImagePhoto(QPixmap image)
 {
+	imageLabel->setPixmap(image);
 }
 
 QPushButton* SharedUIElements::GetReturnButton()

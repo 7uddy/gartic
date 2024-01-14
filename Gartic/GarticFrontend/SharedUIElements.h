@@ -13,7 +13,7 @@ public:
 	SharedUIElements();
 	void StyleElements();
 
-	void SetImagePhoto();
+	void SetImagePhoto(QPixmap image);
 	QPushButton* GetReturnButton();
 	QLabel* GetImageLabel();
 

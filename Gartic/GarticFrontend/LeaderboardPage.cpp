@@ -2,9 +2,7 @@
 
 LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 {
-	imageLabel = new QLabel(this);
 	layout = new QVBoxLayout(this);
-	returnButton = new QPushButton(this);
 	boardPadding = new QWidget;
 	topLeftLayout = new QHBoxLayout;
 	bottomLeftLayout = new QVBoxLayout;
@@ -12,10 +10,9 @@ LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 	isGameFinished = false;
 	title = new QLabel("Leaderboard",this);
 	index = 0;
-	SetSize();
 	StyleElements();
 	PlaceElements();
-	connect(returnButton, &QPushButton::clicked, controller, [=]() {
+	connect(sharedElements.GetReturnButton(), &QPushButton::clicked, controller, [=]() {
 		isGameFinished = false;
 		ClearPlayerProfiles();
 		controller->ShowPage("MainMenu");
@@ -26,14 +23,10 @@ void LeaderboardPage::PlaceElements()
 {
 	setLayout(layout);
 
-	QPixmap image("Game_Name.png");
-	imageLabel->setPixmap(image);
-	topLeftLayout->addWidget(imageLabel);
+	topLeftLayout->addWidget(sharedElements.GetImageLabel());
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-	returnButton->setIconSize(QSize(50, 50));
-	returnButton->setFixedSize(40, 40);
-	bottomLeftLayout->addWidget(returnButton);
+	bottomLeftLayout->addWidget(sharedElements.GetReturnButton());
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	boardPadding->setFixedSize(400, 350);
@@ -48,7 +41,6 @@ void LeaderboardPage::PlaceElements()
 
 void LeaderboardPage::StyleElements()
 {
-	returnButton->setAccessibleName("returnButton");
 	boardPadding->setAccessibleName("mainPadding");
 	title->setAccessibleName("title");
 	QFile styleFile("style.css");
@@ -57,10 +49,6 @@ void LeaderboardPage::StyleElements()
 	setStyleSheet(styleSheet);
 }
 
-void LeaderboardPage::SetSize()
-{
-	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-}
 
 void LeaderboardPage::UpdateData()
 {

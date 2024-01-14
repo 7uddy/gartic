@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QtWidgets>
 #include "PageController.h"
+#include "SharedUIElements.h"
 
 class LeaderboardPage  : public QWidget
 {
@@ -11,7 +12,6 @@ public:
 	LeaderboardPage(PageController* controller, QWidget* parent = nullptr);
 	void PlaceElements();
 	void StyleElements();
-	void SetSize();
 	void UpdateData();
 	void showEvent(QShowEvent* event) override;
 	void AddPlayer(const QString& playerName, const QString& playerScore);
@@ -19,10 +19,10 @@ public:
 	~LeaderboardPage();
 
 private:
-	QLabel* imageLabel, *title;
+	QLabel*title;
 	QVBoxLayout* layout, *bottomLeftLayout, * middleLayout;
-	QPushButton* returnButton;
 	QHBoxLayout* topLeftLayout;
+	SharedUIElements sharedElements;
 	bool isGameFinished;
 	int index;
 

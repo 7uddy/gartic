@@ -3,6 +3,7 @@
 #include <algorithm> 
 #include <numeric> 
 #include "PageController.h"
+#include "SharedUIElements.h"
 
 class ProfilePage:public QWidget
 {
@@ -17,12 +18,12 @@ public:
 	~ProfilePage();
 private:
     QVBoxLayout* layout, * bottomLeftLayout, * middleLayout, * leftSideLayout;
-    QPushButton* returnButton;
     QHBoxLayout* topLeftLayout, * mainPaddingLayout;
     QWidget* mainPadding;
-    QLabel* username, * userImage, * averageScore,* imageLabel;;
+    QLabel* username, * userImage, * averageScore;
     QTextEdit* matchHistory;
     Player player;
     PageController* m_controller;
+    SharedUIElements sharedElements;
 };
 

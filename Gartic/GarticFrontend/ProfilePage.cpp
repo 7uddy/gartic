@@ -3,8 +3,6 @@
 ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 {
 	layout = new QVBoxLayout(this);
-	imageLabel = new QLabel(this);
-	returnButton = new QPushButton(this);
 	mainPadding = new QWidget;
 	username = new QLabel;
 	userImage = new QLabel;
@@ -19,7 +17,7 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 	SetSize();
 	StyleElements();
 	PlaceElements();
-	connect(returnButton, &QPushButton::clicked, controller, [=]() {
+	connect(sharedElements.GetReturnButton(), &QPushButton::clicked, controller, [=]() {
 		matchHistory->setText("Match History: ");
 		controller->ShowPage("MainMenu");
 		});
@@ -28,14 +26,11 @@ ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 void ProfilePage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Game_Name.png");
-	imageLabel->setPixmap(image);
-	topLeftLayout->addWidget(imageLabel);
+	
+	topLeftLayout->addWidget(sharedElements.GetImageLabel());
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-	returnButton->setIconSize(QSize(50, 50));
-	returnButton->setFixedSize(40, 40);
-	bottomLeftLayout->addWidget(returnButton);
+	bottomLeftLayout->addWidget(sharedElements.GetReturnButton());
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	middleLayout->addWidget(mainPadding);
@@ -56,9 +51,9 @@ void ProfilePage::PlaceElements()
 void ProfilePage::StyleElements()
 {
 	matchHistory->setEnabled(false);
-	returnButton->setAccessibleName("returnButton");
 	mainPadding->setAccessibleName("mainPadding");
 	matchHistory->setAccessibleName("matchHistory");
+	sharedElements.SetImagePhoto(QPixmap("Title.png"));
 
 	userImage->setPixmap(QPixmap("[PNG] App_icon.png"));
 	userImage->setFixedSize(150, 150);
@@ -74,7 +69,6 @@ void ProfilePage::StyleElements()
 
 void ProfilePage::SetSize()
 {
-	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	mainPadding->setFixedSize(600, 500);
 	matchHistory->setFixedSize(300, 400);
 }
