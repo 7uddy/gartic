@@ -108,7 +108,12 @@ void WaitingRoomPage::SetConnections()
 		{
 			timer->stop();
 			if (m_controller->StartGame(DifficultyToInt(currentDifficulty)))
+			{
+				code->setEnabled(true);
+				code->setText("Press here");
+				ClearPlayerProfiles();
 				m_controller->ShowPage("Game");
+			}
 		}
 		});
 	connect(returnButton, &QPushButton::clicked, m_controller, [=]() {
@@ -117,6 +122,7 @@ void WaitingRoomPage::SetConnections()
 			timer->stop();
 			code->setEnabled(true);
 			code->setText("Press here");
+			ClearPlayerProfiles();
 			m_controller->ShowPage("MainMenu");
 		}
 		else
@@ -196,6 +202,9 @@ void WaitingRoomPage::UpdateDataFromRoom()
 		timer->stop();
 		statusText->setText("Launched");
 		m_controller->ShowPage("Game");
+		code->setEnabled(true);
+		code->setText("Press here");
+		ClearPlayerProfiles();
 		return;
 	}
 
@@ -216,6 +225,23 @@ void WaitingRoomPage::UpdateDataFromRoom()
 			oldPlayers.push_back(player["username"].get<std::string>());
 		}
 	}
+	for (auto it = oldPlayers.begin(); it != oldPlayers.end();)
+	{
+		auto player = *it;
+		auto itInNewPlayers = std::find_if(players.begin(), players.end(), [&](const auto& p) {
+			return p["username"].get<std::string>() == player;
+			});
+		if (itInNewPlayers == players.end())
+		{
+			int indexToRemove = std::distance(oldPlayers.begin(), it);
+			ClearPlayerProfile(indexToRemove);
+			it = oldPlayers.erase(it);
+		}
+		else
+		{
+			it++;
+		}
+	}
 	timer->start(2000);
 }
 
@@ -227,6 +253,40 @@ void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, const bool& o
 	code->setText(QString::fromUtf8(codeLobby.c_str()));
 	code->setEnabled(false);
 	UpdateDataFromRoom();
+}
+
+void WaitingRoomPage::ClearPlayerProfiles()
+{
+	for (int index = 0; index < profilePaddings.size(); index++)
+	{
+		delete profilePaddings[index];
+	}
+	profilePaddings.clear();
+	profileLayouts.clear();
+	profileNames.clear();
+	mainPadding->setFixedSize(600, 300);
+	oldPlayers.clear();
+}
+
+void WaitingRoomPage::ClearPlayerProfile(int index)
+{
+	if (index >= 0 && index < profilePaddings.size())
+	{
+		layout->removeWidget(profilePaddings[index]);
+		delete profilePaddings[index];
+		profilePaddings.remove(index);
+		profileLayouts.remove(index);
+		profileNames.remove(index);
+		mainPadding->setFixedSize(600, 300);
+	}
+}
+
+void WaitingRoomPage::OnPlayerLeave(int index)
+{
+	if (index >= 0 && index < profilePaddings.size())
+	{
+		ClearPlayerProfile(index);
+	}
 }
 
 QString WaitingRoomPage::DifficultyToQString(const Difficulty& difficulty) {
