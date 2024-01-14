@@ -308,6 +308,12 @@ void GamePage::UpdateDataFromGame()
 	UpdateWord();
 	if (!UpdateStatus())
 	{
+		listPlayers->clear();
+		round->clear();
+		chatHistory->clear();
+		time->clear();
+		word->clear();
+		board->pointsCoordinates.clear();
 		m_controller->ShowPage("Leaderboard");
 		return;
 	}

@@ -266,6 +266,7 @@ void WaitingRoomPage::ClearPlayerProfiles()
 	profileNames.clear();
 	mainPadding->setFixedSize(600, 300);
 	oldPlayers.clear();
+	playersNumber->setText("0/4");
 }
 
 void WaitingRoomPage::ClearPlayerProfile(int index)
@@ -287,6 +288,7 @@ void WaitingRoomPage::OnPlayerLeave(int index)
 	{
 		ClearPlayerProfile(index);
 	}
+	playersNumber->setText(QString::number(profilePaddings.size()) + "/4");
 }
 
 QString WaitingRoomPage::DifficultyToQString(const Difficulty& difficulty) {

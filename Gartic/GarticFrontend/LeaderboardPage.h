@@ -15,6 +15,7 @@ public:
 	void UpdateData();
 	void showEvent(QShowEvent* event) override;
 	void AddPlayer(const QString& playerName, const QString& playerScore);
+	void ClearPlayerProfiles();
 	~LeaderboardPage();
 
 private:

@@ -15,7 +15,8 @@ LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 	SetSize();
 	StyleElements();
 	PlaceElements();
-	connect(returnButton, &QPushButton::clicked, controller, [controller]() {
+	connect(returnButton, &QPushButton::clicked, controller, [=]() {
+		ClearPlayerProfiles();
 		controller->ShowPage("MainMenu");
 		});
 }
@@ -124,6 +125,17 @@ void LeaderboardPage::AddPlayer(const QString& playerName, const QString& player
 	profileScores.append(newProfileScore);
 
 	index++;
+}
+
+void LeaderboardPage::ClearPlayerProfiles()
+{
+	for (int index = 0; index < profilePaddings.size(); index++)
+	{
+		delete profilePaddings[index];
+	}
+	profilePaddings.clear();
+	profileLayouts.clear();
+	profileNames.clear();
 }
 
 LeaderboardPage::~LeaderboardPage()
