@@ -24,7 +24,7 @@ public:
 
 	void OnPlayerJoin(const QString& playerName);
 	void UpdateMainPaddingSize();
-	void UpdateRoomCode(const std::string& codeLobby, const bool& owner);
+	void UpdateRoomCode(const std::string& codeLobby,bool owner);
 	void ClearPlayerProfiles();
 	void OnPlayerLeave(int index);
 	void ClearPlayerProfile(int index);

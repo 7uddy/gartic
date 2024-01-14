@@ -245,7 +245,7 @@ void WaitingRoomPage::UpdateDataFromRoom()
 	timer->start(2000);
 }
 
-void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, const bool& owner)
+void WaitingRoomPage::UpdateRoomCode(const std::string& codeLobby, bool owner)
 {
 	player = m_controller->GetPlayer();
 	ownerRoom = owner;

@@ -13,12 +13,14 @@ SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
     SetSize();
     StyleElements();
     PlaceElements();
-    connect(returnButton, &QPushButton::clicked, controller, [controller]() {
+    connect(returnButton, &QPushButton::clicked, controller, [=]() {
+       roomCode->clear();
        controller->ShowPage("MainMenu");
    });
     connect(joinButton, &QPushButton::clicked, controller, [=]() {
         if (controller->VerifyCode(roomCode->text()))
         {
+            roomCode->clear();
             controller->ShowPage("WaitingRoom");
         }
         else
