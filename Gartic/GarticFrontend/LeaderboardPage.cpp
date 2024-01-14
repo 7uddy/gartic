@@ -16,6 +16,7 @@ LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 	StyleElements();
 	PlaceElements();
 	connect(returnButton, &QPushButton::clicked, controller, [=]() {
+		isGameFinished = false;
 		ClearPlayerProfiles();
 		controller->ShowPage("MainMenu");
 		});
@@ -136,6 +137,7 @@ void LeaderboardPage::ClearPlayerProfiles()
 	profilePaddings.clear();
 	profileLayouts.clear();
 	profileNames.clear();
+	this->index = 0;
 }
 
 LeaderboardPage::~LeaderboardPage()
