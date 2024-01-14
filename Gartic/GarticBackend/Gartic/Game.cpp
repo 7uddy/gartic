@@ -219,8 +219,8 @@ bool Game::TimeToEndGame() const noexcept
 
 void Game::SaveScoresInDatabase(GarticDatabase& storage) const noexcept
 {
-	for (const auto& player : m_players)
-	{
+	auto saveScoresInDatabase = [this, &storage](const std::pair<std::string, std::shared_ptr<Player>>& player) {
 		storage.AddScoreToDatabase(m_gameID, player.first, player.second->GetScore());
-	}
+		};
+	std::ranges::for_each(m_players, saveScoresInDatabase);
 }
