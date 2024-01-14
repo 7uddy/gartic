@@ -2,6 +2,7 @@
 #include <QFile>
 #include <QtWidgets>
 #include "PageController.h"
+#include "SharedUIElements.h"
 
 class SelectRoomPage : public QWidget
 {
@@ -16,8 +17,8 @@ public:
 
 private:
     QLineEdit* roomCode;
-    QPushButton* joinButton, * returnButton;
-    QLabel* imageLabel;
+    QPushButton* joinButton;
     QVBoxLayout* layout,* bottomLeftLayout,* middleLayout;
     QHBoxLayout* topLeftLayout;
+    SharedUIElements sharedElements;
 };

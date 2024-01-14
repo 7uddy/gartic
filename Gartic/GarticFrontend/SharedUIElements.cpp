@@ -10,7 +10,7 @@ SharedUIElements::SharedUIElements()
 
 void SharedUIElements::StyleElements()
 {
-	QPixmap image("Images/Game_Name.png");
+	QPixmap image("Game_Name.png");
 	imageLabel->setPixmap(image);
 
 	returnButton->setIconSize(QSize(50, 50));

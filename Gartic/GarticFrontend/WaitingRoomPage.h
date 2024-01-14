@@ -2,6 +2,7 @@
 #include <QtWidgets>
 #include <iterator>
 #include "PageController.h"
+#include "SharedUIElements.h"
 
 class WaitingRoomPage : public QWidget
 {
@@ -24,7 +25,7 @@ public:
 
 	void OnPlayerJoin(const QString& playerName);
 	void UpdateMainPaddingSize();
-	void UpdateRoomCode(const std::string& codeLobby,bool owner);
+	void UpdateRoomCode(const std::string& codeLobby, bool owner);
 	void ClearPlayerProfiles();
 	void OnPlayerLeave(int index);
 	void ClearPlayerProfile(int index);
@@ -38,14 +39,15 @@ private slots:
 
 private:
 	QVBoxLayout* layout, * profilesLayout, * bottomLeftLayout, * roomSettingLayout;
-	QHBoxLayout* topLeftLayout,* statusLayout;
-	QLabel* imageLabel, * playersNumber, * statusText, *difficulty,* roomCode;
-	QPushButton* returnButton,* startButton,* code, * difficultyButton;
+	QHBoxLayout* topLeftLayout, * statusLayout;
+	QLabel* playersNumber, * statusText, * difficulty, * roomCode;
+	QPushButton * startButton, * code, * difficultyButton;
 	QWidget* mainPadding;
-	QGridLayout* middleLayout,*mainPaddingLayout;
+	QGridLayout* middleLayout, * mainPaddingLayout;
 	QVector<QWidget*> profilePaddings;
 	QVector<QHBoxLayout*> profileLayouts;
 	QVector<QLabel*> profileNames;
+	SharedUIElements sharedElements;
 
 	QTimer* timer;
 	Difficulty currentDifficulty;

@@ -3,8 +3,6 @@
 WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 {
 	layout = new QVBoxLayout(this);
-	imageLabel = new QLabel(this);
-	returnButton = new QPushButton(this);
 	mainPadding = new QWidget;
 	profilesLayout = new QVBoxLayout;
 	difficultyButton = new QPushButton("Easy");
@@ -32,14 +30,11 @@ WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 void WaitingRoomPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Game_Name.png");
-	imageLabel->setPixmap(image);
-	topLeftLayout->addWidget(imageLabel);
+	
+	topLeftLayout->addWidget(sharedElements.GetImageLabel());
 	topLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
 
-	returnButton->setIconSize(QSize(50, 50));
-	returnButton->setFixedSize(40, 40);
-	bottomLeftLayout->addWidget(returnButton);
+	bottomLeftLayout->addWidget(sharedElements.GetReturnButton());
 	bottomLeftLayout->setAlignment(Qt::AlignLeft | Qt::AlignBottom);
 
 	statusText->setAccessibleName("statusLabel");
@@ -70,7 +65,6 @@ void WaitingRoomPage::PlaceElements()
 
 void WaitingRoomPage::StyleElements()
 {
-	returnButton->setAccessibleName("returnButton");
 	difficultyButton->setAccessibleName("difficultyButton");
 	startButton->setAccessibleName("startButton");
 	mainPadding->setAccessibleName("mainPadding");
@@ -90,7 +84,6 @@ void WaitingRoomPage::SetSize()
 	profilesLayout->setSpacing(2);
 	code->setFixedSize(110, 30);
 
-	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 	startButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 }
 
@@ -116,7 +109,7 @@ void WaitingRoomPage::SetConnections()
 			}
 		}
 		});
-	connect(returnButton, &QPushButton::clicked, m_controller, [=]() {
+	connect(sharedElements.GetReturnButton(), &QPushButton::clicked, m_controller, [=]() {
 		if (m_controller->LeaveRoom())
 		{
 			timer->stop();
