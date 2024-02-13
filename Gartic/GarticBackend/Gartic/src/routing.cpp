@@ -100,7 +100,20 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				return crow::response(202);
 			});
 
-	
+	CROW_ROUTE(m_app, "/disconnect")
+		.methods(crow::HTTPMethod::GET)([&loggedInPlayers](const crow::request& req)
+			{
+				std::string receivedUsername{ req.url_params.get("username") };
+
+				//CHECK DATA
+				if (receivedUsername.empty())
+					return crow::response(400);
+
+				loggedInPlayers.erase(receivedUsername);
+
+				return crow::response(409);
+			});
+
 
 	CROW_ROUTE(m_app, "/deleteuser")
 		.methods(crow::HTTPMethod::GET)([&db](const crow::request& req)
@@ -535,6 +548,20 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				}
 
 				return crow::json::wvalue{ gameData_json };
+			});
+
+	CROW_ROUTE(m_app, "/disconnectfromgame")
+		.methods(crow::HTTPMethod::GET)([&lobbies](const crow::request& req)
+			{
+				std::string receivedUsername{ req.url_params.get("username") };
+
+				//CHECK DATA
+				if (receivedUsername.empty())
+					return crow::response(400);
+
+				game->RemovePlayer(receivedUsername);
+
+				return crow::response(409);
 			});
 
 	//PROFILE PAGE
