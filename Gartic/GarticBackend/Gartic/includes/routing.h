@@ -5,12 +5,14 @@
 
 import lobby;
 
+import <unordered_set>;
+
 namespace gartic
 {
 	class Routing
 	{
 	public:
-		void Run(GarticDatabase& storage, std::unique_ptr<Game>&, std::vector<std::unique_ptr<Lobby>>&);
+		void Run(GarticDatabase& storage, std::unique_ptr<Game>&, std::unordered_map<std::string, std::unique_ptr<Lobby>>&, std::unordered_set<std::string>&);
 		crow::SimpleApp& GetApp();
 
 	private:
