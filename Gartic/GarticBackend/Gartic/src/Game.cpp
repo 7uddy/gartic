@@ -110,17 +110,17 @@ std::vector<std::string> Game::GetChat(std::string_view user) const noexcept
 	return chat;
 }
 
-const std::string& gartic::Game::GetPainterUsername() const noexcept
+const std::string& Game::GetPainterUsername() const noexcept
 {
 	return m_round.GetPainterUsername();
 }
 
-const std::string& gartic::Game::GetHiddenWord() const noexcept
+const std::string& Game::GetHiddenWord() const noexcept
 {
 	return m_round.GetHiddenWord();
 }
 
-const std::string& gartic::Game::GetShownWord() const noexcept
+const std::string& Game::GetShownWord() const noexcept
 {
 	return m_round.GetShownWord();
 }
@@ -180,7 +180,7 @@ void Game::UpdateBoard(std::vector<Game::Coordinate>&& newBoard)
 	m_board = std::move(newBoard);
 }
 
-int Game::ConvertStatusToInteger(const Game::Status& current) const noexcept
+int Game::ConvertStatusToInteger(const Game::Status& current)
 {
 	switch (current)
 	{

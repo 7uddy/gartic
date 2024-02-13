@@ -7,7 +7,6 @@ using namespace gartic;
 
 
 //TO DO:
-//routes related to disconnect from game / menu (complete disconnect)
 //convert methods related to game status to static
 //create new routes related to game ending
 //create new routes related to timer, get hidden word, get hint and start another round
@@ -416,8 +415,6 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				std::string receivedUsername { req.url_params.get("username") };
 				if (receivedUsername.empty())
 					return crow::json::wvalue{ "ERROR: NO USERNAME IN PARAMETERS" };
-				if (!game)
-					return crow::json::wvalue{ "ERROR: NO GAME IN PROCESS" };
 
 				//GET CHAT
 				std::vector<crow::json::wvalue> gameData_json;
@@ -446,7 +443,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 					return crow::json::wvalue{ "" };
 				game->IsTimeForHint();
 				auto seconds = game->GetTimer();
-				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Transitioning))
+				if (game->GetGameStatus() == Game::ConvertStatusToInteger(Game::Status::Transitioning))
 					return crow::json::wvalue{ Round::kRoundSeconds };
 				if ((seconds > Round::kRoundSeconds || game->AllPlayersGuessed()))
 					game->StartAnotherRound(db);
@@ -486,7 +483,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 					receivedCoordinates.emplace_back(x, y);
 				}
 
-				if (game->GetGameStatus() == game->ConvertStatusToInteger(Game::Status::Transitioning))
+				if (game->GetGameStatus() == Game::ConvertStatusToInteger(Game::Status::Transitioning))
 					return crow::response(200);
 
 				game->UpdateBoard(std::move(receivedCoordinates));
@@ -551,17 +548,23 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 			});
 
 	CROW_ROUTE(m_app, "/disconnectfromgame")
-		.methods(crow::HTTPMethod::GET)([&lobbies](const crow::request& req)
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
 			{
 				std::string receivedUsername{ req.url_params.get("username") };
 
 				//CHECK DATA
 				if (receivedUsername.empty())
 					return crow::response(400);
+				try 
+				{
+					game->RemovePlayer(receivedUsername);
 
-				game->RemovePlayer(receivedUsername);
-
-				return crow::response(409);
+				}
+				catch (...)
+				{
+					return crow::response(409);
+				}
+				return crow::response(200);
 			});
 
 	//PROFILE PAGE

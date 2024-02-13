@@ -62,7 +62,7 @@ namespace gartic
 		//
 
 		void ClearChat() noexcept;
-		int ConvertStatusToInteger(const Status&) const noexcept;
+		static int ConvertStatusToInteger(const Status&);
 	private:
 
 	private:
