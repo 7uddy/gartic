@@ -18,6 +18,41 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="includes\game.cppm" />
+    <ClCompile Include="includes\gamescore.cppm" />
+    <ClCompile Include="includes\lobby.cppm" />
+    <ClCompile Include="includes\player.cppm" />
+    <ClCompile Include="includes\round.cppm" />
+    <ClCompile Include="includes\word.cppm" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\gamescore.cpp" />
+    <ClCompile Include="src\garticDatabase.cpp" />
+    <ClCompile Include="src\lobby.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\round.cpp" />
+    <ClCompile Include="src\routing.cpp" />
+    <ClCompile Include="src\Source.cpp" />
+    <ClCompile Include="src\word.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="resources\credentials.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </CopyFileToFolders>
+    <CopyFileToFolders Include="resources\words.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </CopyFileToFolders>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\garticDatabase.h" />
+    <ClInclude Include="includes\routing.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -147,35 +182,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="game.cpp" />
-    <ClCompile Include="game.cppm" />
-    <ClCompile Include="gamescore.cpp" />
-    <ClCompile Include="gamescore.cppm" />
-    <ClCompile Include="garticDatabase.cpp" />
-    <ClCompile Include="Input.cpp" />
-    <ClCompile Include="lobby.cpp" />
-    <ClCompile Include="lobby.cppm" />
-    <ClCompile Include="player.cpp" />
-    <ClCompile Include="player.cppm" />
-    <ClCompile Include="round.cpp" />
-    <ClCompile Include="round.cppm" />
-    <ClCompile Include="routing.cpp" />
-    <ClCompile Include="Source.cpp" />
-    <ClCompile Include="utils.cpp" />
-    <ClCompile Include="utils.cppm" />
-    <ClCompile Include="word.cpp" />
-    <ClCompile Include="word.cppm" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="garticDatabase.h" />
-    <ClInclude Include="Input.h" />
-    <ClInclude Include="routing.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CopyFileToFolders Include="credentials.txt" />
-    <CopyFileToFolders Include="words.txt" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

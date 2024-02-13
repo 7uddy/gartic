@@ -1,6 +1,24 @@
-#include "routing.h"
+#include "../../Gartic/includes/routing.h"
 import lobby;
 using namespace gartic;
+
+const std::unique_ptr<gartic::Lobby>* GetLobbyWithPlayer(const std::vector<std::unique_ptr<gartic::Lobby>>& lobbies, std::string_view username)
+{
+	std::string searchUsername{ username };
+	for (auto& lobby : lobbies)
+		if (lobby->IsInLobby(searchUsername))
+			return &lobby;
+	return nullptr;
+}
+
+const std::unique_ptr<gartic::Lobby>* GetLobbyWithCode(const std::vector<std::unique_ptr<gartic::Lobby>>& lobbies, std::string_view lobbyCode)
+{
+	std::string searchCode{ lobbyCode };
+	for (const auto& lobby : lobbies)
+		if (lobby->CheckLobbyCode(searchCode))
+			return &lobby;
+	return nullptr;
+}
 
 
 void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::vector<std::unique_ptr<Lobby>>& lobbies)

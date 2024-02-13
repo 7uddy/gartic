@@ -1,6 +1,6 @@
 #include <crow.h>
-#include "garticDatabase.h"
-#include "routing.h"
+#include "../../Gartic/includes/garticDatabase.h"
+#include "../../Gartic/includes/routing.h"
 import lobby;
 using namespace gartic;
 

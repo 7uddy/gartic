@@ -1,4 +1,4 @@
-#include "garticDatabase.h";
+#include "../../Gartic/includes/garticDatabase.h"
 
 using namespace gartic;
 
@@ -100,7 +100,7 @@ int GarticDatabase::GetNextGameID()
 
 void GarticDatabase::PopulatePlayerStorage()
 {
-	std::ifstream fin{ "credentials.txt" };
+	std::ifstream fin{ kCredentialsFile };
 	if (!fin.is_open())
 		throw std::exception("UNABLE TO OPEN FILE TO READ PLAYERS");
 	std::string username;

@@ -67,8 +67,9 @@ namespace gartic
 		int GenerateRandomNumber(int max);
 
 	private:
-		const std::string kDbFile{ "database.sqlite" };
-		const std::string kWordFile{ "words.txt" };
+		const std::string kDbFile{ "resources//database.sqlite" };
+		const std::string kWordFile{ "resources//words.txt" };
+		const std::string kCredentialsFile{ "resources//credentials.txt" };
 		const int kNumberOfWordsOfADifficulty{ 200 };
 
 	private:

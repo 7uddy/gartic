@@ -1,10 +1,9 @@
 #pragma once
 
 #include <crow.h>
-#include "garticDatabase.h"
+#include "../../Gartic/includes/garticDatabase.h"
 
 import lobby;
-import utils;
 
 namespace gartic
 {
