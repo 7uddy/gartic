@@ -241,6 +241,18 @@ std::vector<std::shared_ptr<Player>> Round::GetPlayers() const noexcept
 	return result;
 }
 
+void Round::RemovePlayer(const std::string& name)
+{
+	for (size_t index{ 0u }; index<m_players.size(); ++index)
+	{
+		if (m_players[index]->GetUsername() == name)
+		{
+			m_players.erase(m_players.begin() + index);
+			return;
+		}
+	}
+}
+
 void Round::AddPlayer(std::shared_ptr<Player> player)
 {
 	m_players.emplace_back(player);

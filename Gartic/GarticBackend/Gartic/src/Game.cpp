@@ -25,7 +25,7 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 	m_gameState = Status::Transitioning;
 	do {
 		Word word = storage.GetRandomWordWithDifficulty(GetDifficulty());
-		if (std::find(pastWords.begin(), pastWords.end(), word) == pastWords.end())
+		if (std::ranges::find(pastWords, word) == pastWords.end())
 		{
 			pastWords.emplace_back(word);
 			if (!m_round.StartRound(word))
@@ -33,6 +33,8 @@ void Game::StartAnotherRound(GarticDatabase& storage) noexcept
 				m_gameState = Status::Finished;
 				return;
 			}
+
+			//MIGHT BE OVERKILL
 			m_board.clear();
 			break;
 		}
@@ -127,10 +129,14 @@ const std::string& Game::GetShownWord() const noexcept
 
 void Game::RemovePlayer(std::string_view username)
 {
-	if (std::string usernameString(username); !m_players.contains(usernameString))
+	std::string usernameString(username);
+	if (!m_players.contains(usernameString))
 		throw std::exception("UNABLE TO DELETE PLAYER FROM GAME: DOESN'T EXIST");
 	else
+	{
 		m_players.erase(usernameString);
+		m_round.RemovePlayer(usernameString);
+	}
 }
 
 void Game::ChangeDifficulty(int difficulty)
@@ -145,7 +151,7 @@ void Game::ChangeDifficulty(int difficulty)
 	}
 }
 
-void gartic::Game::IsTimeForHint()
+void Game::IsTimeForHint()
 {
 	uint16_t seconds = GetTimer();
 	int multiple = (int)seconds / m_round.GetTimeForHint();
@@ -153,6 +159,11 @@ void gartic::Game::IsTimeForHint()
 	{
 		m_round.GetNextHint();
 	}
+}
+
+int Game::GetTimerForHint()
+{
+	return m_round.GetTimeForHint();
 }
 
 uint16_t Game::GetDifficulty() const noexcept

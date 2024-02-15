@@ -46,7 +46,7 @@ namespace gartic
 
 		std::vector<std::shared_ptr<Player>> GetPlayers() const noexcept;
 
-
+		void RemovePlayer(const std::string& name);
 		void AddPlayer(std::shared_ptr<Player> player);
 		void AddPlayerGuessTime(const std::string&);
 

@@ -7,9 +7,9 @@ using namespace gartic;
 
 
 //TO DO:
-//convert methods related to game status to static
 //create new routes related to game ending
 //create new routes related to timer, get hidden word, get hint and start another round
+// get timer, get hint timer, get hint, start round
 //modify methods related to chat>?<
 
 void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordered_map<std::string, std::unique_ptr<Lobby>>& lobbies, std::unordered_set<std::string>& loggedInPlayers)
@@ -347,6 +347,9 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 					//MOVE PLAYERS FROM LOBBY TO GAME
 					foundLobby->MovePlayersToGame(*(game.get()));
 
+					//DELETE LOBBY
+					lobbies.erase(foundLobby->GetLobbyCode());
+
 					//START FIRST ROUND
 					game->StartAnotherRound(db);
 				}
@@ -388,7 +391,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 			});
 
 	CROW_ROUTE(m_app, "/addmessagetochat")
-		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
 			{
 				//CHECK DATA
 				std::string receivedUsername { req.url_params.get("username") };
@@ -401,7 +404,11 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				//ADD MESSAGES TO CHAT
 				//If message is hidden word, return that the player has guessed the word
 				if (game->AddMessageToChat(std::move(receivedMessage), std::move(receivedUsername)))
+				{
+					if (game->AllPlayersGuessed())
+						game->StartAnotherRound(db);
 					return crow::response(201);
+				}
 				//Return success
 				return crow::response(200);
 			});
@@ -435,8 +442,10 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 					return crow::json::wvalue{ "" };
 				return crow::json::wvalue{ game->GetRoundNumber() };
 			});
+	//
 
-	CROW_ROUTE(m_app, "/gettimer")
+
+	/*CROW_ROUTE(m_app, "/gettimer")
 		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
 			{
 				if (!game)
@@ -448,7 +457,49 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				if ((seconds > Round::kRoundSeconds || game->AllPlayersGuessed()))
 					game->StartAnotherRound(db);
 				return crow::json::wvalue{ game->GetTimer() };
+			});*/
+
+	CROW_ROUTE(m_app, "/gettimer")
+		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
+			{
+				if (!game)
+					return crow::json::wvalue{ "" };
+				game->IsTimeForHint();
+				if (game->GetGameStatus() == Game::ConvertStatusToInteger(Game::Status::Transitioning))
+					return crow::json::wvalue{ Round::kRoundSeconds };
+				return crow::json::wvalue{ game->GetTimer() };
 			});
+
+	CROW_ROUTE(m_app, "/gethinttimer")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				if (!game)
+					return crow::json::wvalue{ "" };
+				if (game->GetGameStatus() == Game::ConvertStatusToInteger(Game::Status::Transitioning))
+					return crow::json::wvalue{ Round::kRoundSeconds };
+				return crow::json::wvalue{ game->GetTimerForHint() };
+			});
+
+	CROW_ROUTE(m_app, "/getnewhint")
+		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)
+			{
+				if (!game)
+					return crow::response(409);
+				game->IsTimeForHint();
+				return crow::response(200);
+			});
+
+	CROW_ROUTE(m_app, "/startround")
+		.methods(crow::HTTPMethod::GET)([&game, &db](const crow::request& req)
+			{
+				if (!game)
+					return crow::response(409);
+				game->StartAnotherRound(db);
+				return crow::response(200);
+			});
+
+
+	//
 
 	CROW_ROUTE(m_app, "/getboard")
 		.methods(crow::HTTPMethod::GET)([&game](const crow::request& req)

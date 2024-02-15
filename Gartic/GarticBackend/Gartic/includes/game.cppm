@@ -50,6 +50,8 @@ namespace gartic
 		const int& GetGameStatus() const noexcept;
 		const int& GetGameID() const noexcept;
 		uint16_t GetTimer() const noexcept;
+		int GetTimerForHint();
+
 		uint16_t GetDifficulty() const noexcept;
 		uint16_t GetRoundNumber() const noexcept;
 		const std::vector<Coordinate>& GetBoard() const noexcept;
