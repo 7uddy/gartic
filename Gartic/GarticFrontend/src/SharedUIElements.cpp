@@ -1,4 +1,4 @@
-#include "SharedUIElements.h"
+#include "../includes/SharedUIElements.h"
 
 SharedUIElements::SharedUIElements()
 {
@@ -10,7 +10,7 @@ SharedUIElements::SharedUIElements()
 
 void SharedUIElements::StyleElements()
 {
-	QPixmap image("Game_Name.png");
+	QPixmap image("resources//Game_Name.png");
 	imageLabel->setPixmap(image);
 
 	returnButton->setIconSize(QSize(50, 50));
@@ -19,6 +19,10 @@ void SharedUIElements::StyleElements()
 	returnButton->setAccessibleName("returnButton");
 	returnButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
 
+	QFile styleFile("resources//style.css");
+	styleFile.open(QFile::ReadOnly | QFile::Text);
+	QString styleSheet = styleFile.readAll();
+	setStyleSheet(styleSheet);
 }
 
 void SharedUIElements::SetImagePhoto(QPixmap image)
@@ -38,6 +42,5 @@ QLabel* SharedUIElements::GetImageLabel()
 
 SharedUIElements::~SharedUIElements()
 {
-	delete returnButton;
-	delete imageLabel;
+	/*empty*/
 }

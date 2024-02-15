@@ -1,4 +1,4 @@
-#include "WaitingRoomPage.h"
+#include "../includes/WaitingRoomPage.h"
 
 WaitingRoomPage::WaitingRoomPage(PageController* controller, QWidget* parent)
 {
@@ -71,7 +71,7 @@ void WaitingRoomPage::StyleElements()
 	playersNumber->setAccessibleName("statusLabel");
 	code->setAccessibleName("codeButton");
 
-	QFile styleFile("style.css");
+	QFile styleFile("resources//style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
 	setStyleSheet(styleSheet);
@@ -139,7 +139,7 @@ void WaitingRoomPage::OnPlayerJoin(const QString& playerName)
 	QHBoxLayout* newProfileLayout = new QHBoxLayout(newProfilePadding);
 
 	QLabel* newProfileImage = new QLabel;
-	newProfileImage->setPixmap(QPixmap("[PNG] App_icon.png"));
+	newProfileImage->setPixmap(QPixmap("resources//[PNG] App_icon.png"));
 	newProfileImage->setFixedSize(40, 40);
 	newProfileImage->setScaledContents(true);
 

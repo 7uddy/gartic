@@ -1,4 +1,4 @@
-#include "LoginPage.h"
+#include "../includes/LoginPage.h"
 
 LoginPage::LoginPage(PageController* controller,QWidget* parent)
 {
@@ -30,7 +30,7 @@ LoginPage::LoginPage(PageController* controller,QWidget* parent)
 void LoginPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Title.png");
+	QPixmap image("resources//Title.png");
 	imageLabel->setPixmap(image);
 	innerLayout->addWidget(imageLabel);
 	innerLayout->setAlignment(Qt::AlignCenter);
@@ -53,7 +53,7 @@ void LoginPage::StyleElements()
 	password->setEchoMode(QLineEdit::Password);
 	username->setPlaceholderText("Username");
 	password->setPlaceholderText("Password");
-	QFile styleFile("style.css");
+	QFile styleFile("resources//style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
 	setStyleSheet(styleSheet);

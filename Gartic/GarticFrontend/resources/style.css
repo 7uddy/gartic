@@ -25,15 +25,15 @@ QLineEdit {
 }
 
 QPushButton[accessibleName="returnButton"] {
-    icon: url("./arrow.png");
+    icon: url("arrow.png");
 }
 
 QPushButton[accessibleName="returnButton"]:hover {
-    icon: url("./arrow_hovered.png");
+    icon: url("arrow_hovered.png");
 }
 
 QPushButton[accessibleName="returnButton"]:pressed {
-    icon: url("./arrow_pressed.png");
+    icon: url("arrow_pressed.png");
 }
 
 QPushButton[accessibleName="myProfile"] {

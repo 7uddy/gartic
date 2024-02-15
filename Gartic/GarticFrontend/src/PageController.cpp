@@ -1,4 +1,4 @@
-#include "PageController.h"
+#include "../includes/PageController.h"
 
 PageController::PageController(QWidget* parent):QStackedWidget(parent)
 {

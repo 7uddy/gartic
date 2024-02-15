@@ -1,4 +1,4 @@
-#include "LeaderboardPage.h"
+#include "../includes/LeaderboardPage.h"
 
 LeaderboardPage::LeaderboardPage(PageController* controller, QWidget* parent)
 {
@@ -43,7 +43,7 @@ void LeaderboardPage::StyleElements()
 {
 	boardPadding->setAccessibleName("mainPadding");
 	title->setAccessibleName("title");
-	QFile styleFile("style.css");
+	QFile styleFile("resources//style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
 	setStyleSheet(styleSheet);
@@ -87,7 +87,7 @@ void LeaderboardPage::AddPlayer(const QString& playerName, const QString& player
 	QHBoxLayout* newProfileLayout = new QHBoxLayout(newProfilePadding);
 
 	QLabel* newProfileImage = new QLabel;
-	newProfileImage->setPixmap(QPixmap("[PNG] App_icon.png"));
+	newProfileImage->setPixmap(QPixmap("resources//[PNG] App_icon.png"));
 	newProfileImage->setFixedSize(40, 40);
 	newProfileImage->setScaledContents(true);
 

@@ -1,4 +1,4 @@
-#include "ProfilePage.h"
+#include "../includes/ProfilePage.h"
 
 ProfilePage::ProfilePage(PageController* controller, QWidget* parent)
 {
@@ -53,15 +53,15 @@ void ProfilePage::StyleElements()
 	matchHistory->setEnabled(false);
 	mainPadding->setAccessibleName("mainPadding");
 	matchHistory->setAccessibleName("matchHistory");
-	sharedElements.SetImagePhoto(QPixmap("Title.png"));
+	sharedElements.SetImagePhoto(QPixmap("resources//Title.png"));
 
-	userImage->setPixmap(QPixmap("[PNG] App_icon.png"));
+	userImage->setPixmap(QPixmap("resources//[PNG] App_icon.png"));
 	userImage->setFixedSize(150, 150);
 	userImage->setScaledContents(true);
 	QRegion* region = new QRegion(0, 0, userImage->width(), userImage->height(), QRegion::Ellipse);
 	userImage->setMask(*region);
 
-	QFile styleFile("style.css");
+	QFile styleFile("resources//style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
 	setStyleSheet(styleSheet);

@@ -1,4 +1,4 @@
-#include "RegisterPage.h"
+#include "../includes/RegisterPage.h"
 
 RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 {
@@ -32,7 +32,7 @@ RegisterPage::RegisterPage(PageController* controller, QWidget* parent)
 void RegisterPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Title.png");
+	QPixmap image("resources//Title.png");
 	imageLabel->setPixmap(image);
 	innerLayout->addWidget(imageLabel);
 	innerLayout->setAlignment(Qt::AlignCenter);
@@ -58,7 +58,7 @@ void RegisterPage::StyleElements()
 	username->setPlaceholderText("Username");
 	email->setPlaceholderText("Email");
 	password->setPlaceholderText("Password");
-	QFile styleFile("style.css");
+	QFile styleFile("resources//style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
 	setStyleSheet(styleSheet);

@@ -1,4 +1,4 @@
-#include "GamePage.h"
+#include "../includes/GamePage.h"
 
 GamePage::GamePage(PageController* controller, QWidget* parent)
 {
@@ -37,7 +37,7 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 void GamePage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Title.png");
+	QPixmap image("resources//Title.png");
 	imageLabel->setPixmap(image);
 	imageLabel->setFixedSize(image.width(), image.height());
 	topLayout->addWidget(imageLabel);
@@ -74,7 +74,7 @@ void GamePage::StyleElements()
 	time->setAccessibleName("statusLabel");
 	word->setAccessibleName("statusLabel");
 
-	QFile styleFile("style.css");
+	QFile styleFile("resources//style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
 	setStyleSheet(styleSheet);

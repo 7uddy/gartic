@@ -130,34 +130,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BoardWidget.cpp" />
-    <ClCompile Include="GamePage.cpp" />
-    <ClCompile Include="LeaderboardPage.cpp" />
-    <ClCompile Include="MainMenuPage.cpp" />
-    <ClCompile Include="LoginPage.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="PageController.cpp" />
-    <ClCompile Include="ProfilePage.cpp" />
-    <ClCompile Include="RegisterPage.cpp" />
-    <ClCompile Include="SelectRoomPage.cpp" />
-    <ClCompile Include="SharedUIElements.cpp" />
-    <ClCompile Include="WaitingRoomPage.cpp" />
-    <QtMoc Include="MainWindow.h" />
-    <ClCompile Include="main.cpp" />
-    <QtUic Include="MainWindow.ui" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="SharedUIElements.h" />
-    <QtMoc Include="WaitingRoomPage.h" />
-    <QtMoc Include="ProfilePage.h" />
-    <QtMoc Include="SelectRoomPage.h" />
-    <QtMoc Include="RegisterPage.h" />
-    <QtMoc Include="LoginPage.h" />
-    <QtMoc Include="MainMenuPage.h" />
-    <QtMoc Include="GamePage.h" />
-    <QtMoc Include="LeaderboardPage.h" />
-    <QtMoc Include="BoardWidget.h" />
-    <ClInclude Include="PageController.h" />
+    <ClCompile Include="src\BoardWidget.cpp" />
+    <ClCompile Include="src\GamePage.cpp" />
+    <ClCompile Include="src\LeaderboardPage.cpp" />
+    <ClCompile Include="src\LoginPage.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MainMenuPage.cpp" />
+    <ClCompile Include="src\MainWindow.cpp" />
+    <ClCompile Include="src\PageController.cpp" />
+    <ClCompile Include="src\ProfilePage.cpp" />
+    <ClCompile Include="src\RegisterPage.cpp" />
+    <ClCompile Include="src\SelectRoomPage.cpp" />
+    <ClCompile Include="src\SharedUIElements.cpp" />
+    <ClCompile Include="src\WaitingRoomPage.cpp" />
+    <QtUic Include="form\MainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DLL\DLL\DLL.vcxproj">
@@ -165,17 +151,46 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="App_icon.ico" />
-    <CopyFileToFolders Include="arrow.png" />
-    <CopyFileToFolders Include="arrow_hovered.png" />
-    <CopyFileToFolders Include="arrow_pressed.png" />
-    <CopyFileToFolders Include="Background_game.jpg" />
-    <CopyFileToFolders Include="Game_Name.png" />
-    <CopyFileToFolders Include="Title.png" />
-    <CopyFileToFolders Include="[PNG] App_icon.png" />
+    <QtMoc Include="includes\BoardWidget.h" />
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="style.css" />
+    <QtMoc Include="includes\GamePage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="includes\LeaderboardPage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="includes\LoginPage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="includes\MainMenuPage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="includes\MainWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\PageController.h" />
+    <QtMoc Include="includes\WaitingRoomPage.h" />
+    <QtMoc Include="includes\SharedUIElements.h" />
+    <QtMoc Include="includes\SelectRoomPage.h" />
+    <QtMoc Include="includes\RegisterPage.h" />
+    <QtMoc Include="includes\ProfilePage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\App_icon.ico" />
+    <Image Include="resources\arrow.png" />
+    <Image Include="resources\arrow_hovered.png" />
+    <Image Include="resources\arrow_pressed.png" />
+    <Image Include="resources\Background_game.jpg" />
+    <Image Include="resources\Game_Name.png" />
+    <Image Include="resources\Title.png" />
+    <Image Include="resources\[PNG] App_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="resources\MainWindow.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\style.css" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

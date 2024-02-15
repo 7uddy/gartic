@@ -1,4 +1,4 @@
-#include "MainMenuPage.h"
+#include "../includes/MainMenuPage.h"
 
 MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 {
@@ -29,7 +29,7 @@ MainMenuPage::MainMenuPage(PageController* controller, QWidget* parent)
 void MainMenuPage::PlaceElements()
 {
 	setLayout(layout);
-	QPixmap image("Title.png");
+	QPixmap image("resources//Title.png");
 	imageLabel->setPixmap(image);
 	imageLabel->setFixedSize(image.width(), image.height());
 
@@ -51,7 +51,7 @@ void MainMenuPage::PlaceElements()
 
 void MainMenuPage::StyleElements()
 {
-	QFile styleFile("style.css");
+	QFile styleFile("resources//style.css");
 	styleFile.open(QFile::ReadOnly | QFile::Text);
 	QString styleSheet = styleFile.readAll();
 	myProfile->setAccessibleName("myProfile");

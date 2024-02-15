@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "../includes/MainWindow.h"
 #include <QtWidgets/QApplication>
 #include <QIcon>
 

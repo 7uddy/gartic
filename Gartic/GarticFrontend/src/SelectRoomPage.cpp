@@ -1,4 +1,4 @@
-#include "SelectRoomPage.h"
+#include "../includes/SelectRoomPage.h"
 
 SelectRoomPage::SelectRoomPage(PageController* controller, QWidget* parent)
 {
@@ -50,7 +50,7 @@ void SelectRoomPage::PlaceElements()
 void SelectRoomPage::StyleElements() 
 {
     roomCode->setPlaceholderText("Room Code");
-    QFile styleFile("style.css");
+    QFile styleFile("resources//style.css");
     styleFile.open(QFile::ReadOnly | QFile::Text);
     QString styleSheet = styleFile.readAll();
     setStyleSheet(styleSheet);

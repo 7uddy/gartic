@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+#include "../includes/MainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(pageController);
     SetBackground();
     setGeometry(100, 100, 1200, 800);
-    QIcon appIcon("App_icon.ico");
+    QIcon appIcon("resources//App_icon.ico");
     setWindowIcon(appIcon);
     connect(this, &MainWindow::closeEvent, this, &MainWindow::closeEvent);
 }
@@ -36,7 +36,7 @@ void MainWindow::Show()
 
 void MainWindow::SetBackground()
 {
-    QString imageUrl = "Background_game.jpg";
+    QString imageUrl = "resources//Background_game.jpg";
     this->setAutoFillBackground(true);
     QPalette palette;
     palette.setBrush(QPalette::Window, QBrush(QImage(imageUrl)));

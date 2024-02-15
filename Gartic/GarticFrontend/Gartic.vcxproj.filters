@@ -23,118 +23,125 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="MainWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="LoginPage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="RegisterPage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="MainMenuPage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="SelectRoomPage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="ProfilePage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="WaitingRoomPage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="GamePage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="LeaderboardPage.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="BoardWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="SharedUIElements.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\BoardWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
+    <ClCompile Include="src\GamePage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LoginPage.cpp">
+    <ClCompile Include="src\LeaderboardPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PageController.cpp">
+    <ClCompile Include="src\LoginPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RegisterPage.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainMenuPage.cpp">
+    <ClCompile Include="src\MainMenuPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SelectRoomPage.cpp">
+    <ClCompile Include="src\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ProfilePage.cpp">
+    <ClCompile Include="src\PageController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WaitingRoomPage.cpp">
+    <ClCompile Include="src\ProfilePage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GamePage.cpp">
+    <ClCompile Include="src\RegisterPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LeaderboardPage.cpp">
+    <ClCompile Include="src\SelectRoomPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BoardWidget.cpp">
+    <ClCompile Include="src\SharedUIElements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SharedUIElements.cpp">
+    <ClCompile Include="src\WaitingRoomPage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainWindow.ui">
+    <QtUic Include="form\MainWindow.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PageController.h">
+    <QtMoc Include="includes\BoardWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\GamePage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\LeaderboardPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\LoginPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\MainMenuPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\MainWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\ProfilePage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\RegisterPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\SelectRoomPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\SharedUIElements.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="includes\WaitingRoomPage.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\PageController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CopyFileToFolders Include="Title.png">
+    <Image Include="resources\[PNG] App_icon.png">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="style.css">
+    </Image>
+    <Image Include="resources\App_icon.ico">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="Game_Name.png">
+    </Image>
+    <Image Include="resources\arrow.png">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="Background_game.jpg">
+    </Image>
+    <Image Include="resources\arrow_hovered.png">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="arrow_pressed.png">
+    </Image>
+    <Image Include="resources\arrow_pressed.png">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="arrow_hovered.png">
+    </Image>
+    <Image Include="resources\Background_game.jpg">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="arrow.png">
+    </Image>
+    <Image Include="resources\Game_Name.png">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="App_icon.ico">
+    </Image>
+    <Image Include="resources\Title.png">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
-    <CopyFileToFolders Include="[PNG] App_icon.png">
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="resources\MainWindow.qrc">
       <Filter>Resource Files</Filter>
-    </CopyFileToFolders>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\style.css">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
