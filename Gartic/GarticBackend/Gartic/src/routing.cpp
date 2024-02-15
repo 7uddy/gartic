@@ -8,8 +8,6 @@ using namespace gartic;
 
 //TO DO:
 //create new routes related to game ending
-//create new routes related to timer, get hidden word, get hint and start another round
-// get timer, get hint timer, get hint, start round
 //modify methods related to chat>?<
 
 void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordered_map<std::string, std::unique_ptr<Lobby>>& lobbies, std::unordered_set<std::string>& loggedInPlayers)
@@ -563,7 +561,7 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 			});
 
 	//ROUTE RELATED TO END GAME
-	CROW_ROUTE(m_app, "/getplayersandrequestend")
+	/*CROW_ROUTE(m_app, "/getplayersandrequestend")
 		.methods(crow::HTTPMethod::GET)([&game, &db]() 
 			{
 				if (!game)
@@ -596,6 +594,43 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				}
 
 				return crow::json::wvalue{ gameData_json };
+			});*/
+
+
+	CROW_ROUTE(m_app, "/requestend")
+		.methods(crow::HTTPMethod::GET)([&game, &db]()
+			{
+				if (!game)
+					return crow::response(404);
+
+				if (game->GetGameStatus() != Game::ConvertStatusToInteger(Game::Status::Finished))
+				{
+					return crow::response(409);
+				}
+
+				game->AddRequestForEnd();
+
+				if (game->TimeToEndGame())
+					return crow::response(200);
+				else
+					return crow::response(201);
+			});
+
+	CROW_ROUTE(m_app, "/deletegame")
+		.methods(crow::HTTPMethod::GET)([&game, &db]()
+			{
+				if (!game)
+					return crow::response(404);
+
+				if (game->GetGameStatus() != Game::ConvertStatusToInteger(Game::Status::Finished))
+				{
+					return crow::response(409);
+				}
+
+				game->SaveScoresInDatabase(db);
+				game.reset();
+
+				return crow::response(200);
 			});
 
 	CROW_ROUTE(m_app, "/disconnectfromgame")
@@ -609,13 +644,12 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				try 
 				{
 					game->RemovePlayer(receivedUsername);
-
+					return crow::response(200);
 				}
 				catch (...)
 				{
 					return crow::response(409);
 				}
-				return crow::response(200);
 			});
 
 	//PROFILE PAGE
