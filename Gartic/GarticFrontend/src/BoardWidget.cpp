@@ -1,4 +1,4 @@
-#include "BoardWidget.h"
+#include "../includes/BoardWidget.h"
 
 BoardWidget::BoardWidget(QWidget* parent) : QWidget(parent)
 {
