@@ -139,6 +139,30 @@ bool PageController::StartGame(int difficulty)
 	return false;
 }
 
+void PageController::DisconnectPlayer()
+{
+	auto responseDisconnect = cpr::Get(
+		cpr::Url{ "http://localhost:18080/disconnect" },
+		cpr::Parameters{
+				{ "username", player.GetUsername()}
+		}
+	);
+	if (responseDisconnect.status_code == 400)
+		return;
+	LeaveRoom();
+	LeaveGame();
+}
+
+void PageController::LeaveGame()
+{
+	auto responseDisconnect = cpr::Get(
+		cpr::Url{ "http://localhost:18080/disconnectfromgame" },
+		cpr::Parameters{
+				{ "username", player.GetUsername()}
+		}
+	);
+}
+
 const std::string& PageController::GetLobbyCode()
 {
 	return roomCode;

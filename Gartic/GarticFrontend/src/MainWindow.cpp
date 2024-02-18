@@ -61,6 +61,9 @@ void MainWindow::closeEvent(QCloseEvent* event)
     reply = QMessageBox::question(this, "Confirmation", "Do you really want to close the game?",
         QMessageBox::Yes | QMessageBox::No);
     if (reply == QMessageBox::Yes)
+    {
+        pageController->DisconnectPlayer();
         close();
+    }
     event->ignore();
 }

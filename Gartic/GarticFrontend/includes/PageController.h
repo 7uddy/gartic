@@ -23,6 +23,8 @@ public:
 	bool VerifyCode(const QString& enteredCode);
 	bool LeaveRoom();
 	bool StartGame(int difficulty);
+	void DisconnectPlayer();
+	void LeaveGame();
 	// GETTERS 
 	const std::string& GetLobbyCode();
 	Player GetPlayer();

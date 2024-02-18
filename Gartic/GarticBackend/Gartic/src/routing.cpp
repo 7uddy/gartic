@@ -639,6 +639,8 @@ void Routing::Run(GarticDatabase& db, std::unique_ptr<Game>& game, std::unordere
 				std::string receivedUsername{ req.url_params.get("username") };
 
 				//CHECK DATA
+				if (!game)
+					return crow::response(404);
 				if (receivedUsername.empty())
 					return crow::response(400);
 				try 
