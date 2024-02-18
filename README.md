@@ -15,7 +15,6 @@ A recreation of the [Gartic](https://gartic.io) ([Skribbl](https://skribbl.io)) 
 # Presentation
 
 # Team 
-Main members: \
 [David Raluca](https://github.com/RalucaDavid) \
 [Geană Andrei](https://github.com/Andrei-Geana) \
 [Ene Tudor](https://github.com/7uddy) 
