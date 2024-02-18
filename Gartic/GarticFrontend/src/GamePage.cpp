@@ -317,7 +317,6 @@ void GamePage::UpdateDataFromGame()
 		word->clear();
 		board->pointsCoordinates.clear();
 		isGameStarted = false;
-		m_controller->FinishGame();
 		m_controller->ShowPage("Leaderboard");
 		return;
 	}
