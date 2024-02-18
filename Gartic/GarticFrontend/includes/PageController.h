@@ -25,7 +25,6 @@ public:
 	bool StartGame(int difficulty);
 	void DisconnectPlayer();
 	void LeaveGame();
-	void FinishGame();
 	// GETTERS 
 	const std::string& GetLobbyCode();
 	Player GetPlayer();
