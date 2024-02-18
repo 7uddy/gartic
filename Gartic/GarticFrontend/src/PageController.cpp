@@ -163,6 +163,19 @@ void PageController::LeaveGame()
 	);
 }
 
+void PageController::FinishGame()
+{
+	auto responsePlayers = cpr::Get(
+		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" });
+	auto responseEnd = cpr::Get(
+		cpr::Url{ "http://localhost:18080/requestend" });
+	if (responseEnd.status_code == 200)
+	{
+		auto responseEnd = cpr::Get(
+			cpr::Url{ "http://localhost:18080/deletegame" });
+	}
+}
+
 const std::string& PageController::GetLobbyCode()
 {
 	return roomCode;

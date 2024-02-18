@@ -20,6 +20,7 @@ GamePage::GamePage(PageController* controller, QWidget* parent)
 	drawButton = new QPushButton("Draw", this);
 	eraseButton = new QPushButton("Erase", this);
 	timer= new QTimer(this);
+	timerGame = new QTimer(this);
 	currentMode = true;
 	isGameStarted = false;
 	m_controller = controller;
@@ -316,6 +317,7 @@ void GamePage::UpdateDataFromGame()
 		word->clear();
 		board->pointsCoordinates.clear();
 		isGameStarted = false;
+		m_controller->FinishGame();
 		m_controller->ShowPage("Leaderboard");
 		return;
 	}

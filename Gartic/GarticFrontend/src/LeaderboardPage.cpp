@@ -53,8 +53,15 @@ void LeaderboardPage::StyleElements()
 void LeaderboardPage::UpdateData()
 {
 	auto responsePlayers = cpr::Get(
-		cpr::Url{ "http://localhost:18080/getplayersandrequestend" }
+		cpr::Url{ "http://localhost:18080/getplayersdatafromgame" }
 	);
+	auto responseEnd = cpr::Get(
+		cpr::Url{ "http://localhost:18080/requestend" });
+	if (responseEnd.status_code == 200)
+	{
+		auto responseEnd = cpr::Get(
+			cpr::Url{ "http://localhost:18080/deletegame" });
+	}
 	auto players = nlohmann::json::parse(responsePlayers.text);
 	for (const auto& player : players)
 	{

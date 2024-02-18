@@ -40,7 +40,7 @@ private:
 	QGridLayout* gameGridLayout;
 
 	bool currentMode;
-	QTimer* timer;
+	QTimer* timer,* timerGame;
 	Player player;
 	PageController* m_controller;
 	bool painter;
